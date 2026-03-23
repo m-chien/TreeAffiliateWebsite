@@ -195,3 +195,20 @@ img {
 .bg-cream {
   background-color: var(--bg-cream);
 }
+::-webkit-scrollbar {
+  width: 13px; /* Độ rộng của thanh cuộn dọc */
+  height: 10px; /* Độ rộng của thanh cuộn ngang (nếu có) */
+}
+::-webkit-scrollbar-track {
+  background: #F5F0E8; /* Hoặc có thể để màu tối nhẹ như #0F1629 */
+}
+/* Phần tay cầm (thumb) - Nơi bạn nắm để kéo */
+::-webkit-scrollbar-thumb {
+  background: var(--accent-orange); /* Màu xanh sáng của dự án bạn */
+  border-radius: 10px; /* Bo góc cho mượt */
+}
+
+/* Hiệu ứng khi di chuột vào phần tay cầm */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-dark-green); /* Đổi thành xanh đậm hơn khi hover */
+}
