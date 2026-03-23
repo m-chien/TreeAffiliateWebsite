@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, User, Menu, X, Leaf } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Heart, Menu, X, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Header.css';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,27 +24,27 @@ const Header: React.FC = () => {
 
   return (
     <motion.header 
-      className={`header ${isScrolled ? 'scrolled' : ''}`}
+      className={`header ${isScrolled || !isHomePage ? 'scrolled' : ''}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="container header-container">
         {/* Logo */}
-        <a href="#" className="logo flex items-center gap-2">
+        <Link to="/" className="logo flex items-center gap-2">
           <Leaf className="logo-icon" size={24} />
           <span className="font-serif">Plants Avenue</span>
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <nav className="desktop-nav">
           <ul className="nav-links flex items-center gap-6">
-            <li><a href="#">Trang Chủ</a></li>
-            <li><a href="#shop">Sản Phẩm</a></li>
-            <li><a href="#review">Đánh Giá</a></li>
-            <li><a href="#compare">So Sánh</a></li>
-            <li><a href="#blog">Bài Viết</a></li>
-            <li><a href="#contact">Liên Hệ</a></li>
+            <li><Link to="/">Trang Chủ</Link></li>
+            <li><Link to="/category">Sản Phẩm</Link></li>
+            <li><a href="/#review">Đánh Giá</a></li>
+            <li><a href="/#compare">So Sánh</a></li>
+            <li><a href="/#blog">Bài Viết</a></li>
+            <li><a href="/#contact">Liên Hệ</a></li>
           </ul>
         </nav>
 
@@ -58,12 +61,12 @@ const Header: React.FC = () => {
       {/* Mobile Nav */}
       <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
         <ul className="mobile-nav-links">
-          <li><a href="#" onClick={toggleMenu}>Trang Chủ</a></li>
-          <li><a href="#shop" onClick={toggleMenu}>Sản Phẩm</a></li>
-          <li><a href="#review" onClick={toggleMenu}>Đánh Giá</a></li>
-          <li><a href="#compare" onClick={toggleMenu}>So Sánh</a></li>
-          <li><a href="#blog" onClick={toggleMenu}>Bài Viết</a></li>
-          <li><a href="#contact" onClick={toggleMenu}>Liên Hệ</a></li>
+          <li><Link to="/" onClick={toggleMenu}>Trang Chủ</Link></li>
+          <li><Link to="/category" onClick={toggleMenu}>Sản Phẩm</Link></li>
+          <li><a href="/#review" onClick={toggleMenu}>Đánh Giá</a></li>
+          <li><a href="/#compare" onClick={toggleMenu}>So Sánh</a></li>
+          <li><a href="/#blog" onClick={toggleMenu}>Bài Viết</a></li>
+          <li><a href="/#contact" onClick={toggleMenu}>Liên Hệ</a></li>
         </ul>
       </div>
     </motion.header>
