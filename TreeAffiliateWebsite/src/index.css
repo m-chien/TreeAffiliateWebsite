@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Color Palette */
+  --bg-dark-green: #1B4332;
+  --bg-cream: #F5F0E8;
+  --text-dark: #122B20;
+  --text-cream: #F5F0E8;
+  --accent-orange: #C4622D;
+  --accent-orange-hover: #A34E20;
+  --light-green: #D8E2DC;
+  --border-color: #E0DBCD;
+  
+  /* Utilities */
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  
+  --max-width: 1200px;
+  --transition: all 0.3s ease;
+  --header-height: 80px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Typography Utility */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.section-padding {
+  padding: 5rem 1rem;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Button variants */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 99px;
+  font-weight: 500;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background-color: var(--accent-orange);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(196, 98, 45, 0.3);
+}
+
+.btn-outline {
+  border: 1px solid var(--text-dark);
+  background: transparent;
+  color: var(--text-dark);
+}
+
+.btn-outline:hover {
+  background: var(--text-dark);
+  color: var(--bg-cream);
+}
+
+.btn-white-outline {
+  border: 1px solid var(--bg-cream);
+  background: transparent;
+  color: var(--bg-cream);
+}
+
+.btn-white-outline:hover {
+  background: var(--bg-cream);
+  color: var(--bg-dark-green);
+}
+
+/* Badge variants */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-red {
+  background: #FFE5E5;
+  color: #D32F2F;
+}
+
+.badge-green {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.badge-orange {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+/* Text Colors */
+.text-cream {
+  color: var(--text-cream);
+}
+
+.text-green {
+  color: var(--bg-dark-green);
+}
+
+/* Flex utils */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+/* Grid utils */
+.grid {
+  display: grid;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Section specific baseline styling */
+.bg-dark-green {
+  background-color: var(--bg-dark-green);
+  color: var(--text-cream);
+}
+
+.bg-cream {
+  background-color: var(--bg-cream);
+}

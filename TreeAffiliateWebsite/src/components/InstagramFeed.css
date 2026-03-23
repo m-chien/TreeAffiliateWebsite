@@ -1,0 +1,75 @@
+.insta-title {
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.insta-grid {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+
+.insta-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+
+.insta-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.insta-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 67, 50, 0.7);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.insta-overlay span {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.insta-item:hover img {
+  transform: scale(1.1);
+}
+
+.insta-item:hover .insta-overlay {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .insta-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .insta-item:last-child,
+  .insta-item:nth-last-child(2) {
+    display: none; /* Show only 3 items on tablet to keep grid nice */
+  }
+}
+
+@media (max-width: 600px) {
+  .insta-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .insta-item:last-child,
+  .insta-item:nth-last-child(2) {
+    display: block; /* Show 4 on mobile */
+  }
+  .insta-item:nth-child(1) {
+    display: none; /* Hide 1 to only show 4 */
+  }
+}
