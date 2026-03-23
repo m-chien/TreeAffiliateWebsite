@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, User, Menu, X, Leaf } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -19,7 +20,12 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+    <motion.header 
+      className={`header ${isScrolled ? 'scrolled' : ''}`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className="container header-container">
         {/* Logo */}
         <a href="#" className="logo flex items-center gap-2">
@@ -42,7 +48,6 @@ const Header: React.FC = () => {
         {/* Icons */}
         <div className="header-icons flex items-center gap-4">
           <a href="#" className="icon-btn" title="Yêu Thích"><Heart size={20} /></a>
-          <a href="#" className="icon-btn" title="Tài Khoản"><User size={20} /></a>
           
           <button className="mobile-menu-btn" onClick={toggleMenu}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -61,7 +66,7 @@ const Header: React.FC = () => {
           <li><a href="#contact" onClick={toggleMenu}>Liên Hệ</a></li>
         </ul>
       </div>
-    </header>
+    </motion.header>
   );
 };
 

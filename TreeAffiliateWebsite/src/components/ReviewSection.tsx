@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, StarHalf, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './ReviewSection.css';
 
 const TESTIMONIALS = [
@@ -42,18 +43,35 @@ const ReviewSection: React.FC = () => {
   return (
     <section className="review-section bg-cream section-padding" id="review">
       <div className="container">
-        <div className="text-center mb-5">
+        <motion.div 
+          className="text-center mb-5"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="font-serif section-title">Đánh Giá & Review Cây Cảnh</h2>
           <p className="subtitle mx-auto">Khám phá hàng ngàn đánh giá từ cộng đồng người yêu cây cảnh của chúng tôi.</p>
-        </div>
+        </motion.div>
 
         <div className="grid review-grid">
           
           {/* Detailed Product Review Card */}
-          <div className="product-review-card">
+          <motion.div 
+            className="product-review-card"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8 }}
+          >
             <div className="prd-review-header flex gap-4">
               <div className="prd-review-img">
-                <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Monstera Deliciosa" />
+                <motion.img 
+                  src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                  alt="Monstera Deliciosa" 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                />
               </div>
               <div className="prd-review-title">
                 <h3 className="font-serif">Monstera Deliciosa</h3>
@@ -104,12 +122,25 @@ const ReviewSection: React.FC = () => {
                   <span className="expert-title">Chuyên gia cây cảnh</span>
                 </div>
               </div>
-              <a href="#" className="btn btn-primary gap-2">Mua tại đây <ArrowRight size={16}/></a>
+              <motion.a 
+                href="#" 
+                className="btn btn-primary gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Mua tại đây <ArrowRight size={16}/>
+              </motion.a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Testimonial Carousel */}
-          <div className="testimonial-carousel">
+          <motion.div 
+            className="testimonial-carousel"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             <h3 className="font-serif mb-4 text-center">Trải Nghiệm Khách Hàng</h3>
             <div className="carousel-window">
               <div 
@@ -145,7 +176,7 @@ const ReviewSection: React.FC = () => {
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

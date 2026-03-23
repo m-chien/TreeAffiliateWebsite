@@ -1,12 +1,13 @@
 import React from 'react';
 import { Star, Check, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './ComparisonTable.css';
 
 const PLANTS_DATA = [
-  { id: 'fiddle', name: 'Fiddle Leaf Fig', difficulty: 4, light: 'Sáng gián tiếp', air: 1, pet: false, price: '$45', recommended: false },
-  { id: 'monstera', name: 'Monstera', difficulty: 3, light: 'Bóng râm', air: 1, pet: false, price: '$30', recommended: false },
-  { id: 'snake', name: 'Snake Plant', difficulty: 2, light: 'Bóng râm', air: 2, pet: false, price: '$15', recommended: true },
-  { id: 'peace', name: 'Peace Lily', difficulty: 3, light: 'Ít sáng', air: 2, pet: false, price: '$20', recommended: false },
+  { id: 'fiddle', name: 'Fiddle Leaf Fig', difficulty: 4, light: 'Sáng gián tiếp', air: 1, pet: false, price: '1.150.000₫', recommended: false },
+  { id: 'monstera', name: 'Monstera', difficulty: 3, light: 'Bóng râm', air: 1, pet: false, price: '750.000₫', recommended: false },
+  { id: 'snake', name: 'Snake Plant', difficulty: 2, light: 'Bóng râm', air: 2, pet: false, price: '380.000₫', recommended: true },
+  { id: 'peace', name: 'Peace Lily', difficulty: 3, light: 'Ít sáng', air: 2, pet: false, price: '500.000₫', recommended: false },
 ];
 
 const ComparisonTable: React.FC = () => {
@@ -32,12 +33,24 @@ const ComparisonTable: React.FC = () => {
 
   return (
     <section className="comparison-section section-padding container" id="compare">
-      <div className="text-center mb-5">
+      <motion.div 
+        className="text-center mb-5"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6 }}
+      >
         <h2 className="font-serif section-title">So Sánh Cây Cảnh</h2>
         <p className="subtitle mx-auto">Tìm ra người bạn đồng hành xanh mát phù hợp với không gian và phong cách sống của bạn.</p>
-      </div>
+      </motion.div>
 
-      <div className="table-responsive-wrapper">
+      <motion.div 
+        className="table-responsive-wrapper"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
         <table className="compare-table">
           <thead>
             <tr>
@@ -84,16 +97,16 @@ const ComparisonTable: React.FC = () => {
               {PLANTS_DATA.map(p => <td key={p.id} className={`price-cell ${p.recommended ? 'recommended-col font-bold text-orange' : ''}`}>{p.price}</td>)}
             </tr>
             <tr>
-              <td className="criteria-col font-medium">Affiliate Link</td>
+              <td className="criteria-col font-medium">Nơi Bán</td>
               {PLANTS_DATA.map(p => (
                 <td key={p.id} className={p.recommended ? 'recommended-col' : ''}>
-                  <a href="#" className={`btn ${p.recommended ? 'btn-primary' : 'btn-outline'} btn-sm`}>Mua ngay</a>
+                  <a href="#" className={`btn ${p.recommended ? 'btn-primary' : 'btn-outline'} btn-sm`}>Xem giá tốt nhất</a>
                 </td>
               ))}
             </tr>
           </tbody>
         </table>
-      </div>
+      </motion.div>
     </section>
   );
 };

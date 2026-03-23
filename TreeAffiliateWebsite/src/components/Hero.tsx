@@ -1,12 +1,18 @@
 import React from 'react';
-import { Truck, ShieldCheck, HeartPulse, ArrowRight } from 'lucide-react';
+import { Star, ShieldCheck, ThumbsUp, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './Hero.css';
 
 const Hero: React.FC = () => {
   return (
     <section className="hero bg-dark-green">
       <div className="container hero-container grid">
-        <div className="hero-content animate-fade-in">
+        <motion.div 
+          className="hero-content"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <h1 className="hero-title font-serif">Mang Thiên Nhiên <br/> Đến Gần Bạn Hơn</h1>
           <p className="hero-description">
             Tô điểm không gian sống với các loại cây trong nhà của chúng tôi. 
@@ -18,43 +24,68 @@ const Hero: React.FC = () => {
               <ArrowRight size={16} />
             </span>
           </a>
-        </div>
+        </motion.div>
         
-        <div className="hero-visual animate-fade-in" style={{animationDelay: '0.2s'}}>
+        <motion.div 
+          className="hero-visual"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+        >
           <div className="arch-mask">
             {/* Using a placeholder high-quality plant image */}
             <img src="https://images.unsplash.com/photo-1597055909287-2521c78473e6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Beautiful indoor plant" />
-            <div className="price-badge font-serif">
+            <motion.div 
+              className="price-badge font-serif"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.8, type: "spring" }}
+            >
               <span>Giá từ</span>
-              <strong>$8</strong>
-            </div>
+              <strong>199.000₫</strong>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <div className="container">
-        <div className="trust-badges flex justify-between items-center animate-fade-in" style={{animationDelay: '0.4s'}}>
-          <div className="trust-badge flex items-center gap-4">
-            <Truck size={36} className="trust-icon" />
+        <div className="trust-badges flex justify-between items-center">
+          <motion.div 
+            className="trust-badge flex items-center gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Star size={36} className="trust-icon" />
             <div>
-              <h4>Giao Hàng Tận Nơi</h4>
-              <p>Miễn phí giao hàng toàn quốc cho mọi đơn hàng trên 500k</p>
+              <h4>Tuyển Chọn Kỹ Càng</h4>
+              <p>Chỉ giới thiệu sản phẩm từ các nhà vườn và đối tác uy tín nhất</p>
             </div>
-          </div>
-          <div className="trust-badge flex items-center gap-4">
+          </motion.div>
+          <motion.div 
+            className="trust-badge flex items-center gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
             <ShieldCheck size={36} className="trust-icon" />
             <div>
-              <h4>Thanh Toán An Toàn</h4>
-              <p>Bảo mật thông tin tuyệt đối qua cổng thanh toán uy tín</p>
+              <h4>Đối Tác Đáng Tin Cậy</h4>
+              <p>Đảm bảo giao dịch an toàn và minh bạch qua các sàn TMĐT uy tín</p>
             </div>
-          </div>
-          <div className="trust-badge flex items-center gap-4">
-            <HeartPulse size={36} className="trust-icon" />
+          </motion.div>
+          <motion.div 
+            className="trust-badge flex items-center gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            <ThumbsUp size={36} className="trust-icon" />
             <div>
-              <h4>Hỗ Trợ Tận Tình</h4>
-              <p>Cam kết hoàn tiền trong 30 ngày nếu không hài lòng</p>
+              <h4>Đánh Giá Chân Thực</h4>
+              <p>Mang đến những đánh giá và kinh nghiệm thực tế nhất cho người yêu cây</p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
