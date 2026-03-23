@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
         >
           <div className="arch-mask">
             {/* Using a placeholder high-quality plant image */}
-            <img src="https://images.unsplash.com/photo-1597055909287-2521c78473e6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Beautiful indoor plant" />
+            <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80" alt="Beautiful indoor plant" />
             <motion.div 
               className="price-badge font-serif"
               initial={{ opacity: 0, scale: 0 }}

@@ -77,8 +77,8 @@
   left: -40px;
   background-color: var(--bg-dark-green);
   color: var(--text-cream);
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@
 }
 
 .price-badge strong {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 

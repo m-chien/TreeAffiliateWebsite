@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
+import ComparisonPage from './pages/ComparisonPage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/category" element={<CategoryPage />} />
+        <Route path="/compare" element={<ComparisonPage />} />
       </Routes>
       <Footer />
     </div>

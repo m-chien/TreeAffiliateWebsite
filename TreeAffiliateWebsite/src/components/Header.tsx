@@ -42,7 +42,7 @@ const Header: React.FC = () => {
             <li><Link to="/">Trang Chủ</Link></li>
             <li><Link to="/category">Sản Phẩm</Link></li>
             <li><a href="/#review">Đánh Giá</a></li>
-            <li><a href="/#compare">So Sánh</a></li>
+            <li><Link to="/compare">So Sánh</Link></li>
             <li><a href="/#blog">Bài Viết</a></li>
             <li><a href="/#contact">Liên Hệ</a></li>
           </ul>
@@ -61,10 +61,10 @@ const Header: React.FC = () => {
       {/* Mobile Nav */}
       <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
         <ul className="mobile-nav-links">
-          <li><Link to="/" onClick={toggleMenu}>Trang Chủ</Link></li>
+          <li><Link to="/">Trang Chủ</Link></li>
           <li><Link to="/category" onClick={toggleMenu}>Sản Phẩm</Link></li>
           <li><a href="/#review" onClick={toggleMenu}>Đánh Giá</a></li>
-          <li><a href="/#compare" onClick={toggleMenu}>So Sánh</a></li>
+          <li><Link to="/compare" onClick={toggleMenu}>So Sánh</Link></li>
           <li><a href="/#blog" onClick={toggleMenu}>Bài Viết</a></li>
           <li><a href="/#contact" onClick={toggleMenu}>Liên Hệ</a></li>
         </ul>
