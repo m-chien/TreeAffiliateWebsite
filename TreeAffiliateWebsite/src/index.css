@@ -210,5 +210,5 @@ img {
 
 /* Hiệu ứng khi di chuột vào phần tay cầm */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-dark-green); /* Đổi thành xanh đậm hơn khi hover */
+  background: var(--accent-orange); /* Đổi thành xanh đậm hơn khi hover */
 }
