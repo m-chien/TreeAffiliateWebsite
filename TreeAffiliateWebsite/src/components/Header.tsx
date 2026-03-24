@@ -46,7 +46,7 @@ const Header = () => {
               <Link to="/category">Sản Phẩm</Link>
             </li>
             <li>
-              <a href="/#review">Đánh Giá</a>
+              <Link to="/reviews">Đánh Giá</Link>
             </li>
             <li>
               <Link to="/compare">So Sánh</Link>
@@ -84,9 +84,9 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <a href="/#review" onClick={toggleMenu}>
+            <Link to="/reviews" onClick={toggleMenu}>
               Đánh Giá
-            </a>
+            </Link>
           </li>
           <li>
             <Link to="/compare" onClick={toggleMenu}>

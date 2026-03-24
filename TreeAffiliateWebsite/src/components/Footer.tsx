@@ -50,7 +50,7 @@ const Footer = () => {
               <br />
               Đà Nẵng
             </address>
-            <p className="phone">+84 123 456 789</p>
+            <p className="phone">+84 0969 827 284</p>
             <p className="email">plants.ave@gmail.com</p>
           </div>
 

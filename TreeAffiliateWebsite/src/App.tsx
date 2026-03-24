@@ -5,6 +5,8 @@ import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import ComparisonPage from './pages/ComparisonPage';
 import BlogListingPage from './pages/BlogListingPage';
+import PlantReviewPage from './pages/PlantReviewPage';
+import ReviewListingPage from './pages/ReviewListingPage';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/compare" element={<ComparisonPage />} />
         <Route path="/blog" element={<BlogListingPage />} />
+        <Route path="/reviews" element={<ReviewListingPage />} />
+        <Route path="/review/monstera" element={<PlantReviewPage />} />
       </Routes>
       <Footer />
     </div>
