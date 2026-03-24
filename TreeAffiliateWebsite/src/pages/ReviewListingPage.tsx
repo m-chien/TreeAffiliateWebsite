@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Search, Star, ArrowRight, MousePointer2 } from "lucide-react";
+import { Search, Star, ArrowRight, MousePointer2, Leaf, Sprout } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { mockReviews } from "../data/reviewData";
@@ -20,6 +20,24 @@ const ReviewListingPage = () => {
 
   return (
     <div className={styles.hubPage}>
+      <div className="global-artistic-background">
+        <Leaf className="decor-leaf leaf-1" size={120} />
+        <Leaf className="decor-leaf leaf-2" size={80} />
+        <Sprout className="decor-leaf leaf-3" size={100} />
+        <Leaf className="decor-leaf leaf-4" size={60} />
+        <Leaf className="decor-leaf leaf-5" size={110} />
+        <Sprout className="decor-leaf leaf-6" size={70} />
+        <Leaf className="decor-leaf leaf-7" size={90} />
+        <Leaf className="decor-leaf leaf-8" size={50} />
+        <Leaf className="decor-leaf leaf-9" size={130} />
+        <Sprout className="decor-leaf leaf-10" size={85} />
+        <Leaf className="decor-leaf leaf-11" size={95} />
+        <Leaf className="decor-leaf leaf-12" size={75} />
+        <Sprout className="decor-leaf leaf-13" size={105} />
+        <Leaf className="decor-leaf leaf-14" size={55} />
+        <Leaf className="decor-leaf leaf-15" size={115} />
+      </div>
+
       <div className={styles.container}>
         <header className={styles.hubHeader}>
           <motion.h1
