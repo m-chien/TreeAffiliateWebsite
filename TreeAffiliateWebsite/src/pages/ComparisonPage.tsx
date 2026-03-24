@@ -95,32 +95,7 @@ const mockAlternatives = [
   },
 ];
 
-const FAQItem = ({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div className="faq-item">
-      <div className="faq-question" onClick={() => setIsOpen(!isOpen)}>
-        <h4>{question}</h4>
-        <span className="faq-icon">{isOpen ? "-" : "+"}</span>
-      </div>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          className="faq-answer"
-        >
-          <p>{answer}</p>
-        </motion.div>
-      )}
-    </div>
-  );
-};
+import FAQ from "../components/FAQ";
 
 const ComparisonPage = () => {
   const [plant1Id, setPlant1Id] = useState<string>(mockPlants[0].id);
@@ -511,23 +486,24 @@ const ComparisonPage = () => {
 
       {/* 2. FAQ Section - At the very bottom */}
       <section className="comparison-section-dark">
-        <div className="comparison-faq">
-          <h2 className="font-serif">Câu Hỏi Thường Gặp (FAQ)</h2>
-          <div className="accordion">
-            <FAQItem
-              question={`Trồng ${plant1?.name || "cây này"} và ${plant2?.name || "cây kia"} chung một chậu được không?`}
-              answer="Thông thường, mỗi loại cây có nhu cầu nước và ánh sáng khác nhau. Việc trồng chung một chậu có thể làm rễ tranh giành chất dinh dưỡng hoặc dễ gây úng rễ nếu nhu cầu tưới tiêu không đồng đều. Tốt nhất là nên trồng riêng rẽ để cây phát triển khỏe mạnh nhất."
-            />
-            <FAQItem
-              question="Cây nào lọc bụi mịn tốt hơn?"
-              answer="Hầu hết các dòng cây trồng trong nhà (như Lưỡi Hổ, Lan Ý, Trầu Bà) đều có khả năng hút khí độc (formaldehyde, benzene) cực tốt theo nghiên cứu của NASA. Tuy nhiên, để lọc bụi mịn PM2.5 thì máy lọc không khí chuyên dụng mới là lựa chọn chính xác nhất. Cây xanh chỉ hỗ trợ thanh lọc không khí cơ bản."
-            />
-            <FAQItem
-              question="Nhà có thú cưng (chó, mèo) thì tuyệt đối phải tránh cây nào?"
-              answer="Bạn nên tránh trồng Monstera, Vạn Niên Thanh, và Kim Tiền vì lá của chúng có chứa tinh thể calcium oxalate có thể gây ngứa miệng, nôn mửa cho chó mèo nếu ăn phải. Những cây an toàn là Lan Ý (mức độ độc thấp), Cọ cảnh, hoặc Cỏ Lan Chi."
-            />
-          </div>
-        </div>
+        <FAQ 
+          theme="dark"
+          title="Câu Hỏi Thường Gặp (FAQ)"
+          items={[
+            {
+              question: `Trồng ${plant1?.name || "cây này"} và ${plant2?.name || "cây kia"} chung một chậu được không?`,
+              answer: "Thông thường, mỗi loại cây có nhu cầu nước và ánh sáng khác nhau. Việc trồng chung một chậu có thể làm rễ tranh giành chất dinh dưỡng hoặc dễ gây úng rễ nếu nhu cầu tưới tiêu không đồng đều. Tốt nhất là nên trồng riêng rẽ để cây phát triển khỏe mạnh nhất."
+            },
+            {
+              question: "Cây nào lọc bụi mịn tốt hơn?",
+              answer: "Hầu hết các dòng cây trồng trong nhà (như Lưỡi Hổ, Lan Ý, Trầu Bà) đều có khả năng hút khí độc (formaldehyde, benzene) cực tốt theo nghiên cứu của NASA. Tuy nhiên, để lọc bụi mịn PM2.5 thì máy lọc không khí chuyên dụng mới là lựa chọn chính xác nhất. Cây xanh chỉ hỗ trợ thanh lọc không khí cơ bản."
+            },
+            {
+              question: "Nhà có thú cưng (chó, mèo) thì tuyệt đối phải tránh cây nào?",
+              answer: "Bạn nên tránh trồng Monstera, Vạn Niên Thanh, và Kim Tiền vì lá của chúng có chứa tinh thể calcium oxalate có thể gây ngứa miệng, nôn mửa cho chó mèo nếu ăn phải. Những cây an toàn là Lan Ý (mức độ độc thấp), Cọ cảnh, hoặc Cỏ Lan Chi."
+            }
+          ]}
+        />
       </section>
 
       {/* Review Section */}

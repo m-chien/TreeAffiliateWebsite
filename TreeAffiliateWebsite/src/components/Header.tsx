@@ -55,7 +55,7 @@ const Header = () => {
               <Link to="/blog">Bài Viết</Link>
             </li>
             <li>
-              <a href="/#contact">Liên Hệ</a>
+              <Link to="/contact">Liên Hệ</Link>
             </li>
           </ul>
         </nav>
@@ -99,9 +99,9 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <a href="/#contact" onClick={toggleMenu}>
+            <Link to="/contact" onClick={toggleMenu}>
               Liên Hệ
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

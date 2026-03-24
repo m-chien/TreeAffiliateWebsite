@@ -1,6 +1,7 @@
 import React from "react";
 import { Facebook, Instagram, Youtube, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
@@ -93,7 +94,7 @@ const Footer = () => {
                 <a href="#blog">Bài Viết</a>
               </li>
               <li>
-                <a href="#contact">Liên Hệ</a>
+                <Link to="/contact">Liên Hệ</Link>
               </li>
             </ul>
           </div>
