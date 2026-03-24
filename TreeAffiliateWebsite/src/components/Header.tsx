@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Heart, Menu, X, Leaf } from "lucide-react";
 import { motion } from "framer-motion";
@@ -52,7 +52,7 @@ const Header = () => {
               <Link to="/compare">So Sánh</Link>
             </li>
             <li>
-              <a href="/#blog">Bài Viết</a>
+              <Link to="/blog">Bài Viết</Link>
             </li>
             <li>
               <a href="/#contact">Liên Hệ</a>
@@ -94,9 +94,9 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <a href="/#blog" onClick={toggleMenu}>
+            <Link to="/blog" onClick={toggleMenu}>
               Bài Viết
-            </a>
+            </Link>
           </li>
           <li>
             <a href="/#contact" onClick={toggleMenu}>
