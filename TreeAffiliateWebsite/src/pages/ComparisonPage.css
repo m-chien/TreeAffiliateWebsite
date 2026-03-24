@@ -7,15 +7,64 @@
 
 .comparison-hero {
   text-align: center;
-  padding: 4rem 1rem 2rem;
-  max-width: 800px;
+  padding: 6rem 1rem 4rem;
+  max-width: 900px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.global-artistic-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.decor-leaf {
+  position: absolute;
+  color: #1A332A;
+  opacity: 0.03;
+  filter: blur(1.5px);
+  pointer-events: none;
+}
+
+.leaf-1 { top: 10%; left: 15%; transform: rotate(-15deg); animation: float-slow 20s infinite alternate ease-in-out; }
+.leaf-2 { top: 20%; right: 15%; transform: rotate(165deg); animation: float-reverse 25s infinite alternate ease-in-out; }
+.leaf-3 { top: 45%; left: 20%; transform: rotate(45deg); animation: float-slow 22s infinite alternate ease-in-out; opacity: 0.025; filter: blur(3px); }
+.leaf-4 { top: 35%; right: 25%; transform: rotate(-115deg); animation: float-reverse 18s infinite alternate ease-in-out; }
+.leaf-5 { bottom: 15%; left: 25%; transform: rotate(25deg); animation: float-slow 30s infinite alternate ease-in-out; }
+.leaf-6 { bottom: 25%; right: 20%; transform: rotate(195deg); animation: float-reverse 28s infinite alternate ease-in-out; opacity: 0.025; filter: blur(4px); }
+.leaf-7 { top: 65%; left: 15%; transform: rotate(-45deg); animation: float-slow 15s infinite alternate ease-in-out; }
+.leaf-8 { bottom: 45%; right: 18%; transform: rotate(125deg); animation: float-reverse 24s infinite alternate ease-in-out; }
+.leaf-9 { top: 5%; left: 45%; transform: rotate(180deg); animation: float-slow 35s infinite alternate ease-in-out; opacity: 0.02; }
+.leaf-10 { bottom: 0%; right: 45%; transform: rotate(0deg); animation: float-reverse 32s infinite alternate ease-in-out; opacity: 0.02; }
+.leaf-11 { top: 30%; left: 40%; transform: rotate(90deg); animation: float-slow 26s infinite alternate ease-in-out; opacity: 0.015; }
+.leaf-12 { bottom: 35%; left: 35%; transform: rotate(-45deg); animation: float-reverse 21s infinite alternate ease-in-out; opacity: 0.02; }
+.leaf-13 { top: 55%; right: 40%; transform: rotate(135deg); animation: float-slow 29s infinite alternate ease-in-out; opacity: 0.02; }
+.leaf-14 { bottom: 10%; right: 35%; transform: rotate(-25deg); animation: float-reverse 23s infinite alternate ease-in-out; opacity: 0.02; }
+.leaf-15 { top: 75%; right: 30%; transform: rotate(65deg); animation: float-slow 27s infinite alternate ease-in-out; opacity: 0.015; }
+
+@keyframes float-slow {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to { transform: translate(40px, 50px) rotate(15deg); }
+}
+
+@keyframes float-reverse {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to { transform: translate(-30px, -40px) rotate(-20deg); }
 }
 
 .comparison-hero h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
   color: var(--bg-dark-green, #1A332A);
+  font-weight: 800;
+  letter-spacing: -1px;
 }
 
 .comparison-hero p {
@@ -31,6 +80,7 @@
 }
 
 /* Selectors Area */
+/* Sửa lại class hiện tại để cho phép dây leo tràn ra ngoài */
 .comparison-selectors {
   display: flex;
   justify-content: center;
@@ -38,11 +88,67 @@
   gap: 2rem;
   margin-bottom: 3rem;
   background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  padding: 2.5rem;
+  border-radius: 24px;
   flex-wrap: wrap;
-  border: 1px solid #f0f0f0;
+  position: relative;
+  z-index: 10;
+  
+  /* Bổ sung/Sửa đổi phần viền và bóng để bảng nổi bật hơn */
+  border: 2px solid rgba(46, 125, 50, 0.15); /* Đổi viền sang màu xanh nhẹ */
+  box-shadow: 0 15px 40px rgba(46, 125, 50, 0.08); /* Bóng đổ ám xanh lá */
+  overflow: visible; /* QUAN TRỌNG: Để dây leo không bị cắt mất khi chĩa ra ngoài */
+}
+
+/* --- THÊM CLASS MỚI CHO DÂY LEO --- */
+.vine-decor {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  pointer-events: none; /* Tránh cản trở việc click vào dropdown */
+  z-index: 11; /* Đè lên trên khung một chút để tạo cảm giác "quấn" */
+}
+
+.vine-top-left {
+  top: -5px;
+  left: -5px;
+  transform: rotate(-10deg);
+}
+
+.vine-bottom-right {
+  bottom: -5px;
+  right: -5px;
+  transform: rotate(-10deg);
+}
+
+/* Thêm hiệu ứng phát sáng nhẹ cho chữ VS */
+.vs-circle {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-dark-green, #1A332A);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-style: italic;
+  font-family: var(--font-serif);
+  border: 4px solid #ffffff;
+  font-size: 1.1rem;
+  /* Thêm animation đập nhịp (pulse) */
+  animation: vs-pulse 2s infinite alternate ease-in-out;
+}
+
+@keyframes vs-pulse {
+  0% { 
+    box-shadow: 0 4px 15px rgba(26, 51, 42, 0.2); 
+    transform: scale(1); 
+  }
+  100% { 
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6); /* Glow màu xanh sáng */
+    transform: scale(1.05); 
+  }
 }
 
 .selector-group {
@@ -80,11 +186,26 @@
 }
 
 .selector-vs {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ccc;
-  font-family: var(--font-serif);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-circle {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-dark-green, #1A332A);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
   font-style: italic;
+  font-family: var(--font-serif);
+  box-shadow: 0 4px 15px rgba(26, 51, 42, 0.2);
+  border: 4px solid #ffffff;
+  font-size: 1.1rem;
 }
 
 /* Comparison Table */
@@ -137,8 +258,19 @@
   border-right: 1px solid #f0f0f0;
 }
 
+.criteria-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.criteria-icon {
+  color: var(--accent-orange, #D97757);
+  opacity: 0.8;
+}
+
 .comparison__cell--feature h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin: 0;
   color: var(--bg-dark-green, #1A332A);
   font-family: var(--font-serif);
@@ -171,18 +303,27 @@
 
 .best-choice-badge {
   position: absolute;
-  top: -12px;
+  top: -15px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-orange, #D97757);
+  background: linear-gradient(135deg, #D97757 0%, #B85F41 100%);
   color: white;
-  padding: 0.25rem 0.75rem;
+  padding: 0.4rem 1.2rem;
   border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
   white-space: nowrap;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(217, 119, 87, 0.4);
+  border: 2px solid #ffffff;
+}
+
+.inline-icon {
+  margin-top: -1px;
 }
 
 .comparison__cell--alt.comparison__cell--data {
@@ -199,13 +340,18 @@
 
 /* Specific Cell content */
 .comparison__image-wrapper {
-  width: 140px;
-  height: 140px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 1rem;
-  border: 4px solid #ffffff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+  border: 6px solid #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.comparison__cell--data:hover .comparison__image-wrapper {
+  transform: scale(1.08);
 }
 
 .comparison__image-wrapper img {
@@ -216,9 +362,19 @@
 
 .comparison__plant-name {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: var(--bg-dark-green, #1A332A);
   margin: 0;
+  font-weight: 700;
+}
+
+.light-tag {
+  background-color: rgba(217, 119, 87, 0.08);
+  color: #B85F41;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .comparison__stars {

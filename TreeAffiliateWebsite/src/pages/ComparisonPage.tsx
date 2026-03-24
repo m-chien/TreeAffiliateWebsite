@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Star, CheckCircle, XCircle, Check } from "lucide-react";
+import { Star, CheckCircle, XCircle, Check, Sun, Activity, Wind, Heart, Shield, ShoppingCart, Award, Leaf, Sprout } from "lucide-react";
 import ReviewSection from "../components/ReviewSection";
 import "./ComparisonPage.css";
 import CareSteps from "../components/CareSteps";
@@ -198,6 +198,24 @@ const ComparisonPage = () => {
 
   return (
     <div className="comparison-page">
+      <div className="global-artistic-background">
+        <Leaf className="decor-leaf leaf-1" size={120} />
+        <Leaf className="decor-leaf leaf-2" size={80} />
+        <Sprout className="decor-leaf leaf-3" size={100} />
+        <Leaf className="decor-leaf leaf-4" size={60} />
+        <Leaf className="decor-leaf leaf-5" size={110} />
+        <Sprout className="decor-leaf leaf-6" size={70} />
+        <Leaf className="decor-leaf leaf-7" size={90} />
+        <Leaf className="decor-leaf leaf-8" size={50} />
+        <Leaf className="decor-leaf leaf-9" size={130} />
+        <Sprout className="decor-leaf leaf-10" size={85} />
+        <Leaf className="decor-leaf leaf-11" size={95} />
+        <Leaf className="decor-leaf leaf-12" size={75} />
+        <Sprout className="decor-leaf leaf-13" size={105} />
+        <Leaf className="decor-leaf leaf-14" size={55} />
+        <Leaf className="decor-leaf leaf-15" size={115} />
+      </div>
+
       {/* Hero Section */}
       <motion.section
         className="comparison-hero"
@@ -205,7 +223,9 @@ const ComparisonPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="font-serif">Công Cụ So Sánh Trực Quan</h1>
+        <h1 className="font-serif">Bàn Cân Thực Vật</h1>
+
+
         <p>
           Phân vân không biết nên chọn cây nào cho góc làm việc? Hãy sử dụng
           công cụ so sánh trực quan dưới đây để tìm ra người bạn xanh mát lý
@@ -221,6 +241,23 @@ const ComparisonPage = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
+          {/* --- DÂY LEO GÓC TRÁI TRÊN --- */}
+          <motion.svg 
+            className="vine-decor vine-top-left" 
+            viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            {/* Cành */}
+            <motion.path d="M-10,110 C20,70 -10,20 50,-10" stroke="#2E7D32" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+            {/* Lá */}
+            <path d="M15,55 C25,45 35,50 30,65 C20,65 10,60 15,55 Z" fill="#4CAF50" opacity="0.8" />
+            <path d="M5,25 C20,15 25,25 20,35 C10,40 0,30 5,25 Z" fill="#2E7D32" opacity="0.9" />
+            <path d="M30,-5 C45,-10 50,0 40,10 C25,15 20,5 30,-5 Z" fill="#81C784" opacity="0.9" />
+          </motion.svg>
+
+          {/* --- CÁC SELECTOR GIỮ NGUYÊN --- */}
           <div className="selector-group">
             <label>Cây số 1</label>
             <select
@@ -236,7 +273,9 @@ const ComparisonPage = () => {
             </select>
           </div>
 
-          <div className="selector-vs">VS</div>
+          <div className="selector-vs">
+            <span className="vs-circle">VS</span>
+          </div>
 
           <div className="selector-group">
             <label>Cây số 2</label>
@@ -252,6 +291,22 @@ const ComparisonPage = () => {
               ))}
             </select>
           </div>
+
+          {/* --- DÂY LEO GÓC PHẢI DƯỚI --- */}
+          <motion.svg 
+            className="vine-decor vine-bottom-right" 
+            viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.7 }}
+          >
+             {/* Cành */}
+             <motion.path d="M110,-10 C70,30 110,80 50,110" stroke="#2E7D32" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+             {/* Lá */}
+             <path d="M85,45 C75,55 65,50 70,35 C80,35 90,40 85,45 Z" fill="#4CAF50" opacity="0.8" />
+             <path d="M95,75 C80,85 75,75 80,65 C90,60 100,70 95,75 Z" fill="#2E7D32" opacity="0.9" />
+             <path d="M70,105 C55,110 50,100 60,90 C75,85 80,95 70,105 Z" fill="#81C784" opacity="0.9" />
+          </motion.svg>
         </motion.div>
 
         {plant1 && plant2 && (
@@ -270,7 +325,9 @@ const ComparisonPage = () => {
                 className={`comparison__cell comparison__cell--data comparison__cell--first-row ${isP1Better ? "highlight" : ""}`}
               >
                 {isP1Better && (
-                  <div className="best-choice-badge">Lựa Chọn Tốt Nhất</div>
+                  <div className="best-choice-badge">
+                    <Award size={12} className="inline-icon" /> Lựa Chọn Tốt Nhất
+                  </div>
                 )}
                 <div className="comparison__image-wrapper">
                   <img src={plant1.image} alt={plant1.name} />
@@ -281,7 +338,9 @@ const ComparisonPage = () => {
                 className={`comparison__cell comparison__cell--data comparison__cell--first-row ${isP2Better ? "highlight" : ""}`}
               >
                 {isP2Better && (
-                  <div className="best-choice-badge">Lựa Chọn Tốt Nhất</div>
+                  <div className="best-choice-badge">
+                    <Award size={12} className="inline-icon" /> Lựa Chọn Tốt Nhất
+                  </div>
                 )}
                 <div className="comparison__image-wrapper">
                   <img src={plant2.image} alt={plant2.name} />
@@ -289,9 +348,12 @@ const ComparisonPage = () => {
                 <h4 className="comparison__plant-name">{plant2.name}</h4>
               </div>
 
-              {/* Row 2: Độ khó chăm sóc (càng ít sao càng dễ) */}
+              {/* Row 2: Độ khó chăm sóc */}
               <div className="comparison__cell comparison__cell--feature comparison__cell--alt">
-                Độ khó chăm sóc
+                <div className="criteria-header">
+                  <Heart size={18} className="criteria-icon" />
+                  <span>Độ khó chăm sóc</span>
+                </div>
               </div>
               <div
                 className={`comparison__cell comparison__cell--data comparison__cell--alt ${isP1Better ? "highlight" : ""}`}
@@ -306,7 +368,10 @@ const ComparisonPage = () => {
 
               {/* Row 3: Lọc không khí */}
               <div className="comparison__cell comparison__cell--feature">
-                Khả năng lọc không khí
+                <div className="criteria-header">
+                  <Wind size={18} className="criteria-icon" />
+                  <span>Lọc không khí</span>
+                </div>
               </div>
               <div
                 className={`comparison__cell comparison__cell--data ${isP1Better ? "highlight" : ""}`}
@@ -321,22 +386,28 @@ const ComparisonPage = () => {
 
               {/* Row 4: Ánh sáng */}
               <div className="comparison__cell comparison__cell--feature comparison__cell--alt">
-                Ánh sáng cần thiết
+                <div className="criteria-header">
+                  <Sun size={18} className="criteria-icon" />
+                  <span>Ánh sáng cần thiết</span>
+                </div>
               </div>
               <div
                 className={`comparison__cell comparison__cell--data comparison__cell--alt ${isP1Better ? "highlight" : ""}`}
               >
-                {plant1.light_requirement}
+                <span className="light-tag">{plant1.light_requirement}</span>
               </div>
               <div
                 className={`comparison__cell comparison__cell--data comparison__cell--alt ${isP2Better ? "highlight" : ""}`}
               >
-                {plant2.light_requirement}
+                <span className="light-tag">{plant2.light_requirement}</span>
               </div>
 
               {/* Row 5: Phù hợp Pet */}
               <div className="comparison__cell comparison__cell--feature">
-                An toàn cho thú cưng
+                <div className="criteria-header">
+                  <Shield size={18} className="criteria-icon" />
+                  <span>An toàn thú cưng</span>
+                </div>
               </div>
               <div
                 className={`comparison__cell comparison__cell--data ${isP1Better ? "highlight" : ""}`}
@@ -351,7 +422,10 @@ const ComparisonPage = () => {
 
               {/* Row 6: Giá */}
               <div className="comparison__cell comparison__cell--feature comparison__cell--alt">
-                Giá tham khảo
+                <div className="criteria-header">
+                  <Activity size={18} className="criteria-icon" />
+                  <span>Giá tham khảo</span>
+                </div>
               </div>
               <div
                 className={`comparison__cell comparison__cell--price comparison__cell--data comparison__cell--alt ${isP1Better ? "highlight" : ""}`}
@@ -366,7 +440,10 @@ const ComparisonPage = () => {
 
               {/* Row 7: CTA */}
               <div className="comparison__cell comparison__cell--feature comparison__cell--last-row">
-                Nơi Bán
+                <div className="criteria-header">
+                  <ShoppingCart size={18} className="criteria-icon" />
+                  <span>Nơi Bán</span>
+                </div>
               </div>
               <div
                 className={`comparison__cell comparison__cell--data comparison__cell--last-row ${isP1Better ? "highlight" : ""}`}
