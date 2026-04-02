@@ -14,7 +14,7 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h1 className="hero-title font-serif">
-            Mang Thiên Nhiên <br /> Đến Gần Bạn Hơn
+            Mang thiên nhiên <br /> đến gần bạn hơn
           </h1>
           <p className="hero-description">
             Tô điểm không gian sống với các loại cây trong nhà của chúng tôi.

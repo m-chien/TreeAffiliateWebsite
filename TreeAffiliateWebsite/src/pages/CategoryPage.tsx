@@ -378,9 +378,6 @@ const CategoryPage = () => {
                       <button className="action-btn" title="Xem nhanh">
                         <Maximize2 size={18} />
                       </button>
-                      <button className="action-btn" title="Thêm giỏ hàng">
-                        <ShoppingCart size={18} />
-                      </button>
                     </div>
                   </div>
 

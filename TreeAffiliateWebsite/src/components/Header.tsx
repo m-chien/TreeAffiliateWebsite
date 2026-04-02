@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X, Leaf } from "lucide-react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Heart, Menu, X, Leaf, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import "./Header.css";
 
@@ -22,6 +22,17 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (!q) return;
+    navigate(`/search?q=${encodeURIComponent(q)}`);
+    setSearchQuery("");
+  };
+
   return (
     <motion.header
       className={`header ${isScrolled || !isHomePage ? "scrolled" : ""}`}
@@ -40,28 +51,54 @@ const Header = () => {
         <nav className="desktop-nav">
           <ul className="nav-links flex items-center gap-6">
             <li>
-              <Link to="/">Trang Chủ</Link>
+              <NavLink to="/" className={({ isActive }) => (isActive ? "active" : undefined)}>
+                Trang Chủ
+              </NavLink>
             </li>
             <li>
-              <Link to="/category">Sản Phẩm</Link>
+              <NavLink to="/category" className={({ isActive }) => (isActive ? "active" : undefined)}>
+                Sản Phẩm
+              </NavLink>
             </li>
             <li>
-              <Link to="/reviews">Đánh Giá</Link>
+              <NavLink to="/reviews" className={({ isActive }) => (isActive ? "active" : undefined)}>
+                Đánh Giá
+              </NavLink>
             </li>
             <li>
-              <Link to="/compare">So Sánh</Link>
+              <NavLink to="/compare" className={({ isActive }) => (isActive ? "active" : undefined)}>
+                So Sánh
+              </NavLink>
             </li>
             <li>
-              <Link to="/blog">Bài Viết</Link>
+              <NavLink to="/blog" className={({ isActive }) => (isActive ? "active" : undefined)}>
+                Bài Viết
+              </NavLink>
             </li>
             <li>
-              <Link to="/contact">Liên Hệ</Link>
+              <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : undefined)}>
+                Liên Hệ
+              </NavLink>
             </li>
           </ul>
         </nav>
 
-        {/* Icons */}
+        {/* Icons + Search */}
         <div className="header-icons flex items-center gap-4">
+          <form className="search-inline" onSubmit={handleSearchSubmit} role="search">
+            <button type="submit" className="search-icon-btn" aria-label="Tìm">
+              <Search size={14} />
+            </button>
+            <input
+              className="search-input-inline"
+              type="search"
+              placeholder="Tìm sản phẩm, bài viết..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Tìm kiếm"
+            />
+          </form>
+
           <a href="#" className="icon-btn" title="Yêu Thích">
             <Heart size={20} />
           </a>
