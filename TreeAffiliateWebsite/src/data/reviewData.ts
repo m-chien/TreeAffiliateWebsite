@@ -1,13 +1,4 @@
-export interface ReviewSummary {
-  id: string;
-  name: string;
-  scientificName: string;
-  category: "Dễ Chăm" | "Lọc Không Khí" | "Phong Thủy";
-  rating: number;
-  image: string;
-  prosSnippet: string;
-  link: string;
-}
+import type { ReviewSummary } from "../types";
 
 export const mockReviews: ReviewSummary[] = [
   {

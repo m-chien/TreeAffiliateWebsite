@@ -1,35 +1,9 @@
-import React from "react";
 import { Instagram } from "lucide-react";
 import { motion } from "framer-motion";
+import { INSTA_POSTS } from "../data/socialData";
 import "./InstagramFeed.css";
 
-const INSTA_POSTS = [
-  {
-    id: 1,
-    likes: 234,
-    img: "/images/bush3.jpg",
-  },
-  {
-    id: 2,
-    likes: 189,
-    img: "/images/bush1.jpg",
-  },
-  {
-    id: 3,
-    likes: 541,
-    img: "/images/bush2.jpg",
-  },
-  {
-    id: 4,
-    likes: 320,
-    img: "/images/bush4.jpg",
-  },
-  {
-    id: 5,
-    likes: 672,
-    img: "/images/bush.jpg",
-  },
-];
+/* Removed local INSTA_POSTS definition */
 
 const InstagramFeed = () => {
   return (

@@ -1,71 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Products.css";
+import { TABS } from "../data/configData";
+import { ALL_PRODUCTS } from "../data/plantData";
+import type { Plant } from "../types";
 
-const TABS = ["MỚI NHẤT", "BÁN CHẠY", "ĐƯỢC YÊU THÍCH"];
-
-const ALL_PRODUCTS = [
-  {
-    id: 1,
-    name: "Homalomena Rubescens",
-    price: "99.000₫",
-    img: "/images/cay1.png",
-    tab: "MỚI NHẤT",
-    link: "#",
-  },
-  {
-    id: 2,
-    name: "Ucuala Grandis",
-    price: "99.000₫",
-    img: "/images/cay2.png",
-    tab: "BÁN CHẠY",
-    link: "#",
-  },
-  {
-    id: 3,
-    name: "Fiddle Leaf Fig",
-    price: "99.000₫",
-    img: "/images/cay3.png",
-    tab: "ĐƯỢC YÊU THÍCH",
-    link: "#",
-  },
-  {
-    id: 4,
-    name: "Monstera Deliciosa",
-    price: "99.000₫",
-    img: "/images/cay4.png",
-    tab: "MỚI NHẤT",
-    link: "#",
-  },
-  {
-    id: 5,
-    name: "Lưỡi Hổ (Snake Plant)",
-    price: "99.000₫",
-    img: "/images/cay5.png",
-    tab: "BÁN CHẠY",
-    link: "#",
-  },
-  {
-    id: 6,
-    name: "Lan Ý (Peace Lily)",
-    price: "99.000₫",
-    img: "/images/cay6.png",
-    tab: "MỚI NHẤT",
-    link: "#",
-  },
-];
+/* Removed local ALL_PRODUCTS definition */
 
 const Products = () => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
-  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>([]);
 
-  const toggleWishlist = (id: number) => {
+  const toggleWishlist = (id: string) => {
     setWishlist((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
-
+  
+  const filteredProducts: Plant[] = ALL_PRODUCTS.filter((p) => p.tab === activeTab);
+  console.log("🚀 ~ Products ~ ALL_PRODUCTS:", ALL_PRODUCTS)
+  console.log("🚀 ~ Products ~ filteredProducts:", filteredProducts)
+  
   return (
     <section className="products container section-padding" id="shop">
       <motion.h2
@@ -98,7 +54,7 @@ const Products = () => {
 
       <motion.div className="products-grid grid" layout>
         <AnimatePresence>
-          {ALL_PRODUCTS.map((product, index) => {
+          {filteredProducts.map((product, index) => {
             const isLiked = wishlist.includes(product.id);
             return (
               <motion.div

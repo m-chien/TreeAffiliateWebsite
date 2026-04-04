@@ -14,113 +14,17 @@ import {
   Award,
   Leaf,
   Sprout,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import ReviewSection from "../components/ReviewSection";
 import "./ComparisonPage.css";
 import CareSteps from "../components/CareSteps";
-
-interface Plant {
-  id: string;
-  name: string;
-  image: string;
-  light_requirement: string;
-  care_difficulty: number;
-  air_purifying: number;
-  pet_friendly: boolean;
-  price: string;
-  affiliate_link: string;
-}
-
-const mockPlants: Plant[] = [
-  {
-    id: "p1",
-    name: "Bàng Singapore",
-    image: "/images/3_plant.png",
-    light_requirement: "Ánh sáng gián tiếp sáng",
-    care_difficulty: 3,
-    air_purifying: 2,
-    pet_friendly: false,
-    price: "480.000₫",
-    affiliate_link: "https://shopee.vn",
-  },
-  {
-    id: "p2",
-    name: "Monstera Deliciosa",
-    image: "/images/main-plant.png",
-    light_requirement: "Ánh sáng gián tiếp trung bình",
-    care_difficulty: 2,
-    air_purifying: 3,
-    pet_friendly: false,
-    price: "630.000₫",
-    affiliate_link: "https://shopee.vn",
-  },
-  {
-    id: "p3",
-    name: "Lan Ý (Peace Lily)",
-    image: "/images/4_plant.png",
-    light_requirement: "Ánh sáng yếu đến trung bình",
-    care_difficulty: 1,
-    air_purifying: 5,
-    pet_friendly: true,
-    price: "300.000₫",
-    affiliate_link: "https://shopee.vn",
-  },
-  {
-    id: "p4",
-    name: "Lưỡi Hổ (Snake Plant)",
-    image: "/images/5_plant.png",
-    light_requirement: "Chịu được mọi mức sáng",
-    care_difficulty: 1,
-    air_purifying: 4,
-    pet_friendly: false,
-    price: "150.000₫",
-    affiliate_link: "https://shopee.vn",
-  },
-];
-
-const mockAlternatives = [
-  {
-    id: "a1",
-    name: "Cỏ Lan Chi",
-    price: "120.000₫",
-    image: "/images/6_plant.png",
-    link: "https://shopee.vn",
-  },
-  {
-    id: "a2",
-    name: "Cây Kim Tiền",
-    price: "250.000₫",
-    image: "/images/2_main_plant.png",
-    link: "https://shopee.vn",
-  },
-  {
-    id: "a3",
-    name: "Trầu Bà Vàng",
-    price: "90.000₫",
-    image: "/images/2_plant.png",
-    link: "https://shopee.vn",
-  },
-  {
-    id: "a2",
-    name: "Cây Kim Tiền",
-    price: "250.000₫",
-    image: "/images/2_main_plant.png",
-    link: "https://shopee.vn",
-  },
-  {
-    id: "a3",
-    name: "Trầu Bà Vàng",
-    price: "90.000₫",
-    image: "/images/2_plant.png",
-    link: "https://shopee.vn",
-  },
-];
-
 import FAQ from "../components/FAQ";
+import AlternativeSuggestions from "../components/AlternativeSuggestions";
+/* Removed unused Plant type import */
+import { mockPlants, mockAlternatives } from "../data/plantData";
+
+/* Removed redundant data definitions, importing from plantData instead */
+/* Removed duplicate FAQ import */
 
 const ComparisonPage = () => {
   const [plant1Id, setPlant1Id] = useState<string>(mockPlants[0].id);
@@ -139,8 +43,8 @@ const ComparisonPage = () => {
   const isP1Better =
     plant1 &&
     plant2 &&
-    (plant1.care_difficulty < plant2.care_difficulty ||
-      plant1.air_purifying > plant2.air_purifying);
+    (plant1.care_difficulty! < plant2.care_difficulty! ||
+      plant1.air_purifying! > plant2.air_purifying!);
   const isP2Better = plant1 && plant2 && !isP1Better;
 
   const renderStars = (rating: number) => {
@@ -399,12 +303,12 @@ const ComparisonPage = () => {
               <div
                 className={`comparison__cell comparison__cell--data comparison__cell--alt ${isP1Better ? "highlight" : ""}`}
               >
-                {renderStars(plant1.care_difficulty)}
+                {renderStars(plant1.care_difficulty!)}
               </div>
               <div
                 className={`comparison__cell comparison__cell--data comparison__cell--alt ${isP2Better ? "highlight" : ""}`}
               >
-                {renderStars(plant2.care_difficulty)}
+                {renderStars(plant2.care_difficulty!)}
               </div>
 
               {/* Row 3: Lọc không khí */}
@@ -417,12 +321,12 @@ const ComparisonPage = () => {
               <div
                 className={`comparison__cell comparison__cell--data ${isP1Better ? "highlight" : ""}`}
               >
-                {renderAirPurifying(plant1.air_purifying)}
+                {renderAirPurifying(plant1.air_purifying!)}
               </div>
               <div
                 className={`comparison__cell comparison__cell--data ${isP2Better ? "highlight" : ""}`}
               >
-                {renderAirPurifying(plant2.air_purifying)}
+                {renderAirPurifying(plant2.air_purifying!)}
               </div>
 
               {/* Row 4: Ánh sáng */}
@@ -453,12 +357,12 @@ const ComparisonPage = () => {
               <div
                 className={`comparison__cell comparison__cell--data ${isP1Better ? "highlight" : ""}`}
               >
-                {renderPetFriendly(plant1.pet_friendly)}
+                {renderPetFriendly(plant1.pet_friendly!)}
               </div>
               <div
                 className={`comparison__cell comparison__cell--data ${isP2Better ? "highlight" : ""}`}
               >
-                {renderPetFriendly(plant2.pet_friendly)}
+                {renderPetFriendly(plant2.pet_friendly!)}
               </div>
 
               {/* Row 6: Giá */}
@@ -516,75 +420,7 @@ const ComparisonPage = () => {
       </section>
 
       {/* 4. Gợi Ý Thay Thế (Alternatives) - Right after the table */}
-      <section className="comparison-section-dark text-center">
-        <div className="comparison-alternatives">
-          <h2 className="font-serif">Gợi Ý Thay Thế</h2>
-          <p>
-            Không ưng ý 2 loại cây trên? Tham khảo thêm các dòng cây trồng trong
-            nhà vô cùng dễ chăm sóc khác:
-          </p>
-
-          {/* Swiper Carousel */}
-          <div className="alternatives-carousel-wrapper">
-            <Swiper
-              modules={[Navigation]}
-              navigation={{
-                prevEl: ".swiper-button-prev-custom",
-                nextEl: ".swiper-button-next-custom",
-              }}
-              loop={mockAlternatives.length > 1}
-              breakpoints={{
-                320: {
-                  slidesPerView: 1,
-                },
-                768: {
-                  slidesPerView: 2,
-                },
-                1024: {
-                  slidesPerView: 3,
-                },
-              }}
-              className="alternatives-swiper"
-            >
-              {mockAlternatives.map((alt) => (
-                <SwiperSlide key={alt.id}>
-                  <div className="alt-card">
-                    <div className="alt-image">
-                      <img src={alt.image} alt={alt.name} />
-                    </div>
-                    <div className="alt-info">
-                      <h4>{alt.name}</h4>
-                      <span className="price">{alt.price}</span>
-                      <a
-                        href={alt.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="alt-btn"
-                      >
-                        Xem giá tốt nhất
-                      </a>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            {/* Custom Navigation Buttons */}
-            <button
-              className="swiper-button-prev-custom"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button
-              className="swiper-button-next-custom"
-              aria-label="Next slide"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-        </div>
-      </section>
+      <AlternativeSuggestions alternatives={mockAlternatives} />
 
       {/* 3. Care Steps - After Alternatives */}
       <CareSteps />

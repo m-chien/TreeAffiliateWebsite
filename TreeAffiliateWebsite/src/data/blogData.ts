@@ -1,13 +1,4 @@
-export interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: "Top List" | "Guides" | "Phong Thủy";
-  author: string;
-  date: string;
-  image: string;
-  featured?: boolean;
-}
+import type { BlogPost } from "../types";
 
 export const mockBlogPosts: BlogPost[] = [
   {

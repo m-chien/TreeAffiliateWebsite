@@ -1,50 +1,9 @@
-import React from "react";
 import { Star, Check, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { PLANTS_DATA } from "../data/plantData";
 import "./ComparisonTable.css";
 
-const PLANTS_DATA = [
-  {
-    id: "fiddle",
-    name: "Fiddle Leaf Fig",
-    difficulty: 4,
-    light: "Sáng gián tiếp",
-    air: 1,
-    pet: false,
-    price: "1.150.000₫",
-    recommended: false,
-  },
-  {
-    id: "monstera",
-    name: "Monstera",
-    difficulty: 3,
-    light: "Bóng râm",
-    air: 1,
-    pet: false,
-    price: "750.000₫",
-    recommended: false,
-  },
-  {
-    id: "snake",
-    name: "Snake Plant",
-    difficulty: 2,
-    light: "Bóng râm",
-    air: 2,
-    pet: false,
-    price: "380.000₫",
-    recommended: true,
-  },
-  {
-    id: "peace",
-    name: "Peace Lily",
-    difficulty: 3,
-    light: "Ít sáng",
-    air: 2,
-    pet: false,
-    price: "500.000₫",
-    recommended: false,
-  },
-];
+/* Removed local PLANTS_DATA definition */
 
 const ComparisonTable = () => {
   const renderStars = (count: number) => {
