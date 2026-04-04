@@ -3,6 +3,7 @@
 }
 
 .care-header h2 {
+  text-align: center;
   font-size: 2.2rem;
   margin-bottom: 0.5rem;
 }
@@ -56,7 +57,7 @@
 }
 
 .step-icon {
-  color: var(--accent-orange);
+  color: white;
 }
 
 .step-card:hover .step-icon-wrapper {

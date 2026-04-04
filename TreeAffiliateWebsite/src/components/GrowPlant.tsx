@@ -21,7 +21,7 @@ const GrowPlant = () => {
 
         <div className="grow-plant-images flex gap-4">
           <motion.img
-            src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+            src="/images/2_main_plant.png"
             alt="Tall plant on stand component"
             className="img-large"
             style={{ color: "transparent" }}

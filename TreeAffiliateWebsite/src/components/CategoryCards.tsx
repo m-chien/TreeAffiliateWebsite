@@ -25,11 +25,11 @@ const CategoryCards = () => {
           </div>
           <div className="card-image">
             <motion.img
-              src="https://images.unsplash.com/photo-1487798452839-440eb76e1a47?auto=format&fit=crop&w=400&q=80"
+              src="/images/main-plant.png"
               alt="Indoor Plants"
               style={{ color: "transparent" }}
               whileHover={{ scale: 1.08, rotate: -3 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             />
           </div>
         </motion.div>
@@ -53,7 +53,7 @@ const CategoryCards = () => {
           </div>
           <div className="card-image">
             <motion.img
-              src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=400&q=80"
+              src="/images/2_plant.png"
               alt="Herbal Plants"
               style={{ color: "transparent" }}
               whileHover={{ scale: 1.08, rotate: 3 }}

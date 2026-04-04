@@ -1,6 +1,24 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Star, CheckCircle, XCircle, Check, Sun, Activity, Wind, Heart, Shield, ShoppingCart, Award, Leaf, Sprout } from "lucide-react";
+import {
+  Star,
+  CheckCircle,
+  XCircle,
+  Check,
+  Sun,
+  Activity,
+  Wind,
+  Heart,
+  Shield,
+  ShoppingCart,
+  Award,
+  Leaf,
+  Sprout,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import ReviewSection from "../components/ReviewSection";
 import "./ComparisonPage.css";
 import CareSteps from "../components/CareSteps";
@@ -21,8 +39,7 @@ const mockPlants: Plant[] = [
   {
     id: "p1",
     name: "Bàng Singapore",
-    image:
-      "https://images.unsplash.com/photo-1598531405105-9b2f3d640fa8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    image: "/images/3_plant.png",
     light_requirement: "Ánh sáng gián tiếp sáng",
     care_difficulty: 3,
     air_purifying: 2,
@@ -33,8 +50,7 @@ const mockPlants: Plant[] = [
   {
     id: "p2",
     name: "Monstera Deliciosa",
-    image:
-      "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    image: "/images/main-plant.png",
     light_requirement: "Ánh sáng gián tiếp trung bình",
     care_difficulty: 2,
     air_purifying: 3,
@@ -45,8 +61,7 @@ const mockPlants: Plant[] = [
   {
     id: "p3",
     name: "Lan Ý (Peace Lily)",
-    image:
-      "https://images.unsplash.com/photo-1597055909287-2521c78473e6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    image: "/images/4_plant.png",
     light_requirement: "Ánh sáng yếu đến trung bình",
     care_difficulty: 1,
     air_purifying: 5,
@@ -57,8 +72,7 @@ const mockPlants: Plant[] = [
   {
     id: "p4",
     name: "Lưỡi Hổ (Snake Plant)",
-    image:
-      "https://images.unsplash.com/photo-1599598425947-3300454316d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    image: "/images/5_plant.png",
     light_requirement: "Chịu được mọi mức sáng",
     care_difficulty: 1,
     air_purifying: 4,
@@ -71,26 +85,37 @@ const mockPlants: Plant[] = [
 const mockAlternatives = [
   {
     id: "a1",
-    name: "Cỏ Lan Chi (Spider Plant)",
+    name: "Cỏ Lan Chi",
     price: "120.000₫",
-    image:
-      "https://images.unsplash.com/photo-1614594805320-e6bfec508e67?auto=format&fit=crop&w=600&q=80",
+    image: "/images/6_plant.png",
     link: "https://shopee.vn",
   },
   {
     id: "a2",
     name: "Cây Kim Tiền",
     price: "250.000₫",
-    image:
-      "https://images.unsplash.com/photo-1611094709425-4309395f133f?auto=format&fit=crop&w=600&q=80",
+    image: "/images/2_main_plant.png",
     link: "https://shopee.vn",
   },
   {
     id: "a3",
     name: "Trầu Bà Vàng",
     price: "90.000₫",
-    image:
-      "https://images.unsplash.com/photo-1600889260195-ce0d5a36dbcd?auto=format&fit=crop&w=600&q=80",
+    image: "/images/2_plant.png",
+    link: "https://shopee.vn",
+  },
+  {
+    id: "a2",
+    name: "Cây Kim Tiền",
+    price: "250.000₫",
+    image: "/images/2_main_plant.png",
+    link: "https://shopee.vn",
+  },
+  {
+    id: "a3",
+    name: "Trầu Bà Vàng",
+    price: "90.000₫",
+    image: "/images/2_plant.png",
     link: "https://shopee.vn",
   },
 ];
@@ -200,7 +225,6 @@ const ComparisonPage = () => {
       >
         <h1 className="font-serif">Bàn Cân Thực Vật</h1>
 
-
         <p>
           Phân vân không biết nên chọn cây nào cho góc làm việc? Hãy sử dụng
           công cụ so sánh trực quan dưới đây để tìm ra người bạn xanh mát lý
@@ -217,19 +241,39 @@ const ComparisonPage = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           {/* --- DÂY LEO GÓC TRÁI TRÊN --- */}
-          <motion.svg 
-            className="vine-decor vine-top-left" 
-            viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+          <motion.svg
+            className="vine-decor vine-top-left"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.5 }}
           >
             {/* Cành */}
-            <motion.path d="M-10,110 C20,70 -10,20 50,-10" stroke="#2E7D32" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+            <motion.path
+              d="M-10,110 C20,70 -10,20 50,-10"
+              stroke="#2E7D32"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              opacity="0.6"
+            />
             {/* Lá */}
-            <path d="M15,55 C25,45 35,50 30,65 C20,65 10,60 15,55 Z" fill="#4CAF50" opacity="0.8" />
-            <path d="M5,25 C20,15 25,25 20,35 C10,40 0,30 5,25 Z" fill="#2E7D32" opacity="0.9" />
-            <path d="M30,-5 C45,-10 50,0 40,10 C25,15 20,5 30,-5 Z" fill="#81C784" opacity="0.9" />
+            <path
+              d="M15,55 C25,45 35,50 30,65 C20,65 10,60 15,55 Z"
+              fill="#4CAF50"
+              opacity="0.8"
+            />
+            <path
+              d="M5,25 C20,15 25,25 20,35 C10,40 0,30 5,25 Z"
+              fill="#2E7D32"
+              opacity="0.9"
+            />
+            <path
+              d="M30,-5 C45,-10 50,0 40,10 C25,15 20,5 30,-5 Z"
+              fill="#81C784"
+              opacity="0.9"
+            />
           </motion.svg>
 
           {/* --- CÁC SELECTOR GIỮ NGUYÊN --- */}
@@ -268,19 +312,39 @@ const ComparisonPage = () => {
           </div>
 
           {/* --- DÂY LEO GÓC PHẢI DƯỚI --- */}
-          <motion.svg 
-            className="vine-decor vine-bottom-right" 
-            viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+          <motion.svg
+            className="vine-decor vine-bottom-right"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.7 }}
           >
-             {/* Cành */}
-             <motion.path d="M110,-10 C70,30 110,80 50,110" stroke="#2E7D32" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-             {/* Lá */}
-             <path d="M85,45 C75,55 65,50 70,35 C80,35 90,40 85,45 Z" fill="#4CAF50" opacity="0.8" />
-             <path d="M95,75 C80,85 75,75 80,65 C90,60 100,70 95,75 Z" fill="#2E7D32" opacity="0.9" />
-             <path d="M70,105 C55,110 50,100 60,90 C75,85 80,95 70,105 Z" fill="#81C784" opacity="0.9" />
+            {/* Cành */}
+            <motion.path
+              d="M110,-10 C70,30 110,80 50,110"
+              stroke="#2E7D32"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              opacity="0.6"
+            />
+            {/* Lá */}
+            <path
+              d="M85,45 C75,55 65,50 70,35 C80,35 90,40 85,45 Z"
+              fill="#4CAF50"
+              opacity="0.8"
+            />
+            <path
+              d="M95,75 C80,85 75,75 80,65 C90,60 100,70 95,75 Z"
+              fill="#2E7D32"
+              opacity="0.9"
+            />
+            <path
+              d="M70,105 C55,110 50,100 60,90 C75,85 80,95 70,105 Z"
+              fill="#81C784"
+              opacity="0.9"
+            />
           </motion.svg>
         </motion.div>
 
@@ -301,7 +365,8 @@ const ComparisonPage = () => {
               >
                 {isP1Better && (
                   <div className="best-choice-badge">
-                    <Award size={12} className="inline-icon" /> Lựa Chọn Tốt Nhất
+                    <Award size={12} className="inline-icon" /> Lựa Chọn Tốt
+                    Nhất
                   </div>
                 )}
                 <div className="comparison__image-wrapper">
@@ -314,7 +379,8 @@ const ComparisonPage = () => {
               >
                 {isP2Better && (
                   <div className="best-choice-badge">
-                    <Award size={12} className="inline-icon" /> Lựa Chọn Tốt Nhất
+                    <Award size={12} className="inline-icon" /> Lựa Chọn Tốt
+                    Nhất
                   </div>
                 )}
                 <div className="comparison__image-wrapper">
@@ -457,26 +523,65 @@ const ComparisonPage = () => {
             Không ưng ý 2 loại cây trên? Tham khảo thêm các dòng cây trồng trong
             nhà vô cùng dễ chăm sóc khác:
           </p>
-          <div className="alternatives-grid">
-            {mockAlternatives.map((alt) => (
-              <div key={alt.id} className="alt-card">
-                <div className="alt-image">
-                  <img src={alt.image} alt={alt.name} />
-                </div>
-                <div className="alt-info">
-                  <h4>{alt.name}</h4>
-                  <span className="price">{alt.price}</span>
-                  <a
-                    href={alt.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="alt-btn"
-                  >
-                    Xem giá tốt nhất
-                  </a>
-                </div>
-              </div>
-            ))}
+
+          {/* Swiper Carousel */}
+          <div className="alternatives-carousel-wrapper">
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                prevEl: ".swiper-button-prev-custom",
+                nextEl: ".swiper-button-next-custom",
+              }}
+              loop={mockAlternatives.length > 1}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                },
+                768: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              className="alternatives-swiper"
+            >
+              {mockAlternatives.map((alt) => (
+                <SwiperSlide key={alt.id}>
+                  <div className="alt-card">
+                    <div className="alt-image">
+                      <img src={alt.image} alt={alt.name} />
+                    </div>
+                    <div className="alt-info">
+                      <h4>{alt.name}</h4>
+                      <span className="price">{alt.price}</span>
+                      <a
+                        href={alt.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="alt-btn"
+                      >
+                        Xem giá tốt nhất
+                      </a>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Custom Navigation Buttons */}
+            <button
+              className="swiper-button-prev-custom"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              className="swiper-button-next-custom"
+              aria-label="Next slide"
+            >
+              <ChevronRight size={24} />
+            </button>
           </div>
         </div>
       </section>
@@ -486,22 +591,26 @@ const ComparisonPage = () => {
 
       {/* 2. FAQ Section - At the very bottom */}
       <section className="comparison-section-dark">
-        <FAQ 
+        <FAQ
           theme="dark"
           title="Câu Hỏi Thường Gặp (FAQ)"
           items={[
             {
               question: `Trồng ${plant1?.name || "cây này"} và ${plant2?.name || "cây kia"} chung một chậu được không?`,
-              answer: "Thông thường, mỗi loại cây có nhu cầu nước và ánh sáng khác nhau. Việc trồng chung một chậu có thể làm rễ tranh giành chất dinh dưỡng hoặc dễ gây úng rễ nếu nhu cầu tưới tiêu không đồng đều. Tốt nhất là nên trồng riêng rẽ để cây phát triển khỏe mạnh nhất."
+              answer:
+                "Thông thường, mỗi loại cây có nhu cầu nước và ánh sáng khác nhau. Việc trồng chung một chậu có thể làm rễ tranh giành chất dinh dưỡng hoặc dễ gây úng rễ nếu nhu cầu tưới tiêu không đồng đều. Tốt nhất là nên trồng riêng rẽ để cây phát triển khỏe mạnh nhất.",
             },
             {
               question: "Cây nào lọc bụi mịn tốt hơn?",
-              answer: "Hầu hết các dòng cây trồng trong nhà (như Lưỡi Hổ, Lan Ý, Trầu Bà) đều có khả năng hút khí độc (formaldehyde, benzene) cực tốt theo nghiên cứu của NASA. Tuy nhiên, để lọc bụi mịn PM2.5 thì máy lọc không khí chuyên dụng mới là lựa chọn chính xác nhất. Cây xanh chỉ hỗ trợ thanh lọc không khí cơ bản."
+              answer:
+                "Hầu hết các dòng cây trồng trong nhà (như Lưỡi Hổ, Lan Ý, Trầu Bà) đều có khả năng hút khí độc (formaldehyde, benzene) cực tốt theo nghiên cứu của NASA. Tuy nhiên, để lọc bụi mịn PM2.5 thì máy lọc không khí chuyên dụng mới là lựa chọn chính xác nhất. Cây xanh chỉ hỗ trợ thanh lọc không khí cơ bản.",
             },
             {
-              question: "Nhà có thú cưng (chó, mèo) thì tuyệt đối phải tránh cây nào?",
-              answer: "Bạn nên tránh trồng Monstera, Vạn Niên Thanh, và Kim Tiền vì lá của chúng có chứa tinh thể calcium oxalate có thể gây ngứa miệng, nôn mửa cho chó mèo nếu ăn phải. Những cây an toàn là Lan Ý (mức độ độc thấp), Cọ cảnh, hoặc Cỏ Lan Chi."
-            }
+              question:
+                "Nhà có thú cưng (chó, mèo) thì tuyệt đối phải tránh cây nào?",
+              answer:
+                "Bạn nên tránh trồng Monstera, Vạn Niên Thanh, và Kim Tiền vì lá của chúng có chứa tinh thể calcium oxalate có thể gây ngứa miệng, nôn mửa cho chó mèo nếu ăn phải. Những cây an toàn là Lan Ý (mức độ độc thấp), Cọ cảnh, hoặc Cỏ Lan Chi.",
+            },
           ]}
         />
       </section>

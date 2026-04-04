@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Maximize2, ShoppingCart, Star, X } from "lucide-react";
+import { Heart, Maximize2, Star, X, Leaf, Sprout } from "lucide-react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./CategoryPage.css";
@@ -25,7 +25,7 @@ const DUMMY_PRODUCTS = [
     rating: 4.9,
     category: "Cây trong nhà",
     subcategory: "Cây để bàn",
-    img: "https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/2_plant.png",
     isNew: true,
     isBestSeller: false,
     inStock: true,
@@ -39,7 +39,7 @@ const DUMMY_PRODUCTS = [
     rating: 4.8,
     category: "Cây phong thủy",
     subcategory: "Cây trong nhà",
-    img: "https://images.unsplash.com/photo-1598531405105-9b2f3d640fa8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/3_plant.png",
     isNew: false,
     isBestSeller: true,
     inStock: true,
@@ -53,7 +53,7 @@ const DUMMY_PRODUCTS = [
     rating: 5.0,
     category: "Cây lọc không khí",
     subcategory: "Cây cỡ lớn",
-    img: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/4_plant.png",
     isNew: false,
     isBestSeller: true,
     inStock: true,
@@ -67,7 +67,7 @@ const DUMMY_PRODUCTS = [
     rating: 5.0,
     category: "Cây để bàn",
     subcategory: "Cây lọc không khí",
-    img: "https://images.unsplash.com/photo-1597055909287-2521c78473e6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/5_plant.png",
     isNew: true,
     isBestSeller: false,
     inStock: false,
@@ -81,7 +81,7 @@ const DUMMY_PRODUCTS = [
     rating: 5.0,
     category: "Cây phong thủy",
     subcategory: "Dây leo",
-    img: "https://images.unsplash.com/photo-1609144828691-1fa64ceaaab8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/6_plant.png",
     isNew: false,
     isBestSeller: false,
     inStock: true,
@@ -95,7 +95,7 @@ const DUMMY_PRODUCTS = [
     rating: 5.0,
     category: "Cây trong nhà",
     subcategory: "Có hoa",
-    img: "https://images.unsplash.com/photo-1599598425947-3300454316d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/main-plant.png",
     isNew: false,
     isBestSeller: true,
     inStock: true,
@@ -109,7 +109,7 @@ const DUMMY_PRODUCTS = [
     rating: 4.8,
     category: "Cây để bàn",
     subcategory: "Xương rồng",
-    img: "https://images.unsplash.com/photo-1497942304096-e175440d24bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/2_main_plant.png",
     isNew: true,
     isBestSeller: false,
     inStock: true,
@@ -123,7 +123,7 @@ const DUMMY_PRODUCTS = [
     rating: 4.9,
     category: "Cây văn phòng",
     subcategory: "Có hoa",
-    img: "https://images.unsplash.com/photo-1620645607062-11115668db8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/2_plant.png",
     isNew: false,
     isBestSeller: false,
     inStock: true,
@@ -137,7 +137,7 @@ const DUMMY_PRODUCTS = [
     rating: 5.0,
     category: "Cây phong thủy",
     subcategory: "Cảnh quan",
-    img: "https://images.unsplash.com/photo-1600411832986-5a4477b64a1c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    img: "/images/3_plant.png",
     isNew: false,
     isBestSeller: true,
     inStock: true,
@@ -176,6 +176,23 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page">
+      <div className="global-artistic-background">
+        <Leaf className="decor-leaf leaf-1" size={120} />
+        <Leaf className="decor-leaf leaf-2" size={80} />
+        <Sprout className="decor-leaf leaf-3" size={100} />
+        <Leaf className="decor-leaf leaf-4" size={60} />
+        <Leaf className="decor-leaf leaf-5" size={110} />
+        <Sprout className="decor-leaf leaf-6" size={70} />
+        <Leaf className="decor-leaf leaf-7" size={90} />
+        <Leaf className="decor-leaf leaf-8" size={50} />
+        <Leaf className="decor-leaf leaf-9" size={130} />
+        <Sprout className="decor-leaf leaf-10" size={85} />
+        <Leaf className="decor-leaf leaf-11" size={95} />
+        <Leaf className="decor-leaf leaf-12" size={75} />
+        <Sprout className="decor-leaf leaf-13" size={105} />
+        <Leaf className="decor-leaf leaf-14" size={55} />
+        <Leaf className="decor-leaf leaf-15" size={115} />
+      </div>
       <div className="category-container">
         {/* Sidebar */}
         <aside className="category-sidebar">

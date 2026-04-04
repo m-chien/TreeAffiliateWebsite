@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, MailSearch, Leaf, Sprout } from "lucide-react";
+import { Phone, Mail, MapPin, Leaf, Sprout } from "lucide-react";
 import styles from "./ContactPage.module.css";
 import FAQ from "../components/FAQ";
 

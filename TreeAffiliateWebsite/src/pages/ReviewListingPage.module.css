@@ -1,9 +1,9 @@
 .hubPage {
-  background-color: #F8F6F1;
+  background-color: #f8f6f1;
   min-height: 100vh;
   padding-top: 8rem;
   padding-bottom: 5rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .container {
@@ -18,9 +18,9 @@
 }
 
 .hubHeader h1 {
-  font-family: 'Inter', Georgia, serif;
+  font-family: "Inter", Georgia, serif;
   font-size: 3rem;
-  color: #1A332A;
+  color: #1a332a;
   margin-bottom: 1rem;
 }
 
@@ -37,7 +37,7 @@
   justify-content: center;
   gap: 1.5rem;
   flex-wrap: wrap;
-  margin-bottom: 4rem;
+  margin-bottom: 15rem;
 }
 
 .searchBox {
@@ -64,7 +64,7 @@
 }
 
 .searchInput:focus {
-  border-color: #1A332A;
+  border-color: #1a332a;
 }
 
 .filterGroup {
@@ -75,16 +75,17 @@
 .filterBtn {
   padding: 0.7rem 1.5rem;
   border-radius: 99px;
-  border: 1px solid #1A332A;
+  border: 1px solid #1a332a;
   background: transparent;
-  color: #1A332A;
+  color: #1a332a;
   cursor: pointer;
   font-weight: 700;
   transition: all 0.3s;
 }
 
-.filterBtn:hover, .filterBtn.active {
-  background: #1A332A;
+.filterBtn:hover,
+.filterBtn.active {
+  background: #1a332a;
   color: white;
 }
 
@@ -92,95 +93,131 @@
 .reviewGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2.5rem;
+  gap: 12rem 3rem;
 }
 
 .reviewCard {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  background: linear-gradient(135deg, #1a4d3d 0%, #1b4332 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  padding-top: 100px;
+  padding-bottom: 20px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
 }
 
 .reviewCard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 40px rgba(13, 77, 18, 0.6);
+}
+
+.cardImageContainer {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
 }
 
 .cardImage {
-  height: 220px;
-  overflow: hidden;
-}
-
-.cardImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
 }
 
 .cardContent {
-  padding: 1.5rem;
+  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .category {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  color: #C2714F;
+  color: #ffd700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  letter-spacing: 1.2px;
+  margin-bottom: 0.8rem;
+  align-self: center;
 }
 
 .cardContent h3 {
-  font-family: 'Inter', Georgia, serif;
+  font-family: "Inter", Georgia, serif;
   font-size: 1.4rem;
-  color: #1A332A;
-  margin-bottom: 0.5rem;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+  text-align: center;
+  font-weight: 700;
 }
 
 .sciName {
   display: block;
   font-style: italic;
-  font-size: 0.85rem;
-  color: #999;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .rating {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.3rem;
   margin-bottom: 1rem;
-  color: #FFB300;
-  font-weight: 800;
-  font-size: 0.95rem;
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
 .snippet {
-  color: #666;
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
   line-height: 1.5;
-  margin-bottom: 1.5rem;
+  margin-bottom: auto;
+  text-align: center;
 }
 
 .viewBtn {
+  position: static;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  background: #1A332A;
-  color: white;
-  padding: 0.8rem;
-  border-radius: 10px;
+  gap: 0.6rem;
   text-decoration: none;
-  font-weight: 700;
-  transition: background 0.3s;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .viewBtn:hover {
-  background: #2D4A3E;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+  transform: translateX(2px);
 }
 
 /* No Results */
@@ -194,16 +231,16 @@
   .hubHeader h1 {
     font-size: 2.2rem;
   }
-  
+
   .controls {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .searchBox {
     width: 100%;
   }
-  
+
   .filterGroup {
     width: 100%;
     justify-content: center;
