@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Calendar, User, ShoppingBag, ArrowRight, Mail, Layout, Leaf, Sprout } from "lucide-react";
 import { motion } from "framer-motion";
 import { mockBlogPosts } from "../data/blogData";
@@ -109,7 +110,7 @@ const BlogListingPage = () => {
                   <span><User size={14} /> {featuredPost.author}</span>
                   <span><Calendar size={14} /> {featuredPost.date}</span>
                 </div>
-                <button className="read-more-btn">Đọc tiếp <ArrowRight size={18} style={{marginLeft: '8px', verticalAlign: 'middle'}} /></button>
+                <Link to={`/blog/${featuredPost.id}`} className="read-more-btn" style={{display: 'inline-block', textDecoration: 'none'}}>Đọc tiếp <ArrowRight size={18} style={{marginLeft: '8px', verticalAlign: 'middle'}} /></Link>
               </div>
             </motion.div>
           </section>
@@ -137,7 +138,7 @@ const BlogListingPage = () => {
                     <div className="post-meta">
                       <span>{post.date}</span>
                     </div>
-                    <button className="read-more-btn" style={{padding: '0.6rem 1.2rem', fontSize: '0.9rem'}}>Đọc thêm</button>
+                    <Link to={`/blog/${post.id}`} className="read-more-btn" style={{display: 'inline-block', textDecoration: 'none', padding: '0.6rem 1.2rem', fontSize: '0.9rem'}}>Đọc thêm</Link>
                   </div>
                 </motion.article>
               ))}
