@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -9,12 +9,16 @@ import BlogListingPage from './pages/BlogListingPage';
 import PlantReviewPage from './pages/PlantReviewPage';
 import ReviewListingPage from './pages/ReviewListingPage';
 import ContactPage from './pages/ContactPage';
+import Dashboard from './pages/Admin/Dashboard';
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
     <div className="app-container">
       <ScrollToTop />
-      <Header />
+      {!isAdminRoute && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/category" element={<CategoryPage />} />
@@ -23,8 +27,9 @@ function App() {
         <Route path="/reviews" element={<ReviewListingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/review/monstera" element={<PlantReviewPage />} />
+        <Route path="/admin" element={<Dashboard />} />
       </Routes>
-      <Footer />
+      {!isAdminRoute && <Footer />}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface Plant {
   id: string;
   name: string;
@@ -73,4 +75,64 @@ export interface ReviewSummary {
   expertTitle?: string;
   expertAvatar?: string;
   affiliateLink?: string;
+}
+
+export interface OverviewStat {
+  title: string;
+  value: string;
+  trend: number;
+  trendLabel: string;
+  icon: React.ReactNode;
+  highlight?: boolean;
+}
+
+export interface RankedProduct {
+  id: string;
+  rank: number;
+  name: string;
+  category: string;
+  clicks: number;
+  imageUrl: string;
+}
+
+export interface RankedArticle {
+  id: string;
+  rank: number;
+  title: string;
+  author: string;
+  views: number;
+  affiliateClicks: number;
+}
+
+export interface ChartDataPoint {
+  day: string;
+  clicks: number;
+  revenue: number;
+}
+
+export interface ManagedPlant {
+  id: string;
+  imageUrl: string;
+  name: string;
+  category: string;
+  platform: 'Shopee' | 'TikTok';
+  commission: number;
+  status: 'Active' | 'Inactive';
+}
+
+export interface ManagedArticle {
+  id: string;
+  title: string;
+  author: string;
+  date: string;
+  views: number;
+  affiliateClicks: number;
+  status: 'Published' | 'Draft';
+}
+
+export interface ManagedCategory {
+  id: string;
+  name: string;
+  type: 'Sản phẩm' | 'Bài viết';
+  itemCount: number;
 }
