@@ -7,16 +7,18 @@ import {
   Settings, 
   Search, 
   Bell,
-  User
+  User,
+  Mail
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
-import Overview from './Overview';
+import DashboardAnalytics from './Analytics/DashboardAnalytics';
 import PlantsManager from './PlantsManager';
 import ArticlesManager from './ArticlesManager';
 import CategoriesManager from './CategoriesManager';
 import SettingsManager from './SettingsManager';
 import AccountManager from './AccountManager';
+import NewsletterManager from './NewsletterManager';
 
 const Dashboard: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
@@ -26,6 +28,7 @@ const Dashboard: React.FC = () => {
     { id: 'plants', label: 'Quản lý cây', icon: <Leaf size={20} /> },
     { id: 'articles', label: 'Quản lý bài viết', icon: <FileText size={20} /> },
     { id: 'categories', label: 'Quản lý danh mục', icon: <FolderTree size={20} /> },
+    { id: 'newsletter', label: 'Liên hệ tiếp thị', icon: <Mail size={20} /> },
     { id: 'account', label: 'Tài khoản', icon: <User size={20} /> },
     { id: 'settings', label: 'Hệ thống', icon: <Settings size={20} /> },
   ];
@@ -33,19 +36,21 @@ const Dashboard: React.FC = () => {
   const renderContent = () => {
     switch (activeMenu) {
       case 'dashboard':
-        return <Overview />;
+        return <DashboardAnalytics />;
       case 'plants':
         return <PlantsManager />;
       case 'articles':
         return <ArticlesManager />;
       case 'categories':
         return <CategoriesManager />;
+      case 'newsletter':
+        return <NewsletterManager />;
       case 'account':
         return <AccountManager />;
       case 'settings':
         return <SettingsManager />;
       default:
-        return <Overview />;
+        return <DashboardAnalytics />;
     }
   };
 

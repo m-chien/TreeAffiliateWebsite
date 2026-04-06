@@ -58,7 +58,7 @@
   background: linear-gradient(to top, rgba(30, 59, 50, 0.95) 0%, rgba(30, 59, 50, 0.3) 100%);
 }
 
-.hero-content {
+.hero-content-page {
   position: relative;
   z-index: 10;
   max-width: 1000px;
@@ -80,7 +80,7 @@
   margin-bottom: 24px;
 }
 
-.hero-content h1 {
+.hero-content-page h1 {
   color: white;
   font-size: 48px;
   line-height: 1.2;
@@ -645,7 +645,7 @@
 }
 
 @media (max-width: 1024px) {
-  .hero-content h1 { font-size: 36px; }
+  .hero-content-page h1 { font-size: 36px; }
   .article-layout {
     grid-template-columns: 1fr 300px;
   }

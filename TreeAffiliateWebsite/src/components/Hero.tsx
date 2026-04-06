@@ -1,6 +1,7 @@
 import React from "react";
 import { Star, ShieldCheck, ThumbsUp, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import Tilt from "react-parallax-tilt";
 import "./Hero.css";
 
 const Hero = () => {
@@ -36,10 +37,18 @@ const Hero = () => {
         >
           <div className="arch-mask">
             {/* Using a placeholder high-quality plant image */}
-            <img
-              src="/public/images/cay1.png"
-              alt="Beautiful indoor plant"
-            />
+            <Tilt 
+              tiltMaxAngleX={10} 
+              tiltMaxAngleY={10} 
+              scale={1.05} 
+              transitionSpeed={2000}
+              gyroscope={true}
+            >
+              <img
+                src="/public/images/cay4.png"
+                alt="Beautiful indoor plant"
+              />
+            </Tilt>
             <motion.div
               className="price-badge font-serif"
               initial={{ opacity: 0, scale: 0 }}

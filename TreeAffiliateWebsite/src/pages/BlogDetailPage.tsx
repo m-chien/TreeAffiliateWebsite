@@ -34,7 +34,7 @@ const BlogDetailPage = () => {
       <div className="article-hero" style={{ backgroundImage: `url(${article.image || '/public/images/cay1.png'})` }}>
         <div className="hero-overlay"></div>
         <motion.div 
-          className="hero-content"
+          className="hero-content-page"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
