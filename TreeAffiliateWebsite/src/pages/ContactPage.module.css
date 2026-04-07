@@ -157,6 +157,7 @@
   width: 100%;
   cursor: pointer;
   transition: all 0.3s;
+  font-size: 17px;
 }
 
 .newsBtn:hover {
