@@ -81,6 +81,33 @@
   color: var(--text-light);
 }
 
+.logoutWrapper {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.logoutBtn:hover {
+  background-color: rgba(211, 47, 47, 0.1);
+  color: #ff4d4d;
+}
+
 /* Main Content */
 .mainContent {
   flex-grow: 1;

@@ -9,8 +9,10 @@ import {
   Bell,
   User,
   Users,
-  Mail
+  Mail,
+  LogOut
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 
 import DashboardAnalytics from './Analytics/DashboardAnalytics';
@@ -24,6 +26,11 @@ import UsersManager from './UsersManager';
 
 const Dashboard: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('/admin/login');
+  };
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
@@ -79,6 +86,12 @@ const Dashboard: React.FC = () => {
             </li>
           ))}
         </ul>
+        <div className={styles.logoutWrapper}>
+          <button className={styles.logoutBtn} onClick={handleLogout}>
+            <LogOut size={20} />
+            <span>Đăng xuất</span>
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}

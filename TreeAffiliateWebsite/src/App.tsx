@@ -11,6 +11,7 @@ import PlantReviewPage from './pages/PlantReviewPage';
 import ReviewListingPage from './pages/ReviewListingPage';
 import ContactPage from './pages/ContactPage';
 import Dashboard from './pages/Admin/Dashboard';
+import AdminLogin from './pages/Admin/AdminLogin';
 
 function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function App() {
         <Route path="/reviews" element={<ReviewListingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/review/monstera" element={<PlantReviewPage />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<Dashboard />} />
       </Routes>
       {!isAdminRoute && <Footer />}
