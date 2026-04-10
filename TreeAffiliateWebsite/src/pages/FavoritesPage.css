@@ -1,0 +1,110 @@
+.favorites-page {
+  padding-top: 100px; /* Account for fixed header */
+  min-height: 100vh;
+  background-color: var(--bg-light-cream);
+  position: relative;
+}
+
+.favorites-header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: rgba(74, 103, 65, 0.05); /* very light green */
+  border-bottom: 1px solid rgba(74, 103, 65, 0.1);
+  margin-bottom: 40px;
+}
+
+.favorites-header h1 {
+  font-family: var(--font-serif);
+  color: var(--bg-dark-green);
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.favorites-header p {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.favorites-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.favorites-section {
+  margin-bottom: 60px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-serif);
+  color: var(--text-dark);
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(74, 103, 65, 0.2);
+}
+
+/* Grid for Products */
+.fav-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* Grid for Articles */
+.fav-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.empty-state p {
+  color: #888;
+  margin-top: 15px;
+  font-size: 1.1rem;
+}
+
+.remove-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.remove-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Update Product Card Relative For Delete */
+.product-card {
+  position: relative;
+}
+
+.related-card {
+  position: relative;
+}

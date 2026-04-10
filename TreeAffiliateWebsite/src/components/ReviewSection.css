@@ -199,6 +199,7 @@
 }
 
 .testimonial-user strong {
+  margin-right: 5px;
   font-size: 1.05rem;
   display: block;
 }

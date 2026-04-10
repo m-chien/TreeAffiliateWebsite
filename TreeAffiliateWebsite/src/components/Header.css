@@ -118,8 +118,9 @@
 }
 
 .icon-btn {
+  background-color: var(--bg-dark-green);
   color: inherit;
-  opacity: 0.9;
+  opacity: 1;
   transition: var(--transition);
   display: flex;
   align-items: center;

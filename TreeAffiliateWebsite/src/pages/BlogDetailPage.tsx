@@ -1,12 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, Calendar, ShoppingBag, Eye, List, ThumbsUp, User, Clock, CheckCircle2, Heart, Share2, Info } from 'lucide-react';
 import { mockBlogPosts } from '../data/blogData';
+import EmailSubscriptionModal from '../components/EmailSubscriptionModal';
 import './BlogDetailPage.css';
 
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const article = id && id !== '1' ? mockBlogPosts.find(p => p.id.toString() === id.toString()) : mockBlogPosts[0];
 
   useEffect(() => {
@@ -62,7 +64,7 @@ const BlogDetailPage = () => {
                <h4 className="author-name">{article.author}</h4>
                <p className="author-bio">Chuyên gia thực vật học nội thất với hơn 5 năm kinh nghiệm setup không gian xanh cho hơn 100+ văn phòng.</p>
                <div className="author-socials">
-                 <button className="social-btn"><Heart size={16}/></button>
+                 <button className="social-btn" onClick={() => setIsModalOpen(true)} title="Yêu thích"><Heart size={16}/></button>
                  <button className="social-btn"><Share2 size={16}/></button>
                </div>
              </div>
@@ -84,7 +86,7 @@ const BlogDetailPage = () => {
                  <h3 className="widget-title">Hành động</h3>
                  <div className="share-links">
                    <button className="share-btn"><Share2 size={16}/> Chia sẻ</button>
-                   <button className="share-btn"><Heart size={16} color="#c86c42"/> Lưu Cẩm Nang</button>
+                   <button className="share-btn" onClick={() => setIsModalOpen(true)}><Heart size={16} color="#c86c42"/> Lưu Cẩm Nang</button>
                  </div>
              </div>
           </div>
@@ -194,6 +196,11 @@ const BlogDetailPage = () => {
           ))}
         </div>
       </section>
+
+      <EmailSubscriptionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   );
 };

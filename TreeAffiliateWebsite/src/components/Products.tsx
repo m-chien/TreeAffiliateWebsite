@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import EmailSubscriptionModal from "./EmailSubscriptionModal";
 import "./Products.css";
 import { TABS } from "../data/configData";
 import { ALL_PRODUCTS } from "../data/plantData";
@@ -11,11 +13,16 @@ import type { Plant } from "../types";
 const Products = () => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
   const [wishlist, setWishlist] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleWishlist = (id: string) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
+  const handleFavoriteClick = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsModalOpen(true);
+  };
+  
+  const handleProductClick = () => {
+    navigate('/review/monstera');
   };
   
   const filteredProducts: Plant[] = ALL_PRODUCTS.filter((p) => p.tab === activeTab);
@@ -65,6 +72,8 @@ const Products = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -10 }}
+                onClick={handleProductClick}
+                style={{ cursor: "pointer" }}
               >
                 <div className="product-image-wrapper">
                   <motion.img
@@ -75,7 +84,7 @@ const Products = () => {
                   />
                   <button
                     className="wishlist-btn"
-                    onClick={() => toggleWishlist(product.id)}
+                    onClick={(e) => handleFavoriteClick(product.id, e)}
                     aria-label="Toggle Wishlist"
                   >
                     <Heart
@@ -94,6 +103,11 @@ const Products = () => {
           })}
         </AnimatePresence>
       </motion.div>
+
+      <EmailSubscriptionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </section>
   );
 };

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Maximize2, Star, X, Leaf, Sprout } from "lucide-react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { CATEGORIES, SIZES } from "../data/configData";
 import { DUMMY_PRODUCTS } from "../data/plantData";
+import EmailSubscriptionModal from "../components/EmailSubscriptionModal";
 import "./CategoryPage.css";
 
 /* Removed local CATEGORIES, SIZES, and DUMMY_PRODUCTS definitions */
@@ -15,6 +17,17 @@ const CategoryPage = () => {
   const [inStockOnly, setInStockOnly] = useState(true);
   const [bestSellerOnly, setBestSellerOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000000]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsModalOpen(true);
+  };
+  
+  const handleProductClick = () => {
+    navigate('/review/monstera');
+  };
 
   const toggleFilter = (
     set: React.Dispatch<React.SetStateAction<string[]>>,
@@ -58,6 +71,22 @@ const CategoryPage = () => {
         <Leaf className="decor-leaf leaf-14" size={55} />
         <Leaf className="decor-leaf leaf-15" size={115} />
       </div>
+      
+      <div className="category-hero">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1>Bộ Sưu Tập Cây Xanh Thiết Kế</h1>
+          <p>
+            Khám phá hàng trăm loài thực vật độc đáo được tuyển chọn kỹ lưỡng. 
+            Từ những chậu cây để bàn nhỏ xinh cho đến những tuyệt tác kiến trúc xanh thanh lọc không khí,
+            giúp không gian sống của bạn thêm phần trong lành và thư thái.
+          </p>
+        </motion.div>
+      </div>
+
       <div className="category-container">
         {/* Sidebar */}
         <aside className="category-sidebar">
@@ -249,15 +278,17 @@ const CategoryPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
+                  onClick={handleProductClick}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className="product-image-container">
                     <span className="discount-badge">{product.discount}</span>
                     <img src={product.img} alt={product.name} />
                     <div className="hover-actions">
-                      <button className="action-btn" title="Yêu thích">
+                      <button className="action-btn" title="Yêu thích" onClick={handleFavoriteClick}>
                         <Heart size={18} />
                       </button>
-                      <button className="action-btn" title="Xem nhanh">
+                      <button className="action-btn" title="Xem nhanh" onClick={(e) => e.stopPropagation()}>
                         <Maximize2 size={18} />
                       </button>
                     </div>
@@ -293,6 +324,11 @@ const CategoryPage = () => {
           </div>
         </main>
       </div>
+
+      <EmailSubscriptionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   );
 };

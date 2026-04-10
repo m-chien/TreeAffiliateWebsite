@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Heart, Menu, X, Leaf, Search } from "lucide-react";
 import { motion } from "framer-motion";
+import EmailSubscriptionModal from "./EmailSubscriptionModal";
 import "./Header.css";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
@@ -99,9 +101,9 @@ const Header = () => {
             />
           </form>
 
-          <a href="#" className="icon-btn" title="Yêu Thích">
+          <Link to="/favorites" className="icon-btn" title="Yêu Thích">
             <Heart size={20} />
-          </a>
+          </Link>
 
           <button className="mobile-menu-btn" onClick={toggleMenu}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -142,6 +144,11 @@ const Header = () => {
           </li>
         </ul>
       </div>
+
+      <EmailSubscriptionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </motion.header>
   );
 };

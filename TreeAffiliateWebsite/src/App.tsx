@@ -10,6 +10,7 @@ import BlogDetailPage from './pages/BlogDetailPage';
 import PlantReviewPage from './pages/PlantReviewPage';
 import ReviewListingPage from './pages/ReviewListingPage';
 import ContactPage from './pages/ContactPage';
+import FavoritesPage from './pages/FavoritesPage';
 import Dashboard from './pages/Admin/Dashboard';
 import AdminLogin from './pages/Admin/AdminLogin';
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetailPage />} />
         <Route path="/reviews" element={<ReviewListingPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/review/monstera" element={<PlantReviewPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<Dashboard />} />
