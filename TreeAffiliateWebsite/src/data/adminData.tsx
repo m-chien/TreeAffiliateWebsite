@@ -12,6 +12,7 @@ import type {
   ManagedPlant,
   ManagedArticle,
   ManagedCategory,
+  ManagedPartner,
 } from "../types";
 
 export const overviewStats: OverviewStat[] = [
@@ -240,4 +241,47 @@ export const managedCategories: ManagedCategory[] = [
   { id: "3", name: "Cây phong thủy", type: "Sản phẩm", itemCount: 28 },
   { id: "4", name: "Hướng dẫn chăm sóc", type: "Bài viết", itemCount: 64 },
   { id: "5", name: "Top list", type: "Bài viết", itemCount: 24 },
+];
+
+export const managedPartners: ManagedPartner[] = [
+  {
+    id: "1",
+    name: "Shopee Vietnam",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
+    website: "https://shopee.vn",
+    partnerType: "Shopee",
+    status: "Active",
+    joinedDate: "2024-01-10",
+    commissionRate: 15,
+  },
+  {
+    id: "2",
+    name: "TikTok Shop",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
+    website: "https://tiktok.com",
+    partnerType: "TikTok",
+    status: "Active",
+    joinedDate: "2024-02-15",
+    commissionRate: 20,
+  },
+  {
+    id: "3",
+    name: "Green Garden Center",
+    logoUrl: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+    website: "https://greengarden.com",
+    partnerType: "Garden Center",
+    status: "Active",
+    joinedDate: "2024-03-05",
+    commissionRate: 10,
+  },
+  {
+    id: "4",
+    name: "AccessTrade",
+    logoUrl: "https://pub.accesstrade.vn/images/logo-at.png",
+    website: "https://accesstrade.vn",
+    partnerType: "Other",
+    status: "Inactive",
+    joinedDate: "2023-12-20",
+    commissionRate: 8,
+  },
 ];

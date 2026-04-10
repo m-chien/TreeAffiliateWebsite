@@ -137,3 +137,14 @@ export interface ManagedCategory {
   type: 'Sản phẩm' | 'Bài viết';
   itemCount: number;
 }
+
+export interface ManagedPartner {
+  id: string;
+  name: string;
+  logoUrl: string;
+  website: string;
+  partnerType: 'Shopee' | 'TikTok' | 'Garden Center' | 'Other';
+  status: 'Active' | 'Inactive';
+  joinedDate: string;
+  commissionRate: number;
+}

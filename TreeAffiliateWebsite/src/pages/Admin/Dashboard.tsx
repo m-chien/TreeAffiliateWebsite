@@ -10,7 +10,8 @@ import {
   User,
   Users,
   Mail,
-  LogOut
+  LogOut,
+  Handshake
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
@@ -24,6 +25,7 @@ import SettingsManager from './SettingsManager';
 import AccountManager from './AccountManager';
 import NewsletterManager from './NewsletterManager';
 import UsersManager from './UsersManager';
+import PartnersManager from './PartnersManager';
 
 const Dashboard: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
@@ -41,6 +43,7 @@ const Dashboard: React.FC = () => {
     { id: 'categories', label: 'Quản lý danh mục', icon: <FolderTree size={20} /> },
     { id: 'users', label: 'Người dùng', icon: <Users size={20} /> },
     { id: 'newsletter', label: 'Liên hệ tiếp thị', icon: <Mail size={20} /> },
+    { id: 'partners', label: 'Quản lý đối tác', icon: <Handshake size={20} /> },
     { id: 'account', label: 'Tài khoản', icon: <User size={20} /> },
     { id: 'settings', label: 'Hệ thống', icon: <Settings size={20} /> },
   ];
@@ -61,6 +64,8 @@ const Dashboard: React.FC = () => {
         return <UsersManager />;
       case 'newsletter':
         return <NewsletterManager />;
+      case 'partners':
+        return <PartnersManager />;
       case 'account':
         return <AccountManager />;
       case 'settings':
