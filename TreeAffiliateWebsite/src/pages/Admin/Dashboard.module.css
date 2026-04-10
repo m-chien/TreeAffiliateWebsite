@@ -118,6 +118,7 @@
 
 /* Top Bar */
 .topBar {
+  flex-shrink: 0;
   height: 72px;
   background-color: var(--card-bg);
   display: flex;

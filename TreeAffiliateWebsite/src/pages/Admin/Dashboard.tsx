@@ -17,6 +17,7 @@ import styles from './Dashboard.module.css';
 
 import DashboardAnalytics from './Analytics/DashboardAnalytics';
 import PlantsManager from './PlantsManager';
+import PlantDetailsManager from './PlantDetailsManager';
 import ArticlesManager from './ArticlesManager';
 import CategoriesManager from './CategoriesManager';
 import SettingsManager from './SettingsManager';
@@ -35,6 +36,7 @@ const Dashboard: React.FC = () => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { id: 'plants', label: 'Quản lý cây', icon: <Leaf size={20} /> },
+    { id: 'plant-details', label: 'Thông số cây', icon: <Settings size={20} /> },
     { id: 'articles', label: 'Quản lý bài viết', icon: <FileText size={20} /> },
     { id: 'categories', label: 'Quản lý danh mục', icon: <FolderTree size={20} /> },
     { id: 'users', label: 'Người dùng', icon: <Users size={20} /> },
@@ -49,6 +51,8 @@ const Dashboard: React.FC = () => {
         return <DashboardAnalytics />;
       case 'plants':
         return <PlantsManager />;
+      case 'plant-details':
+        return <PlantDetailsManager />;
       case 'articles':
         return <ArticlesManager />;
       case 'categories':
