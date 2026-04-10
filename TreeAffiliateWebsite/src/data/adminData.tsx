@@ -13,7 +13,48 @@ import type {
   ManagedArticle,
   ManagedCategory,
   ManagedPartner,
+  ManagedReview,
 } from "../types";
+
+// ... (existing constants)
+
+export const managedReviews: ManagedReview[] = [
+  {
+    id: "R001",
+    plantId: "1",
+    plantName: "Monstera Deliciosa",
+    userId: "U002",
+    userName: "Lê Cát Tiên",
+    rating: 5,
+    content: "Cây nhận được rất tươi, đóng gói kỹ càng. Shop tư vấn nhiệt tình.",
+    date: "2024-04-05",
+    imageUrl: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    status: "Approved"
+  },
+  {
+    id: "R002",
+    plantId: "2",
+    plantName: "Bàng Singapore",
+    userId: "U004",
+    userName: "Phạm Hoàng Dung",
+    rating: 4,
+    content: "Cây đẹp nhưng giao hơi lâu một chút. Hy vọng lần sau nhanh hơn.",
+    date: "2024-04-08",
+    status: "Approved"
+  },
+  {
+    id: "R003",
+    plantId: "5",
+    plantName: "Cây Kim Tiền",
+    userId: "U005",
+    userName: "Đỗ Thị Nhàn",
+    rating: 5,
+    content: "Cây kim tiền to hơn mình nghĩ, để trong phòng khách rất sang.",
+    date: "2024-04-09",
+    imageUrl: "https://images.unsplash.com/photo-1632123507747-d0c43c24ff2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    status: "Pending"
+  }
+];
 
 export const overviewStats: OverviewStat[] = [
   {

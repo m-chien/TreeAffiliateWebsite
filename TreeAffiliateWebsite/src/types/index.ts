@@ -148,3 +148,16 @@ export interface ManagedPartner {
   joinedDate: string;
   commissionRate: number;
 }
+
+export interface ManagedReview {
+  id: string;
+  plantId: string;
+  plantName: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  content: string;
+  date: string;
+  imageUrl?: string;
+  status: 'Approved' | 'Pending';
+}

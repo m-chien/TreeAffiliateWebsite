@@ -11,7 +11,8 @@ import {
   Users,
   Mail,
   LogOut,
-  Handshake
+  Handshake,
+  MessageSquare,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
@@ -26,6 +27,7 @@ import AccountManager from './AccountManager';
 import NewsletterManager from './NewsletterManager';
 import UsersManager from './UsersManager';
 import PartnersManager from './PartnersManager';
+import ReviewsManager from './ReviewsManager';
 
 const Dashboard: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
@@ -43,6 +45,7 @@ const Dashboard: React.FC = () => {
     { id: 'categories', label: 'Quản lý danh mục', icon: <FolderTree size={20} /> },
     { id: 'users', label: 'Người dùng', icon: <Users size={20} /> },
     { id: 'newsletter', label: 'Liên hệ tiếp thị', icon: <Mail size={20} /> },
+    { id: 'reviews', label: 'Quản lý đánh giá', icon: <MessageSquare size={20} /> },
     { id: 'partners', label: 'Quản lý đối tác', icon: <Handshake size={20} /> },
     { id: 'account', label: 'Tài khoản', icon: <User size={20} /> },
     { id: 'settings', label: 'Hệ thống', icon: <Settings size={20} /> },
@@ -64,6 +67,8 @@ const Dashboard: React.FC = () => {
         return <UsersManager />;
       case 'newsletter':
         return <NewsletterManager />;
+      case 'reviews':
+        return <ReviewsManager />;
       case 'partners':
         return <PartnersManager />;
       case 'account':
