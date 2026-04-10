@@ -128,6 +128,7 @@ export interface ManagedArticle {
   views: number;
   affiliateClicks: number;
   status: 'Published' | 'Draft';
+  content?: string;
 }
 
 export interface ManagedCategory {

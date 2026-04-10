@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit2, Trash2, FileText, Eye, TrendingUp, Filter, BarChart, PenTool } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, FileText, Eye, TrendingUp, Filter, BarChart, PenTool, Edit3 } from 'lucide-react';
 import styles from './ArticlesManager.module.css';
 import modalStyles from './AdminModal.module.css';
 import { managedArticles as initialArticles } from '../../data/adminData';
 import type { ManagedArticle } from '../../types';
 import AdminModal from './AdminModal';
+import ArticleContentEditor from './ArticleContentEditor';
 
 const ArticlesManager: React.FC = () => {
   const [articles, setArticles] = useState<ManagedArticle[]>(initialArticles);
@@ -15,6 +16,7 @@ const ArticlesManager: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditingContent, setIsEditingContent] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<ManagedArticle | null>(null);
 
   // Form State
@@ -58,6 +60,16 @@ const ArticlesManager: React.FC = () => {
   const openDeleteModal = (article: ManagedArticle) => {
     setSelectedArticle(article);
     setIsDeleteModalOpen(true);
+  };
+
+  const openContentEditor = (article: ManagedArticle) => {
+    setSelectedArticle(article);
+    setIsEditingContent(true);
+  };
+
+  const handleSaveContent = (updatedArticle: ManagedArticle) => {
+    setArticles(articles.map(a => a.id === updatedArticle.id ? updatedArticle : a));
+    setIsEditingContent(false);
   };
 
   const handleSaveAdd = () => {
@@ -288,6 +300,9 @@ const ArticlesManager: React.FC = () => {
                   </td>
                   <td>
                     <div className={styles.actions} style={{ justifyContent: 'flex-end' }}>
+                      <button className={styles.actionBtn} title="Viết nội dung" style={{ color: '#2e8b57' }} onClick={() => openContentEditor(article)}>
+                        <Edit3 size={16} />
+                      </button>
                       <button className={styles.actionBtn} title="Sửa chi tiết" onClick={() => openEditModal(article)}>
                         <Edit2 size={16} />
                       </button>
@@ -353,6 +368,14 @@ const ArticlesManager: React.FC = () => {
       >
         <p>Thao tác sẽ gỡ toàn bộ nội dung của bài <strong>{selectedArticle?.title}</strong> khỏi giao diện Front. Traffic SEO từ Google có thể sẽ mất hoàn toàn.</p>
       </AdminModal>
+
+      {isEditingContent && selectedArticle && (
+        <ArticleContentEditor 
+          article={selectedArticle}
+          onClose={() => setIsEditingContent(false)}
+          onSave={handleSaveContent}
+        />
+      )}
 
     </div>
   );
