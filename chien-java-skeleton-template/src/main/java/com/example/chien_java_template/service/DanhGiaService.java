@@ -45,12 +45,12 @@ public class DanhGiaService {
     }
 
     public Page<DanhGiaDTO> getDanhGiaByCayCanh(Integer cayCanhId, Pageable pageable) {
-        return danhGiaRepository.findByCayCanhId(cayCanhId, pageable)
+        return danhGiaRepository.findByCayCanh_Id(cayCanhId, pageable)
                 .map(danhGiaMapper::toDTO);
     }
 
     public Page<DanhGiaDTO> getDanhGiaByUser(Integer userId, Pageable pageable) {
-        return danhGiaRepository.findByPlantsUserId(userId, pageable)
+        return danhGiaRepository.findByPlantsUser_Id(userId, pageable)
                 .map(danhGiaMapper::toDTO);
     }
 

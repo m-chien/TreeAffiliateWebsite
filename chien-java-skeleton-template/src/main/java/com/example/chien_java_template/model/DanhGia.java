@@ -20,11 +20,11 @@ public class DanhGia {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cayCanhId", nullable = false)
+    @JoinColumn(name = "IDCayCanh", nullable = false)
     private CayCanh cayCanh;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "IDUser", nullable = false)
     private PlantsUser plantsUser;
 
     @Column(name = "NguoiDanhGia", columnDefinition = "NVARCHAR(255)")

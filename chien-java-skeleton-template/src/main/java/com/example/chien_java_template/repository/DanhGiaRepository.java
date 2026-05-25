@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DanhGiaRepository extends JpaRepository<DanhGia, Integer> {
-    Page<DanhGia> findByCayCanhId(Integer cayCanhId, Pageable pageable);
 
-    Page<DanhGia> findByPlantsUserId(Integer userId, Pageable pageable);
+    Page<DanhGia> findByCayCanh_Id(Integer cayCanhId, Pageable pageable);
+
+    Page<DanhGia> findByPlantsUser_Id(Integer userId, Pageable pageable);
 
     @Query("SELECT AVG(d.diem) FROM DanhGia d WHERE d.cayCanh.id = :cayCanhId")
     Double findAverageDiemByCayCanhId(@Param("cayCanhId") Integer cayCanhId);
 }
-

@@ -548,8 +548,8 @@ const PlantReviewPage = () => {
                   transition={{ duration: 0.6 }}
                 >
                   <div className={styles.tHeader}>
-                    {/* Xử lý hiển thị Avatar: Dùng ảnh nếu có, không thì lấy chữ cái đầu */}
-                    {testimonial.linkAnh ? (
+                    {/* Chưa có soure ảnh nên comment lại */}
+                    {/* {testimonial.linkAnh ? (
                       <div className={styles.avatarImageWrapper}>
                         <img
                           src={testimonial.linkAnh}
@@ -561,8 +561,11 @@ const PlantReviewPage = () => {
                       <div className={styles.avatar}>
                         {getInitials(testimonial.nguoiDanhGia)}
                       </div>
-                    )}
-
+                    )} */}
+                    {/* Vì API hiện tại chưa có trường linkAnh nên tạm thời sử dụng avatar chữ cái đầu */}
+                    <div className={styles.avatar}>
+                      {getInitials(testimonial.nguoiDanhGia)}
+                    </div>
                     <div>
                       <span className={styles.tName}>
                         {testimonial.nguoiDanhGia}
