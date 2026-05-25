@@ -215,16 +215,16 @@ GO
 
 -- User
 INSERT INTO [User] (Email, Hoten, soDienThoai, MatKhau, TrangThai, VaiTro) VALUES  
-('admin@plants.com', N'Alex Nguyen', '0987654321', 'pw1', 'Active', 'Admin'),
-('chi@gmail.com', N'Lê Kim Chi', '0901234567', 'pw2', 'Active', 'User'),
-('hung@gmail.com', N'Trần Mạnh Hùng', '0907654321', 'pw3', 'Active', 'User'),
-('lan@gmail.com', N'Vũ Ngọc Lan', '0912345678', 'pw4', 'Active', 'User'),
-('minh@gmail.com', N'Đỗ Quang Minh', '0918765432', 'pw5', 'Active', 'User'),
-('trang@gmail.com', N'Nguyễn Thu Trang', '0921234567', 'pw6', 'Inactive', 'User'),
-('duc@gmail.com', N'Phạm Minh Đức', '0928765432', 'pw7', 'Active', 'User'),
-('an@gmail.com', N'Lý Hoài An', '0931234567', 'pw8', 'Active', 'User'),
-('vy@gmail.com', N'Hoàng Thảo Vy', '0938765432', 'pw9', 'Active', 'User'),
-('thanh@gmail.com', N'Bùi Tiến Thành', '0941234567', 'pw10', 'Active', 'User');
+('admin@plants.com', N'Alex Nguyen', '0987654321', 'pw1', 'ACTIVE', 'Admin'),
+('chi@gmail.com', N'Lê Kim Chi', '0901234567', 'pw2', 'ACTIVE', 'User'),
+('hung@gmail.com', N'Trần Mạnh Hùng', '0907654321', 'pw3', 'ACTIVE', 'User'),
+('lan@gmail.com', N'Vũ Ngọc Lan', '0912345678', 'pw4', 'ACTIVE', 'User'),
+('minh@gmail.com', N'Đỗ Quang Minh', '0918765432', 'pw5', 'ACTIVE', 'User'),
+('trang@gmail.com', N'Nguyễn Thu Trang', '0921234567', 'pw6', 'INACTIVE', 'User'),
+('duc@gmail.com', N'Phạm Minh Đức', '0928765432', 'pw7', 'ACTIVE', 'User'),
+('an@gmail.com', N'Lý Hoài An', '0931234567', 'pw8', 'ACTIVE', 'User'),
+('vy@gmail.com', N'Hoàng Thảo Vy', '0938765432', 'pw9', 'ACTIVE', 'User'),
+('thanh@gmail.com', N'Bùi Tiến Thành', '0941234567', 'pw10', 'ACTIVE', 'User');
 
 -- Danh mục
 INSERT INTO DanhMucNoiDung (tenDanhMuc) VALUES (N'Hướng dẫn chăm sóc'), (N'Mẹo phong thủy'), (N'Top List'), (N'Xu hướng 2026'), (N'Cẩm nang đất trồng'), (N'Phân bón & Dinh dưỡng'), (N'Trang trí nội thất'), (N'Cây mọng nước'), (N'Câu chuyện vườn'), (N'Sự kiện');
@@ -232,16 +232,16 @@ INSERT INTO DanhMucCayCanh (tenDanhMuc) VALUES (N'Cây trong nhà'), (N'Cây đ�
 
 -- CayCanh (Đã sửa lỗi gán nhầm chuỗi vào cột BIT)
 INSERT INTO CayCanh (tenCay, tenTiengAnh, Gia, moTa, Anh, TrangThai, MucTraHoaHong, DiemDanhGia, LuotXem, NgayTao, GiaThamKhao, AnToanChoThuCung, AnhSangCanThiet, LocKhongKhi, DoKhoChamSoc, KichThuoc) VALUES  
-(N'Kim Tiền', 'Zamioculcas', 250000, N'Hút lộc', 'kimtien.png', 'Active', 18.0, 4.8, 1200, '2026-01-01', N'220.000đ - 300.000đ', 0, N'Bóng râm', 1, 1, N'Trung bình'),
-(N'Lưỡi Hổ', 'Sansevieria', 180000, N'Lọc khí đêm', 'luoiho.png', 'Active', 15.0, 4.9, 2500, '2026-01-02', N'150.000đ - 250.000đ', 0, N'Ít sáng', 1, 1, N'Nhỏ'),
-(N'Monstera', 'Deliciosa', 550000, N'Sành điệu', 'monstera.png', 'Active', 15.0, 5.0, 3450, '2026-01-03', N'500.000đ - 700.000đ', 0, N'Tán xạ', 1, 2, N'Lớn'),
-(N'Sen Đá', 'Succulent', 45000, N'Dễ thương', 'senda.png', 'Active', 10.0, 4.7, 4200, '2026-01-04', N'40.000đ - 80.000đ', 1, N'Chịu được mọi mức sáng', 0, 2, N'Mini'),
-(N'Bàng Sing', 'Ficus Lyrata', 320000, N'Hiện đại', 'bangsing.png', 'Active', 20.0, 4.6, 1800, '2026-01-05', N'300.000đ - 450.000đ', 0, N'Nắng nhẹ', 1, 3, N'Lớn'),
-(N'Trầu Bà', 'Pothos', 95000, N'Dễ sống', 'trauba.png', 'Active', 12.0, 4.8, 900, '2026-01-06', N'80.000đ - 120.000đ', 0, N'Mọi loại', 1, 1, N'Vừa'),
-(N'Lan Ý', 'Peace Lily', 120000, N'Thanh khiết', 'lany.png', 'Active', 15.0, 5.0, 1100, '2026-01-07', N'100.000đ - 180.000đ', 0, N'Ít sáng', 1, 2, N'Vừa'),
-(N'Hạnh Phúc', 'Radermachera', 450000, N'Bình an', 'hanhphuc.png', 'Active', 15.0, 4.7, 750, '2026-01-08', N'400.000đ - 600.000đ', 1, N'Ánh sáng gián tiếp sáng', 1, 2, N'Lớn'),
-(N'Xương Rồng', 'Cactus', 75000, N'Mạnh mẽ', 'xuongrong.png', 'Active', 10.0, 4.5, 300, '2026-01-09', N'50.000đ - 100.000đ', 1, N'Ánh sáng gián tiếp sáng', 0, 1, N'Nhỏ'),
-(N'Ngọc Ngân', 'Aglaonema', 140000, N'Tình yêu', 'ngocngan.png', 'Active', 12.0, 4.8, 600, '2026-01-10', N'120.000đ - 200.000đ', 0, N'Sáng vừa', 1, 2, N'Nhỏ');
+(N'Kim Tiền', 'Zamioculcas', 250000, N'Hút lộc', 'kimtien.png', 'ACTIVE', 18.0, 4.8, 1200, '2026-01-01', N'220.000đ - 300.000đ', 0, N'Bóng râm', 1, 1, N'Trung bình'),
+(N'Lưỡi Hổ', 'Sansevieria', 180000, N'Lọc khí đêm', 'luoiho.png', 'ACTIVE', 15.0, 4.9, 2500, '2026-01-02', N'150.000đ - 250.000đ', 0, N'Ít sáng', 1, 1, N'Nhỏ'),
+(N'Monstera', 'Deliciosa', 550000, N'Sành điệu', 'monstera.png', 'ACTIVE', 15.0, 5.0, 3450, '2026-01-03', N'500.000đ - 700.000đ', 0, N'Tán xạ', 1, 2, N'Lớn'),
+(N'Sen Đá', 'Succulent', 45000, N'Dễ thương', 'senda.png', 'ACTIVE', 10.0, 4.7, 4200, '2026-01-04', N'40.000đ - 80.000đ', 1, N'Chịu được mọi mức sáng', 0, 2, N'Mini'),
+(N'Bàng Sing', 'Ficus Lyrata', 320000, N'Hiện đại', 'bangsing.png', 'ACTIVE', 20.0, 4.6, 1800, '2026-01-05', N'300.000đ - 450.000đ', 0, N'Nắng nhẹ', 1, 3, N'Lớn'),
+(N'Trầu Bà', 'Pothos', 95000, N'Dễ sống', 'trauba.png', 'ACTIVE', 12.0, 4.8, 900, '2026-01-06', N'80.000đ - 120.000đ', 0, N'Mọi loại', 1, 1, N'Vừa'),
+(N'Lan Ý', 'Peace Lily', 120000, N'Thanh khiết', 'lany.png', 'ACTIVE', 15.0, 5.0, 1100, '2026-01-07', N'100.000đ - 180.000đ', 0, N'Ít sáng', 1, 2, N'Vừa'),
+(N'Hạnh Phúc', 'Radermachera', 450000, N'Bình an', 'hanhphuc.png', 'ACTIVE', 15.0, 4.7, 750, '2026-01-08', N'400.000đ - 600.000đ', 1, N'Ánh sáng gián tiếp sáng', 1, 2, N'Lớn'),
+(N'Xương Rồng', 'Cactus', 75000, N'Mạnh mẽ', 'xuongrong.png', 'ACTIVE', 10.0, 4.5, 300, '2026-01-09', N'50.000đ - 100.000đ', 1, N'Ánh sáng gián tiếp sáng', 0, 1, N'Nhỏ'),
+(N'Ngọc Ngân', 'Aglaonema', 140000, N'Tình yêu', 'ngocngan.png', 'ACTIVE', 12.0, 4.8, 600, '2026-01-10', N'120.000đ - 200.000đ', 0, N'Sáng vừa', 1, 2, N'Nhỏ');
 
 -- BaiViet
 INSERT INTO BaiViet (IDDanhMucNoiDung, IdUser, TieuDe, LuotXem, thoiGianDoc) VALUES  
@@ -258,29 +258,29 @@ INSERT INTO BaiViet (IDDanhMucNoiDung, IdUser, TieuDe, LuotXem, thoiGianDoc) VAL
 
 -- Link Affiliate
 INSERT INTO LinkAffiliate (IDCayCanh, NhaCungCap, GiaGoc, PhanTramHoaHong, LuotClick, TrangThai) VALUES  
-(1, 'Shopee', 230000, 15.0, 1245, 'Active'),
-(1, 'TikTok', 240000, 18.0, 850, 'Active'),
-(3, 'Shopee', 520000, 10.0, 3450, 'Active'),
-(5, 'TikTok', 300000, 20.0, 2100, 'Active'),
-(2, 'Shopee', 160000, 12.0, 1800, 'Active'),
-(7, 'Shopee', 110000, 18.0, 950, 'Active'),
-(10, 'TikTok', 130000, 12.0, 600, 'Active'),
-(4, 'Shopee', 40000, 8.0, 4200, 'Active'),
-(8, 'Shopee', 420000, 15.0, 750, 'Active'),
-(9, 'TikTok', 70000, 10.0, 300, 'Active');
+(1, 'Shopee', 230000, 15.0, 1245, 'ACTIVE'),
+(1, 'TikTok', 240000, 18.0, 850, 'ACTIVE'),
+(3, 'Shopee', 520000, 10.0, 3450, 'ACTIVE'),
+(5, 'TikTok', 300000, 20.0, 2100, 'ACTIVE'),
+(2, 'Shopee', 160000, 12.0, 1800, 'ACTIVE'),
+(7, 'Shopee', 110000, 18.0, 950, 'ACTIVE'),
+(10, 'TikTok', 130000, 12.0, 600, 'ACTIVE'),
+(4, 'Shopee', 40000, 8.0, 4200, 'ACTIVE'),
+(8, 'Shopee', 420000, 15.0, 750, 'ACTIVE'),
+(9, 'TikTok', 70000, 10.0, 300, 'ACTIVE');
 
 -- Affiliate Order
 INSERT INTO AffiliateOrder (IDLinkAffiliate, NenTang, MaCode, GiaTriDonHang, HoaHong, TrangThai, NgayDat) VALUES  
-(1, 'Shopee', 'SP101', 230000, 34500, 'Completed', '2026-04-01'),
-(3, 'Shopee', 'SP102', 520000, 52000, 'Completed', '2026-04-02'),
-(4, 'TikTok', 'TT201', 300000, 60000, 'Pending', '2026-04-05'),
-(5, 'Shopee', 'SP103', 160000, 19200, 'Completed', '2026-04-06'),
-(1, 'Shopee', 'SP104', 230000, 34500, 'Cancelled', '2026-04-07'),
-(8, 'Shopee', 'SP105', 40000, 3200, 'Completed', '2026-04-08'),
-(10, 'TikTok', 'TT202', 70000, 7000, 'Completed', '2026-04-09'),
-(3, 'Shopee', 'SP106', 520000, 52000, 'Completed', '2026-04-09'),
-(1, 'Shopee', 'SP107', 230000, 34500, 'Completed', '2026-04-10'),
-(6, 'Shopee', 'SP108', 110000, 19800, 'Completed', '2026-04-10');
+(1, 'Shopee', 'SP101', 230000, 34500, 'COMPLETED', '2026-04-01'),
+(3, 'Shopee', 'SP102', 520000, 52000, 'COMPLETED', '2026-04-02'),
+(4, 'TikTok', 'TT201', 300000, 60000, 'PENDING', '2026-04-05'),
+(5, 'Shopee', 'SP103', 160000, 19200, 'COMPLETED', '2026-04-06'),
+(1, 'Shopee', 'SP104', 230000, 34500, 'CANCELLED', '2026-04-07'),
+(8, 'Shopee', 'SP105', 40000, 3200, 'COMPLETED', '2026-04-08'),
+(10, 'TikTok', 'TT202', 70000, 7000, 'COMPLETED', '2026-04-09'),
+(3, 'Shopee', 'SP106', 520000, 52000, 'COMPLETED', '2026-04-09'),
+(1, 'Shopee', 'SP107', 230000, 34500, 'COMPLETED', '2026-04-10'),
+(6, 'Shopee', 'SP108', 110000, 19800, 'COMPLETED', '2026-04-10');
 
 -- Đánh giá
 INSERT INTO DanhGia (IDCayCanh, IDUser, NguoiDanhGia, Diem, NoiDung, NgayDang, LinkAnh) VALUES  
@@ -296,7 +296,6 @@ INSERT INTO DanhGia (IDCayCanh, IDUser, NguoiDanhGia, Diem, NoiDung, NgayDang, L
 (10, 5, N'Quang Minh', 4, N'Xanh mát văn phòng.', '2026-04-10', 'review10.jpg');
 
 -- Các bảng khác...
-INSERT INTO HuongDanChamSoc (IDCayCanh, AnhSang, CheDoNuoc) VALUES (1, N'Ít sáng', N'7 ngày/lần'), (2, N'Bóng râm', N'10 ngày/lần'), (3, N'Sáng tán xạ', N'3 ngày/lần'), (4, N'Nắng gắt', N'2 tuần/lần'), (5, N'Sáng mạnh', N'5 ngày/lần'), (6, N'Bất kỳ', N'Hàng ngày'), (7, N'Yếu', N'Luôn ẩm'), (8, N'Vừa', N'Phun sương'), (9, N'Nắng', N'Ít nước'), (10, N'Sáng', N'Phun lá');
 INSERT INTO ThongTinNoiBat (IDCayCanh, Loai, NoiDung) VALUES (1, 'Uu', N'Dễ sống'), (1, 'Nhuoc', N'Lá có độc'), (3, 'Uu', N'Đẹp sang'), (3, 'Nhuoc', N'Giá cao'), (2, 'Uu', N'Lọc khí tốt'), (4, 'Uu', N'Nhỏ gọn'), (5, 'Nhuoc', N'Khó chăm'), (7, 'Uu', N'Hoa đẹp'), (9, 'Uu', N'Không cần tưới nhiều'), (10, 'Uu', N'Xanh mát');
 INSERT INTO CauHoiThuongGap (IDCayCanh, CauHoi, CauTraLoi) VALUES (1, N'Tưới nhiều có sao không?', N'Dễ thối rễ'), (2, N'Để phòng ngủ được không?', N'Rất tốt'), (3, N'Lá có xẻ không?', N'Cây lớn mới xẻ'), (4, N'Nắng trực tiếp được không?', N'Sẽ cháy lá'), (5, N'Tại sao rụng lá?', N'Do sốc nhiệt'), (6, N'Leo tường được không?', N'Rất tốt'), (7, N'Có cần bón phân?', N'2 tháng/lần'), (8, N'Cây to bao nhiêu?', N'Đến 2 mét'), (9, N'Sống được bao lâu?', N'Vài chục năm'), (10, N'Thay chậu khi nào?', N'Khi rễ mọc ra ngoài');
 INSERT INTO KhuyenMai (TenKhuyenMai, PhanTramGiam) VALUES (N'Chào hè', 10), (N'Flash Sale', 50), (N'Black Friday', 30), (N'Mừng khai trương', 20), (N'Tết Nguyên Đán', 15), (N'Ngày của mẹ', 10), (N'8/3 Sale', 12), (N'Cuối tháng', 5), (N'Mua kèm deal sốc', 7), (N'Member Only', 25);
@@ -313,5 +312,40 @@ INSERT INTO BaiVietYeuThich VALUES (2,1), (2,2), (3,5), (5,7), (10,1);
 INSERT INTO CayCanh_KhuyenMai VALUES (1,1), (2,1), (3,3), (4,4), (5,2);
 GO
 
+
+-- Thêm dữ liệu đầy đủ cho 10 cây cảnh
+INSERT INTO HuongDanChamSoc (IDCayCanh, AnhSang, CheDoNuoc, DatVaDinhDuong, DoAnToan) 
+VALUES 
+-- 1. Kim Tiền
+(1, N'Chịu bóng tốt, tránh ánh nắng gắt trực tiếp', N'Tưới ít, khoảng 1-2 tuần/lần khi đất thật khô', N'Đất tơi xốp, thoát nước tốt', N'Nhựa cây có thể gây kích ứng nhẹ cho thú cưng'),
+
+-- 2. Lưỡi Hổ
+(2, N'Sống tốt từ bóng râm đến ánh sáng mạnh', N'Tưới rất ít, 2-3 tuần/lần', N'Đất trộn cát hoặc đá perlite giúp thoát nước nhanh', N'Có độc nhẹ, gây nôn mửa nếu chó mèo ăn phải'),
+
+-- 3. Monstera
+(3, N'Ánh sáng tán xạ, râm mát', N'Tưới khi bề mặt đất khô (khoảng 1 tuần/lần)', N'Đất giàu mùn, nên bón phân hữu cơ mỗi tháng', N'Có độc tính nhẹ đối với thú cưng'),
+
+-- 4. Sen Đá
+(4, N'Cần nhiều nắng, ánh sáng rực rỡ', N'Rất ít nước, chỉ tưới khi lá có dấu hiệu hơi nhăn', N'Đất chuyên dụng cho sen đá/xương rồng, cực kỳ thoáng khí', N'Hoàn toàn an toàn cho người và thú cưng'),
+
+-- 5. Bàng Sing
+(5, N'Ánh sáng sáng rực rỡ nhưng tránh nắng gắt ban trưa', N'Tưới đều đặn 1-2 lần/tuần, giữ ẩm nhẹ', N'Đất giàu dinh dưỡng, thoát nước tốt', N'Nhựa có độc nhẹ, không an toàn cho thú cưng'),
+
+-- 6. Trầu Bà
+(6, N'Sống tốt trong mọi điều kiện ánh sáng trong nhà', N'Ưa ẩm, tưới 1-2 lần/tuần hoặc trồng thủy sinh', N'Phù hợp với nhiều loại đất, thích hợp đất mùn', N'Chứa tinh thể canxi oxalat, gây ngứa miệng thú cưng'),
+
+-- 7. Lan Ý
+(7, N'Ánh sáng yếu đến tán xạ (phù hợp văn phòng)', N'Ưa nước, tưới ngay khi thấy lá hơi rũ xuống', N'Đất giữ ẩm tốt nhưng không ngập úng', N'Có độc nhẹ nếu nhai phải lá'),
+
+-- 8. Hạnh Phúc
+(8, N'Ánh sáng gián tiếp sáng sủa', N'Giữ ẩm đất thường xuyên, không để đất khô nứt', N'Đất nhiều mùn, bón phân NPK định kỳ 3 tháng/lần', N'An toàn tuyệt đối cho chó, mèo và trẻ nhỏ'),
+
+-- 9. Xương Rồng
+(9, N'Nắng trực tiếp mạnh', N'Cực ít (3-4 tuần/lần), mùa đông có thể ngừng tưới', N'Đất cát, nhiều sỏi đá, nghèo dinh dưỡng', N'An toàn, tuy nhiên cần chú ý gai nhọn gây xước'),
+
+-- 10. Ngọc Ngân
+(10, N'Ánh sáng tán xạ nhẹ nhàng', N'Tưới 1-2 lần/tuần, có thể phun sương lên lá', N'Đất thoáng khí, nên bổ sung phân bón lá', N'Có độc nhẹ cho chó mèo, nên để trên cao');
+GO
 -- Kiểm tra kết quả
 SELECT * FROM CayCanh;
+SELECT * FROM HuongDanChamSoc;

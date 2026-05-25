@@ -10,64 +10,66 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "cay_canh")
+@Table(name = "CayCanh")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CayCanh {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "ten_cay", nullable = false)
+    @Column(name = "tenCay", nullable = false)
     private String tenCay;
 
-    @Column(name = "tentienganh")
+    @Column(name = "tenTiengAnh")
     private String tenTiengAnh;
 
-    @Column(name = "gia", precision = 18, scale = 2)
+    @Column(name = "Gia", precision = 18, scale = 2)
     private BigDecimal gia;
 
-    @Column(name = "mo_ta", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "moTa", columnDefinition = "NVARCHAR(MAX)")
     private String moTa;
 
-    @Column(name = "anh", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "Anh", columnDefinition = "NVARCHAR(MAX)")
     private String anh;
 
-    @Column(name = "trangthai")
     @Enumerated(EnumType.STRING)
+    @Column(name = "TrangThai")
     private Status trangThai;
 
-    @Column(name = "muc_tra_hoa_hong", precision = 5, scale = 2)
+    @Column(name = "MucTraHoaHong", precision = 5, scale = 2)
     private BigDecimal mucTraHoaHong;
 
-    @Column(name = "diemdanhgia")
+    @Column(name = "DiemDanhGia")
     private Float diemDanhGia;
 
-    @Column(name = "luot_xem", columnDefinition = "INT DEFAULT 0")
+    @Column(name = "LuotXem")
     private Integer luotXem;
 
     @CreationTimestamp
-    @Column(name = "ngay_tao", nullable = false, updatable = false)
+    @Column(name = "NgayTao", nullable = false, updatable = false)
     private LocalDateTime ngayTao;
 
-    @Column(name = "giathamkhao")
+    @Column(name = "GiaThamKhao")
     private String giaThamKhao;
 
-    @Column(name = "antoanchothucung")
+    @Column(name = "AnToanChoThuCung")
     private Boolean anToanChoThuCung;
 
-    @Column(name = "anhsangcanthiet")
+    @Column(name = "AnhSangCanThiet")
     private String anhSangCanThiet;
 
-    @Column(name = "lockhongkhi")
+    @Column(name = "LocKhongKhi")
     private Boolean locKhongKhi;
 
-    @Column(name = "dokhochamsoc")
+    @Column(name = "DoKhoChamSoc")
     private Integer doKhoChamSoc;
 
-    @Column(name = "kichthuoc")
+    @Column(name = "KichThuoc")
     private String kichThuoc;
 
     @OneToMany(mappedBy = "cayCanh", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -87,34 +89,33 @@ public class CayCanh {
 
     @ManyToMany
     @JoinTable(
-            name = "danh_muc_cay_canh",
-            joinColumns = @JoinColumn(name = "idcaycanh"),
-            inverseJoinColumns = @JoinColumn(name = "iddanhmuccaycanh")
+            name = "DanhMuc_CayCanh",
+            joinColumns = @JoinColumn(name = "IDCayCanh"),
+            inverseJoinColumns = @JoinColumn(name = "IDDanhMucCayCanh")
     )
     private List<DanhMucCayCanh> danhMucs;
 
     @ManyToMany
     @JoinTable(
-            name = "cay_canh_khuyen_mai",
-            joinColumns = @JoinColumn(name = "idcaycanh"),
-            inverseJoinColumns = @JoinColumn(name = "idkhuyenmai")
+            name = "CayCanh_KhuyenMai",
+            joinColumns = @JoinColumn(name = "IDCayCanh"),
+            inverseJoinColumns = @JoinColumn(name = "IDKhuyenMai")
     )
     private List<KhuyenMai> khuyenMais;
 
     @ManyToMany
     @JoinTable(
-            name = "bai_viet_cay_canh",
-            joinColumns = @JoinColumn(name = "idcaycanh"),
-            inverseJoinColumns = @JoinColumn(name = "idbaiviet")
+            name = "BaiViet_CayCanh",
+            joinColumns = @JoinColumn(name = "IDCayCanh"),
+            inverseJoinColumns = @JoinColumn(name = "IDBaiViet")
     )
     private List<BaiViet> baiViets;
 
     @ManyToMany
     @JoinTable(
-            name = "nguoi_dung_yeu_thich",
-            joinColumns = @JoinColumn(name = "idcaycanh"),
-            inverseJoinColumns = @JoinColumn(name = "idnguoidung")
+            name = "NguoiDungYeuThich",
+            joinColumns = @JoinColumn(name = "IDCayCanh"),
+            inverseJoinColumns = @JoinColumn(name = "IDNguoiDung")
     )
     private List<PlantsUser> yeThichUsers;
 }
-

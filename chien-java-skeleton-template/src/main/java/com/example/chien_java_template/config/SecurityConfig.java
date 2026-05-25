@@ -43,6 +43,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/auth/google-login").permitAll()
                         .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/api/v1/danh-muc-cay-canh/**").permitAll()// Khanh thêm
+                        .requestMatchers("/api/v1/cay-canh/**").permitAll()// Khanh thêm
+                        .requestMatchers("/api/v1/huong-dan-cham-soc/**").permitAll()// Khanh thêm
+                        .requestMatchers("/api/v1/danh-gia/**").permitAll()// Khanh thêm
                         .anyRequest().authenticated());
         http.oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwtConfigurer -> jwtConfigurer

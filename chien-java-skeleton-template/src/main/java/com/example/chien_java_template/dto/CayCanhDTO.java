@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List; // Thêm import này
 
 @Data
 @NoArgsConstructor
@@ -28,5 +29,7 @@ public class CayCanhDTO {
     private Boolean locKhongKhi;
     private Integer doKhoChamSoc;
     private String kichThuoc;
-}
 
+    // ĐÂY LÀ PHẦN THÊM MỚI
+    private List<String> danhMucList;
+}

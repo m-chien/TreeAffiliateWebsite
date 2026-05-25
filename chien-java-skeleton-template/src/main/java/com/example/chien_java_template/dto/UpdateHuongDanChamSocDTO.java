@@ -7,9 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UpdateHuongDanChamSocDTO {
+    private Integer cayCanhId;
     private String anhSang;
     private String cheDoNuoc;
     private String datVaDinhDuong;
     private String doAnToan;
 }
-

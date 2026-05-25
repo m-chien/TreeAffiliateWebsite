@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Star,
   CheckCircle,
@@ -11,56 +12,257 @@ import {
   Wind,
   Leaf,
   Sprout,
+  ArrowLeft,
+  Share2,
+  TrendingUp,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import axios from "axios";
 import styles from "./PlantReviewPage.module.css";
+import EmailSubscriptionModal from "../components/EmailSubscriptionModal";
 
+// ==================== INTERFACES ====================
+interface PlantData {
+  id: number;
+  tenCay: string;
+  tenTiengAnh: string;
+  scientificName?: string;
+  diemDanhGia: number;
+  luotXem: number;
+  anh: string;
+  moTa: string;
+  gia: number;
+  giaThamKhao?: string;
+  anhSangCanThiet: string;
+  locKhongKhi: boolean;
+  doKhoChamSoc: number;
+  kichThuoc: string;
+  anToanChoThuCung: boolean;
+  mucTraHoaHong: number;
+  trangThai: string;
+}
+
+interface CareGuideData {
+  id: number;
+  idCayCanh: number;
+  anhSang: string;
+  cheDoNuoc: string;
+  datVaDinhDuong: string;
+  doAnToan: string;
+}
+
+interface Vendor {
+  name: string;
+  price: string;
+  link: string;
+}
+
+// Cập nhật interface Testimonial để khớp với API DanhGiaDTO
+interface Testimonial {
+  id: number;
+  idCayCanh: number;
+  idUser: number;
+  nguoiDanhGia: string;
+  diem: number;
+  noiDung: string;
+  ngayDang: string; // Có thể format sau nếu cần
+  linkAnh?: string;
+}
+
+// ==================== COMPONENT ====================
 const PlantReviewPage = () => {
-  const plantData = {
-    name: "Cây Monstera Deliciosa",
-    scientificName: "Monstera deliciosa",
-    rating: 4.8,
-    reviews: 128,
-    image: "/images/main-plant.png",
-    pros: [
-      "Vẻ đẹp nhiệt đới sang trọng, tạo điểm nhấn mạnh mẽ.",
-      "Có khả năng lọc không khí cực kỳ hiệu quả.",
-      "Ít sâu bệnh và dễ thích nghi với môi trường trong nhà.",
-      "Mang ý nghĩa phong thủy tốt về sự trường thọ.",
-    ],
-    cons: [
-      "Có độc nhẹ nếu thú cưng hoặc trẻ em nuốt phải.",
-      "Cần không gian rộng để tán lá phát triển.",
-      "Lá dễ bám bụi, cần lau chùi thường xuyên.",
-    ],
-    vendors: [
-      { name: "Shopee Mall", price: "350.000đ - 750.000đ", link: "#" },
-      { name: "Tiệm Cây Xanh A", price: "400.000đ", link: "#" },
-      { name: "Vườn Kiểng Tropical", price: "380.000đ", link: "#" },
-    ],
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  // States chính
+  const [plantData, setPlantData] = useState<PlantData | null>(null);
+  const [careGuide, setCareGuide] = useState<CareGuideData | null>(null);
+  const [reviews, setReviews] = useState<Testimonial[]>([]); // State lưu danh sách đánh giá
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Lấy dữ liệu từ API - chỉ chạy 1 lần khi component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // Gọi đồng thời 3 API: Thông tin cây, Hướng dẫn chăm sóc, và Đánh giá
+        const [plantResponse, careGuideResponse, reviewsResponse] =
+          await Promise.allSettled([
+            axios.get(`http://localhost:8080/api/v1/cay-canh/${id}`),
+            axios.get(
+              `http://localhost:8080/api/v1/huong-dan-cham-soc/cay-canh/${id}`,
+            ),
+            axios.get(`http://localhost:8080/api/v1/danh-gia/cay-canh/${id}`), // API lấy đánh giá
+          ]);
+
+        // Xử lý dữ liệu Cây Cảnh
+        if (
+          plantResponse.status === "fulfilled" &&
+          plantResponse.value.data?.result
+        ) {
+          const data = plantResponse.value.data.result;
+          setPlantData({
+            ...data,
+            scientificName: data.tenTiengAnh || "Orchidaceae",
+          });
+        } else {
+          setError("Không tìm thấy thông tin cây cảnh");
+          setIsLoading(false);
+          return;
+        }
+
+        // Xử lý dữ liệu Hướng Dẫn Chăm Sóc
+        if (
+          careGuideResponse.status === "fulfilled" &&
+          careGuideResponse.value.data?.result
+        ) {
+          setCareGuide(careGuideResponse.value.data.result);
+        }
+
+        // Xử lý dữ liệu Đánh Giá (API trả về đối tượng Page nên data nằm trong result.content)
+        if (
+          reviewsResponse.status === "fulfilled" &&
+          reviewsResponse.value.data?.result?.content
+        ) {
+          setReviews(reviewsResponse.value.data.result.content);
+        }
+      } catch (err) {
+        console.error("Lỗi khi tải dữ liệu:", err);
+        setError("Không thể tải thông tin. Vui lòng thử lại.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+  // Dữ liệu tĩnh (Pros/Cons/Vendors) giữ nguyên
+  const pros = [
+    "Vẻ đẹp nhiệt đới sang trọng, tạo điểm nhấn mạnh mẽ.",
+    "Có khả năng lọc không khí cực kỳ hiệu quả.",
+    "Ít sâu bệnh và dễ thích nghi với môi trường trong nhà.",
+    "Mang ý nghĩa phong thủy tốt về sự trường thọ.",
+  ];
+
+  const cons = [
+    "Có độc nhẹ nếu thú cưng hoặc trẻ em nuốt phải.",
+    "Cần không gian rộng để tán lá phát triển.",
+    "Lá dễ bám bụi, cần lau chùi thường xuyên.",
+  ];
+
+  const vendors: Vendor[] = [
+    { name: "Shopee Mall", price: "350.000đ - 750.000đ", link: "#" },
+    { name: "Tiệm Cây Xanh A", price: "400.000đ", link: "#" },
+    { name: "Vườn Kiểng Tropical", price: "380.000đ", link: "#" },
+  ];
+
+  // Helper function để lấy chữ cái đầu của tên làm Avatar
+  const getInitials = (name: string) => {
+    if (!name) return "U"; // Mặc định là 'U' (User) nếu không có tên
+    const words = name.trim().split(" ");
+    if (words.length >= 2) {
+      return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
   };
+
+  // Handlers
+  const handleFavoriteClick = () => setIsFavorite(!isFavorite);
+  const handleShareClick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: plantData?.tenCay,
+        text: `Xem review về ${plantData?.tenCay}`,
+        url: window.location.href,
+      });
+    }
+  };
+  const handleSubscribeClick = () => setIsModalOpen(true);
+  const handleBackClick = () => navigate(-1);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <Leaf size={40} className={styles.loadingIcon} />
+        </motion.div>
+        <p>Đang tải thông tin cây cảnh...</p>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !plantData) {
+    return (
+      <div className={styles.errorContainer}>
+        <AlertTriangle size={48} />
+        <p>{error || "Không tìm thấy thông tin cây cảnh"}</p>
+        <button onClick={handleBackClick} className={styles.backBtn}>
+          <ArrowLeft size={18} /> Quay lại
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.reviewPage}>
+      {/* Decorative background */}
       <div className="global-artistic-background">
-        <Leaf className="decor-leaf leaf-1" size={120} />
-        <Leaf className="decor-leaf leaf-2" size={80} />
-        <Sprout className="decor-leaf leaf-3" size={100} />
-        <Leaf className="decor-leaf leaf-4" size={60} />
-        <Leaf className="decor-leaf leaf-5" size={110} />
-        <Sprout className="decor-leaf leaf-6" size={70} />
-        <Leaf className="decor-leaf leaf-7" size={90} />
-        <Leaf className="decor-leaf leaf-8" size={50} />
-        <Leaf className="decor-leaf leaf-9" size={130} />
-        <Sprout className="decor-leaf leaf-10" size={85} />
-        <Leaf className="decor-leaf leaf-11" size={95} />
-        <Leaf className="decor-leaf leaf-12" size={75} />
-        <Sprout className="decor-leaf leaf-13" size={105} />
-        <Leaf className="decor-leaf leaf-14" size={55} />
-        <Leaf className="decor-leaf leaf-15" size={115} />
+        {Array.from({ length: 15 }).map((_, i) => (
+          <React.Fragment key={i}>
+            {i % 2 === 0 ? (
+              <Leaf
+                className={`decor-leaf leaf-${i + 1}`}
+                size={Math.random() * 80 + 50}
+              />
+            ) : (
+              <Sprout
+                className={`decor-leaf leaf-${i + 1}`}
+                size={Math.random() * 80 + 50}
+              />
+            )}
+          </React.Fragment>
+        ))}
       </div>
+
+      {/* Navigation Bar */}
+      <nav className={styles.navbar}>
+        <button onClick={handleBackClick} className={styles.backNavBtn}>
+          <ArrowLeft size={20} />
+        </button>
+        <h1 className={styles.navTitle}>{plantData.tenCay}</h1>
+        <div className={styles.navActions}>
+          <button
+            onClick={handleFavoriteClick}
+            className={`${styles.navActionBtn} ${isFavorite ? styles.active : ""}`}
+            title="Thêm vào yêu thích"
+          >
+            <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
+          </button>
+          <button
+            onClick={handleShareClick}
+            className={styles.navActionBtn}
+            title="Chia sẻ"
+          >
+            <Share2 size={20} />
+          </button>
+        </div>
+      </nav>
+
       <div className={styles.container}>
-        {/* Hero Section */}
+        {/* ==================== HERO SECTION ==================== */}
         <section className={styles.hero}>
           <motion.div
             className={styles.heroImage}
@@ -68,41 +270,79 @@ const PlantReviewPage = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <img src={plantData.image} alt={plantData.name} />
+            <img src={`/images/${plantData.anh}`} alt={plantData.tenCay} />
+            {plantData.trangThai !== "ACTIVE" && (
+              <span className={styles.outOfStockBadge}>Tạm hết hàng</span>
+            )}
           </motion.div>
-          <div className={styles.heroContent}>
+
+          <motion.div
+            className={styles.heroContent}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             <div className={styles.expertBadge}>
               <ShieldCheck size={18} /> Đánh giá bởi Chuyên gia
             </div>
-            <h1 className={styles.title}>{plantData.name}</h1>
+
+            <h1 className={styles.title}>{plantData.tenCay}</h1>
             <span className={styles.scientificName}>
-              {plantData.scientificName}
+              Tên khoa học: {plantData.scientificName}
             </span>
+
             <div className={styles.ratingBox}>
               <div className={styles.stars}>
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     size={20}
-                    fill={i < 4 ? "currentColor" : "none"}
+                    fill={
+                      i < Math.floor(plantData.diemDanhGia)
+                        ? "currentColor"
+                        : "none"
+                    }
                   />
                 ))}
               </div>
-              <span className={styles.ratingValue}>{plantData.rating}/5</span>
+              <span className={styles.ratingValue}>
+                {plantData.diemDanhGia?.toFixed(1) || "0.0"}/5
+              </span>
               <span className={styles.reviewCount}>
-                ({plantData.reviews} nhận xét)
+                ({plantData.luotXem || 0} lượt xem)
               </span>
             </div>
+
+            <div className={styles.priceInfo}>
+              <div className={styles.priceSection}>
+                <span className={styles.label}>Giá từ:</span>
+                <span className={styles.price}>
+                  {(plantData.gia || 0).toLocaleString("vi-VN")}₫
+                </span>
+              </div>
+              {plantData.giaThamKhao && (
+                <div className={styles.referencePrice}>
+                  Giá tham khảo: {plantData.giaThamKhao}
+                </div>
+              )}
+            </div>
+
             <p className={styles.shortIntro}>
-              Monstera Deliciosa, hay còn gọi là Trầu Bà Lá Xẻ, là "ông hoàng"
-              của thế giới cây cảnh nội thất. Với những chiếc lá xẻ độc đáo và
-              kích thước ấn tượng, nó mang lại hơi thở nhiệt đới sang trọng cho
-              bất kỳ không gian nào.
+              Mô tả:{" "}
+              {plantData.moTa ||
+                " Cây cảnh nội thất tuyệt vời với khả năng lọc không khí vượt trội. Phù hợp cho không gian sống hiện đại và mang lại vẻ đẹp tự nhiên cho nhà bạn."}
             </p>
-          </div>
+
+            <button
+              className={styles.ctaPrimary}
+              onClick={handleSubscribeClick}
+            >
+              <Heart size={18} /> Thêm vào yêu thích & Nhận tin tức
+            </button>
+          </motion.div>
         </section>
 
-        {/* Pros & Cons Section */}
+        {/* ==================== PROS & CONS SECTION ==================== */}
         <motion.section
           className={styles.prosConsSection}
           initial={{ opacity: 0, y: 30 }}
@@ -116,7 +356,7 @@ const PlantReviewPage = () => {
                 <CheckCircle className={styles.checkIcon} /> Ưu Điểm
               </h3>
               <ul className={styles.pList}>
-                {plantData.pros.map((p, i) => (
+                {pros.map((p, i) => (
                   <li key={i} className={styles.pItem}>
                     <CheckCircle size={18} className={styles.checkIcon} />
                     <span>{p}</span>
@@ -124,12 +364,13 @@ const PlantReviewPage = () => {
                 ))}
               </ul>
             </div>
+
             <div className={styles.consCol}>
               <h3>
                 <AlertTriangle className={styles.warnIcon} /> Nhược Điểm
               </h3>
               <ul className={styles.pList}>
-                {plantData.cons.map((c, i) => (
+                {cons.map((c, i) => (
                   <li key={i} className={styles.pItem}>
                     <AlertTriangle size={18} className={styles.warnIcon} />
                     <span>{c}</span>
@@ -140,7 +381,109 @@ const PlantReviewPage = () => {
           </div>
         </motion.section>
 
-        {/* Affiliate CTA Box */}
+        {/* ==================== CARE GUIDE SECTION ==================== */}
+        <motion.section
+          className={styles.careGuideSection}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <article className={styles.careContent}>
+            <h2>Hướng Dẫn Chăm Sóc Chi Tiết</h2>
+
+            {/* Ánh sáng */}
+            <div className={styles.careSection}>
+              <h4>
+                <Sun size={20} style={{ marginRight: "8px" }} /> Ánh sáng
+              </h4>
+              <p>
+                {careGuide?.anhSang ||
+                  plantData.anhSangCanThiet ||
+                  "Đang cập nhật thông tin ánh sáng."}
+              </p>
+            </div>
+
+            {/* Nước */}
+            <div className={styles.careSection}>
+              <h4>
+                <Droplets size={20} style={{ marginRight: "8px" }} /> Chế độ
+                nước
+              </h4>
+              <p>
+                {careGuide?.cheDoNuoc || "Đang cập nhật thông tin chế độ nước."}
+              </p>
+            </div>
+
+            {/* Đất và Dinh Dưỡng */}
+            <div className={styles.careSection}>
+              <h4>
+                <Leaf size={20} style={{ marginRight: "8px" }} /> Đất và Dinh
+                dưỡng
+              </h4>
+              <p>
+                {careGuide?.datVaDinhDuong ||
+                  "Đang cập nhật thông tin đất trồng và dinh dưỡng."}
+              </p>
+            </div>
+
+            {/* Độ khó chăm sóc */}
+            <div className={styles.careSection}>
+              <h4>
+                <Wind size={20} style={{ marginRight: "8px" }} /> Độ khó chăm
+                sóc
+              </h4>
+              <div className={styles.difficultyMeter}>
+                <div className={styles.difficultyLabel}>
+                  Mức độ:{" "}
+                  {["Rất dễ", "Dễ", "Trung bình", "Khó", "Rất khó"][
+                    plantData.doKhoChamSoc - 1
+                  ] || "Không xác định"}
+                </div>
+                <div className={styles.difficultyBar}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={`${styles.difficultySegment} ${i < plantData.doKhoChamSoc ? styles.filled : ""}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* An toàn */}
+            <div className={styles.careSection}>
+              <h4>
+                <Heart size={20} style={{ marginRight: "8px" }} /> Độ an toàn
+              </h4>
+              <div className={styles.safetyBox}>
+                {careGuide?.doAnToan ? (
+                  <p>{careGuide.doAnToan}</p>
+                ) : plantData.anToanChoThuCung ? (
+                  <p style={{ color: "#27ae60" }}>
+                    ✓ An toàn cho thú cưng và trẻ em
+                  </p>
+                ) : (
+                  <p style={{ color: "#c0392b" }}>
+                    ⚠ Có độc nhẹ nếu thú cưng hoặc trẻ em nuốt phải.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Kích thước */}
+            <div className={styles.careSection}>
+              <h4>
+                <Sprout size={20} style={{ marginRight: "8px" }} /> Kích thước
+              </h4>
+              <p>
+                Kích thước cây: <strong>{plantData.kichThuoc}</strong>
+              </p>
+            </div>
+          </article>
+        </motion.section>
+
+        {/* ==================== AFFILIATE SECTION ==================== */}
         <motion.section
           className={styles.affiliateSection}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -149,84 +492,42 @@ const PlantReviewPage = () => {
           transition={{ duration: 0.6 }}
         >
           <div className={styles.affiliateCard}>
-            <h2>Mua Monstera Uy Tín Ở Đâu?</h2>
+            <div className={styles.affiliateHeader}>
+              <TrendingUp size={24} />
+              <h2>Mua {plantData.tenCay} Uy Tín Ở Đâu?</h2>
+            </div>
+
             <div className={styles.vendorList}>
-              {plantData.vendors.map((v, i) => (
-                <div key={i} className={styles.vendorItem}>
+              {vendors.map((v, i) => (
+                <motion.div
+                  key={i}
+                  className={styles.vendorItem}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                >
                   <div className={styles.vendorInfo}>
                     <span className={styles.vendorName}>{v.name}</span>
                     <span className={styles.vendorPrice}>{v.price}</span>
                   </div>
                   <a href={v.link} className={styles.ctaBtn}>
-                    Đến nơi bán{" "}
+                    Xem chi tiết{" "}
                     <ExternalLink size={16} style={{ marginLeft: "8px" }} />
                   </a>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </motion.section>
 
-        {/* Detailed Review Content */}
-        <motion.section
-          className={styles.detailedReview}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-        >
-          <article className={styles.reviewContent}>
-            <h2>Hướng Dẫn Chăm Sóc Chi Tiết</h2>
-
-            <h4>
-              <Sun size={20} style={{ marginRight: "8px" }} /> Ánh sáng
-            </h4>
-            <p>
-              Monstera ưa ánh sáng tán xạ, tránh ánh nắng trực tiếp gay gắt vì
-              có thể làm cháy lá. Vị trí lý tưởng là gần cửa sổ hướng Đông hoặc
-              Tây nơi có rèm che mỏng. Nếu thiếu sáng, cây sẽ chậm lớn và các lá
-              mới sẽ ít xẻ hơn.
-            </p>
-
-            <h4>
-              <Droplets size={20} style={{ marginRight: "8px" }} /> Chế độ nước
-            </h4>
-            <p>
-              Tưới nước khi lớp đất mặt (khoảng 2-3cm) đã khô. Tránh để cây bị
-              úng nước vì dễ gây thối rễ. Vào mùa hè, bạn có thể phun sương lên
-              lá để tăng độ ẩm, giúp lá bóng mượt hơn.
-            </p>
-
-            <h4>
-              <Wind size={20} style={{ marginRight: "8px" }} /> Đất và Dinh
-              dưỡng
-            </h4>
-            <p>
-              Sử dụng hỗn hợp đất tơi xốp, thoát nước tốt (thường trộn thêm đá
-              perlite hoặc vỏ thông). Bón phân tan chậm hoặc phân hữu cơ định kỳ
-              1 lần/tháng trong mùa sinh trưởng để cây phát triển khỏe mạnh.
-            </p>
-
-            <h4>
-              <Heart size={20} style={{ marginRight: "8px" }} /> Độ an toàn
-            </h4>
-            <p style={{ color: "#C2714F", fontWeight: "bold" }}>
-              Lưu ý: Monstera chứa tinh thể canxi oxalat, có thể gây kích ứng
-              miệng và tiêu hóa nếu nuốt phải. Hãy đặt cây ở vị trí xa tầm tay
-              trẻ nhỏ và thú cưng (chó, mèo).
-            </p>
-          </article>
-        </motion.section>
-      </div>
-
-      {/* Testimonials Section - Moved OUTSIDE container for clean full-width */}
-      <section className={styles.testimonialsSection}>
-        <div className={styles.container}>
+        {/* ==================== TESTIMONIALS SECTION ==================== */}
+        <section className={styles.testimonialsSection}>
           <motion.h2
             style={{
               textAlign: "center",
               marginBottom: "3rem",
-              fontFamily: "Inter, serif",
+              fontFamily: "Poppins, serif",
+              fontSize: "2rem",
             }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -234,58 +535,74 @@ const PlantReviewPage = () => {
           >
             Khách Hàng Nói Gì?
           </motion.h2>
+
           <div className={styles.testimonialsGrid}>
-            <motion.div
-              className={styles.testimonialCard}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className={styles.tHeader}>
-                <div className={styles.avatar}>TN</div>
-                <div>
-                  <span className={styles.tName}>Thanh Nga</span>
-                  <div className={styles.stars}>
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} fill="white" />
-                    ))}
+            {reviews.length > 0 ? (
+              reviews.map((testimonial, i) => (
+                <motion.div
+                  key={testimonial.id || i}
+                  className={styles.testimonialCard}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }} // Chỉnh nhẹ animation để xen kẽ
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className={styles.tHeader}>
+                    {/* Xử lý hiển thị Avatar: Dùng ảnh nếu có, không thì lấy chữ cái đầu */}
+                    {testimonial.linkAnh ? (
+                      <div className={styles.avatarImageWrapper}>
+                        <img
+                          src={testimonial.linkAnh}
+                          alt={testimonial.nguoiDanhGia}
+                          className={styles.avatarImg}
+                        />
+                      </div>
+                    ) : (
+                      <div className={styles.avatar}>
+                        {getInitials(testimonial.nguoiDanhGia)}
+                      </div>
+                    )}
+
+                    <div>
+                      <span className={styles.tName}>
+                        {testimonial.nguoiDanhGia}
+                      </span>
+                      <div className={styles.stars}>
+                        {/* Render số sao tương ứng với 'diem' */}
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            size={14}
+                            fill={i < testimonial.diem ? "#ffc107" : "none"}
+                            color="#ffc107"
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <p className={styles.tQuote}>
-                "Cây mình mua về rất khỏe, lá xẻ rất đẹp. Đặt ở góc phòng khách
-                làm không gian sang hẳn lên. Cảm ơn bài review rất chi tiết đã
-                giúp mình tự tin hơn khi chăm cây!"
+                  <p className={styles.tQuote}>{testimonial.noiDung}</p>
+                </motion.div>
+              ))
+            ) : (
+              <p
+                style={{
+                  textAlign: "center",
+                  width: "100%",
+                  gridColumn: "1 / -1",
+                }}
+              >
+                Hiện chưa có đánh giá nào cho cây này. Hãy là người đầu tiên
+                chia sẻ cảm nhận!
               </p>
-            </motion.div>
-            <motion.div
-              className={styles.testimonialCard}
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className={styles.tHeader}>
-                <div className={styles.avatar}>HQ</div>
-                <div>
-                  <span className={styles.tName}>Hoàng Quân</span>
-                  <div className={styles.stars}>
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} fill="white" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <p className={styles.tQuote}>
-                "Thông tin về ánh sáng và nước rất hữu ích. Mình từng làm chết
-                một cây do tưới quá nhiều, giờ làm theo hướng dẫn thấy cây phát
-                triển tốt lắm."
-              </p>
-            </motion.div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+
+      <EmailSubscriptionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

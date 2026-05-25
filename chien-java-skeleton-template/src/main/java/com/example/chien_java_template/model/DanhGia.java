@@ -7,38 +7,47 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "danh_gia")
+@Table(name = "DanhGia")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DanhGia {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "idcaycanh", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cayCanhId", nullable = false)
     private CayCanh cayCanh;
 
-    @ManyToOne
-    @JoinColumn(name = "iduser", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
     private PlantsUser plantsUser;
 
-    @Column(name = "nguoidanhgia")
+    @Column(name = "NguoiDanhGia", columnDefinition = "NVARCHAR(255)")
     private String nguoiDanhGia;
 
-    @Column(name = "diem")
+    @Column(name = "Diem")
     private Integer diem;
 
-    @Column(name = "noidung", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "NoiDung", columnDefinition = "NVARCHAR(MAX)")
     private String noiDung;
 
     @CreationTimestamp
-    @Column(name = "ngaydang", nullable = false, updatable = false)
+    @Column(name = "NgayDang", nullable = false, updatable = false)
     private LocalDateTime ngayDang;
 
-    @Column(name = "linkanh", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "LinkAnh", columnDefinition = "NVARCHAR(MAX)")
     private String linkAnh;
-}
 
+    public Integer getCayCanhId() {
+        return cayCanh != null ? cayCanh.getId() : null;
+    }
+
+    public Integer getUserId() {
+        return plantsUser != null ? plantsUser.getId() : null;
+    }
+}
