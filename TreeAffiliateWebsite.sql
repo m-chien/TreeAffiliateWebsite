@@ -257,17 +257,28 @@ INSERT INTO BaiViet (IDDanhMucNoiDung, IdUser, TieuDe, LuotXem, thoiGianDoc) VAL
 (10, 1, N'Sự kiện triển lãm cây Đà Nẵng', 500, 3);
 
 -- Link Affiliate
-INSERT INTO LinkAffiliate (IDCayCanh, NhaCungCap, GiaGoc, PhanTramHoaHong, LuotClick, TrangThai) VALUES  
-(1, 'Shopee', 230000, 15.0, 1245, 'ACTIVE'),
-(1, 'TikTok', 240000, 18.0, 850, 'ACTIVE'),
-(3, 'Shopee', 520000, 10.0, 3450, 'ACTIVE'),
-(5, 'TikTok', 300000, 20.0, 2100, 'ACTIVE'),
-(2, 'Shopee', 160000, 12.0, 1800, 'ACTIVE'),
-(7, 'Shopee', 110000, 18.0, 950, 'ACTIVE'),
-(10, 'TikTok', 130000, 12.0, 600, 'ACTIVE'),
-(4, 'Shopee', 40000, 8.0, 4200, 'ACTIVE'),
-(8, 'Shopee', 420000, 15.0, 750, 'ACTIVE'),
-(9, 'TikTok', 70000, 10.0, 300, 'ACTIVE');
+INSERT INTO LinkAffiliate 
+(IDCayCanh, NhaCungCap, LinkAffiliate, linkAnh, GiaGoc, moTa, PhanTramHoaHong, LuotClick, TrangThai) 
+VALUES  
+(1, 'Shopee', 'https://shopee.vn/kim-tien', 'kimtien-affiliate.jpg', 230000, N'Cây Kim Tiền phong thủy để bàn', 15.0, 1245, 'ACTIVE'),
+
+(1, 'TikTok', 'https://tiktok.com/kim-tien', 'kimtien-tiktok.jpg', 240000, N'Cây Kim Tiền chậu sứ cao cấp', 18.0, 850, 'ACTIVE'),
+
+(3, 'Shopee', 'https://shopee.vn/monstera', 'monstera-affiliate.jpg', 520000, N'Monstera lá xẻ nhập khẩu', 10.0, 3450, 'ACTIVE'),
+
+(5, 'TikTok', 'https://tiktok.com/bang-sing', 'bangsing-affiliate.jpg', 300000, N'Bàng Sing decor phòng khách', 20.0, 2100, 'ACTIVE'),
+
+(2, 'Shopee', 'https://shopee.vn/luoi-ho', 'luoiho-affiliate.jpg', 160000, N'Lưỡi Hổ lọc không khí mini', 12.0, 1800, 'ACTIVE'),
+
+(7, 'Shopee', 'https://shopee.vn/lan-y', 'lany-affiliate.jpg', 110000, N'Lan Ý để văn phòng', 18.0, 950, 'ACTIVE'),
+
+(10, 'TikTok', 'https://tiktok.com/ngoc-ngan', 'ngocngan-affiliate.jpg', 130000, N'Ngọc Ngân phong thủy', 12.0, 600, 'ACTIVE'),
+
+(4, 'Shopee', 'https://shopee.vn/sen-da', 'senda-affiliate.jpg', 40000, N'Sen đá mini nhiều màu', 8.0, 4200, 'ACTIVE'),
+
+(8, 'Shopee', 'https://shopee.vn/hanh-phuc', 'hanhphuc-affiliate.jpg', 420000, N'Cây Hạnh Phúc chậu lớn', 15.0, 750, 'ACTIVE'),
+
+(9, 'TikTok', 'https://tiktok.com/xuong-rong', 'xuongrong-affiliate.jpg', 70000, N'Xương Rồng mini để bàn', 10.0, 300, 'ACTIVE');
 
 -- Affiliate Order
 INSERT INTO AffiliateOrder (IDLinkAffiliate, NenTang, MaCode, GiaTriDonHang, HoaHong, TrangThai, NgayDat) VALUES  
@@ -349,3 +360,5 @@ GO
 -- Kiểm tra kết quả
 SELECT * FROM CayCanh;
 SELECT * FROM HuongDanChamSoc;
+SELECT * FROM LinkAffiliate;
+SELECT * FROM AffiliateOrder;

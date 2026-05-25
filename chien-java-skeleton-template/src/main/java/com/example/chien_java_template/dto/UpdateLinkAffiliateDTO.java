@@ -11,13 +11,14 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class UpdateLinkAffiliateDTO {
+    private Integer cayCanhId;
     private String nhaCungCap;
     private String linkAffiliate;
     private String linkAnh;
     private BigDecimal giaGoc;
     private String moTa;
     private Status trangThai;
-    private Platform nenTang;
+    private String nenTang;
     private BigDecimal phanTramHoaHong;
 }
 

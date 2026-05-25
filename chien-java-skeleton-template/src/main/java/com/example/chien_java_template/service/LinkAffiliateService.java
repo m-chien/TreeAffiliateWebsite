@@ -7,7 +7,9 @@ import com.example.chien_java_template.enums.Status;
 import com.example.chien_java_template.exception.AppException;
 import com.example.chien_java_template.exception.ErrorCode;
 import com.example.chien_java_template.mapper.LinkAffiliateMapper;
+import com.example.chien_java_template.model.CayCanh;
 import com.example.chien_java_template.model.LinkAffiliate;
+import com.example.chien_java_template.repository.CayCanhRepository;
 import com.example.chien_java_template.repository.LinkAffiliateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,10 +25,17 @@ import java.util.stream.Collectors;
 public class LinkAffiliateService {
     private final LinkAffiliateRepository linkAffiliateRepository;
     private final LinkAffiliateMapper linkAffiliateMapper;
+    private final CayCanhRepository cayCanhRepository;
 
     @Transactional
     public LinkAffiliateDTO createLinkAffiliate(CreateLinkAffiliateDTO createLinkAffiliateDTO) {
         LinkAffiliate linkAffiliate = linkAffiliateMapper.toEntityFromCreateDTO(createLinkAffiliateDTO);
+
+        // Tự tìm và gán CayCanh từ DB
+        CayCanh cayCanh = cayCanhRepository.findById(createLinkAffiliateDTO.getCayCanhId())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID)); // Thay bằng ErrorCode phù hợp
+        linkAffiliate.setCayCanh(cayCanh);
+
         linkAffiliate.setTrangThai(Status.ACTIVE);
         linkAffiliate.setLuotClick(0);
         LinkAffiliate savedLinkAffiliate = linkAffiliateRepository.save(linkAffiliate);
@@ -68,7 +77,16 @@ public class LinkAffiliateService {
     public LinkAffiliateDTO updateLinkAffiliate(Integer id, UpdateLinkAffiliateDTO updateLinkAffiliateDTO) {
         LinkAffiliate linkAffiliate = linkAffiliateRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
+
         linkAffiliateMapper.updateEntityFromDTO(updateLinkAffiliateDTO, linkAffiliate);
+
+        // Cập nhật lại CayCanh nếu DTO có gửi lên cayCanhId mới
+        if (updateLinkAffiliateDTO.getCayCanhId() != null) {
+            CayCanh cayCanh = cayCanhRepository.findById(updateLinkAffiliateDTO.getCayCanhId())
+                    .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
+            linkAffiliate.setCayCanh(cayCanh);
+        }
+
         LinkAffiliate updatedLinkAffiliate = linkAffiliateRepository.save(linkAffiliate);
         return linkAffiliateMapper.toDTO(updatedLinkAffiliate);
     }

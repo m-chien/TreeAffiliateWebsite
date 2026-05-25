@@ -21,7 +21,7 @@ public class LinkAffiliateDTO {
     private String moTa;
     private LocalDateTime ngayTao;
     private Status trangThai;
-    private Platform nenTang;
+    private String nenTang;
     private BigDecimal phanTramHoaHong;
     private Integer luotClick;
 }

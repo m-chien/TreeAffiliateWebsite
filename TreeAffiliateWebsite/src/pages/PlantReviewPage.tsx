@@ -51,13 +51,14 @@ interface CareGuideData {
   doAnToan: string;
 }
 
-interface Vendor {
-  name: string;
-  price: string;
-  link: string;
+interface LinkAffiliateData {
+  id: number;
+  nhaCungCap: string;
+  giaGoc: number;
+  linkAffiliate: string;
+  trangThai: string;
 }
 
-// Cập nhật interface Testimonial để khớp với API DanhGiaDTO
 interface Testimonial {
   id: number;
   idCayCanh: number;
@@ -65,7 +66,7 @@ interface Testimonial {
   nguoiDanhGia: string;
   diem: number;
   noiDung: string;
-  ngayDang: string; // Có thể format sau nếu cần
+  ngayDang: string;
   linkAnh?: string;
 }
 
@@ -77,28 +78,36 @@ const PlantReviewPage = () => {
   // States chính
   const [plantData, setPlantData] = useState<PlantData | null>(null);
   const [careGuide, setCareGuide] = useState<CareGuideData | null>(null);
-  const [reviews, setReviews] = useState<Testimonial[]>([]); // State lưu danh sách đánh giá
+  const [reviews, setReviews] = useState<Testimonial[]>([]);
+  const [affiliateLinks, setAffiliateLinks] = useState<LinkAffiliateData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Lấy dữ liệu từ API - chỉ chạy 1 lần khi component mount
+  // Lấy dữ liệu từ API
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        // Gọi đồng thời 3 API: Thông tin cây, Hướng dẫn chăm sóc, và Đánh giá
-        const [plantResponse, careGuideResponse, reviewsResponse] =
-          await Promise.allSettled([
-            axios.get(`http://localhost:8080/api/v1/cay-canh/${id}`),
-            axios.get(
-              `http://localhost:8080/api/v1/huong-dan-cham-soc/cay-canh/${id}`,
-            ),
-            axios.get(`http://localhost:8080/api/v1/danh-gia/cay-canh/${id}`), // API lấy đánh giá
-          ]);
+        // Gọi đồng thời 4 API: Thông tin cây, Hướng dẫn chăm sóc, Đánh giá, và Link Affiliate
+        const [
+          plantResponse,
+          careGuideResponse,
+          reviewsResponse,
+          linksResponse,
+        ] = await Promise.allSettled([
+          axios.get(`http://localhost:8080/api/v1/cay-canh/${id}`),
+          axios.get(
+            `http://localhost:8080/api/v1/huong-dan-cham-soc/cay-canh/${id}`,
+          ),
+          axios.get(`http://localhost:8080/api/v1/danh-gia/cay-canh/${id}`),
+          axios.get(
+            `http://localhost:8080/api/v1/link-affiliate/cay-canh/${id}`,
+          ),
+        ]);
 
         // Xử lý dữ liệu Cây Cảnh
         if (
@@ -124,12 +133,23 @@ const PlantReviewPage = () => {
           setCareGuide(careGuideResponse.value.data.result);
         }
 
-        // Xử lý dữ liệu Đánh Giá (API trả về đối tượng Page nên data nằm trong result.content)
+        // Xử lý dữ liệu Đánh Giá
         if (
           reviewsResponse.status === "fulfilled" &&
           reviewsResponse.value.data?.result?.content
         ) {
           setReviews(reviewsResponse.value.data.result.content);
+        }
+
+        // Xử lý dữ liệu Link Affiliate
+        if (
+          linksResponse.status === "fulfilled" &&
+          linksResponse.value.data?.result?.content
+        ) {
+          const activeLinks = linksResponse.value.data.result.content.filter(
+            (link: LinkAffiliateData) => link.trangThai === "ACTIVE",
+          );
+          setAffiliateLinks(activeLinks);
         }
       } catch (err) {
         console.error("Lỗi khi tải dữ liệu:", err);
@@ -144,7 +164,7 @@ const PlantReviewPage = () => {
     }
   }, [id]);
 
-  // Dữ liệu tĩnh (Pros/Cons/Vendors) giữ nguyên
+  // Dữ liệu mẫu Ưu/Nhược điểm
   const pros = [
     "Vẻ đẹp nhiệt đới sang trọng, tạo điểm nhấn mạnh mẽ.",
     "Có khả năng lọc không khí cực kỳ hiệu quả.",
@@ -158,15 +178,9 @@ const PlantReviewPage = () => {
     "Lá dễ bám bụi, cần lau chùi thường xuyên.",
   ];
 
-  const vendors: Vendor[] = [
-    { name: "Shopee Mall", price: "350.000đ - 750.000đ", link: "#" },
-    { name: "Tiệm Cây Xanh A", price: "400.000đ", link: "#" },
-    { name: "Vườn Kiểng Tropical", price: "380.000đ", link: "#" },
-  ];
-
   // Helper function để lấy chữ cái đầu của tên làm Avatar
   const getInitials = (name: string) => {
-    if (!name) return "U"; // Mặc định là 'U' (User) nếu không có tên
+    if (!name) return "U";
     const words = name.trim().split(" ");
     if (words.length >= 2) {
       return (words[0][0] + words[words.length - 1][0]).toUpperCase();
@@ -498,24 +512,45 @@ const PlantReviewPage = () => {
             </div>
 
             <div className={styles.vendorList}>
-              {vendors.map((v, i) => (
-                <motion.div
-                  key={i}
-                  className={styles.vendorItem}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
+              {affiliateLinks.length > 0 ? (
+                affiliateLinks.map((link, i) => (
+                  <motion.div
+                    key={link.id}
+                    className={styles.vendorItem}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <div className={styles.vendorInfo}>
+                      <span className={styles.vendorName}>
+                        {link.nhaCungCap}
+                      </span>
+                      <span className={styles.vendorPrice}>
+                        {link.giaGoc?.toLocaleString("vi-VN")}₫
+                      </span>
+                    </div>
+                    <a
+                      href={link.linkAffiliate}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.ctaBtn}
+                    >
+                      Xem chi tiết{" "}
+                      <ExternalLink size={16} style={{ marginLeft: "8px" }} />
+                    </a>
+                  </motion.div>
+                ))
+              ) : (
+                <p
+                  style={{
+                    textAlign: "center",
+                    width: "100%",
+                    padding: "1rem",
+                  }}
                 >
-                  <div className={styles.vendorInfo}>
-                    <span className={styles.vendorName}>{v.name}</span>
-                    <span className={styles.vendorPrice}>{v.price}</span>
-                  </div>
-                  <a href={v.link} className={styles.ctaBtn}>
-                    Xem chi tiết{" "}
-                    <ExternalLink size={16} style={{ marginLeft: "8px" }} />
-                  </a>
-                </motion.div>
-              ))}
+                  Hiện chưa có liên kết mua hàng cho cây này.
+                </p>
+              )}
             </div>
           </div>
         </motion.section>
@@ -542,27 +577,12 @@ const PlantReviewPage = () => {
                 <motion.div
                   key={testimonial.id || i}
                   className={styles.testimonialCard}
-                  initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }} // Chỉnh nhẹ animation để xen kẽ
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
                   <div className={styles.tHeader}>
-                    {/* Chưa có soure ảnh nên comment lại */}
-                    {/* {testimonial.linkAnh ? (
-                      <div className={styles.avatarImageWrapper}>
-                        <img
-                          src={testimonial.linkAnh}
-                          alt={testimonial.nguoiDanhGia}
-                          className={styles.avatarImg}
-                        />
-                      </div>
-                    ) : (
-                      <div className={styles.avatar}>
-                        {getInitials(testimonial.nguoiDanhGia)}
-                      </div>
-                    )} */}
-                    {/* Vì API hiện tại chưa có trường linkAnh nên tạm thời sử dụng avatar chữ cái đầu */}
                     <div className={styles.avatar}>
                       {getInitials(testimonial.nguoiDanhGia)}
                     </div>
@@ -571,7 +591,6 @@ const PlantReviewPage = () => {
                         {testimonial.nguoiDanhGia}
                       </span>
                       <div className={styles.stars}>
-                        {/* Render số sao tương ứng với 'diem' */}
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
