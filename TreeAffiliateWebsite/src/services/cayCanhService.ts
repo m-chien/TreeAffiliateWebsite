@@ -84,7 +84,7 @@ export function mapCayCanhToPlant(
   return {
     id: String(cayCanh.id),
     name: cayCanh.tenCay,
-    image: cayCanh.anh || "/images/main-plant.png",
+    image: cayCanh.anh ? (cayCanh.anh.startsWith('/') || cayCanh.anh.startsWith('http') ? cayCanh.anh : '/' + cayCanh.anh) : "/images/main-plant.png",
     light_requirement: cayCanh.anhSangCanThiet || "Ánh sáng trung bình",
     care_difficulty: cayCanh.doKhoChamSoc ?? 3,
     air_purifying: mapAirPurifying(cayCanh.locKhongKhi),
