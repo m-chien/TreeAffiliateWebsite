@@ -1,10 +1,13 @@
 package com.example.chien_java_template.enums;
 
 public enum Status {
-    ACTIVE,
-    INACTIVE,
-    PENDING,
-    BLOCKED,
-    ARCHIVED
+    Active,
+    Inactive,
+    Pending,
+    Blocked,
+    Archived,
+    Completed,
+    Cancelled,
+    Sent,
+    Error
 }
-

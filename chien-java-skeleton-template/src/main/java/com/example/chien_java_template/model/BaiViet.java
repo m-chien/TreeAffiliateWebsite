@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "bai_viet")
+@Table(name = "BaiViet")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,45 +16,46 @@ import java.util.List;
 public class BaiViet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "iddanhmucnoidung")
+    @JoinColumn(name = "IDDanhMucNoiDung")
     private DanhMucNoiDung danhMucNoiDung;
 
     @ManyToOne
-    @JoinColumn(name = "iduser", nullable = false)
+    @JoinColumn(name = "IdUser", nullable = false)
     private PlantsUser plantsUser;
 
-    @Column(name = "tieude", nullable = false)
+    @Column(name = "TieuDe", nullable = false)
     private String tieuDe;
 
-    @Column(name = "noidung", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "NoiDung", columnDefinition = "NVARCHAR(MAX)")
     private String noiDung;
 
-    @Column(name = "luotxem", columnDefinition = "INT DEFAULT 0")
+    @Column(name = "LuotXem", columnDefinition = "INT DEFAULT 0")
     private Integer luotXem;
 
-    @Column(name = "thoigiandoc")
+    @Column(name = "thoiGianDoc")
     private Integer thoiGianDoc;
 
     @CreationTimestamp
-    @Column(name = "ngaytao", nullable = false, updatable = false)
+    @Column(name = "NgayTao", nullable = false, updatable = false)
     private LocalDateTime ngayTao;
 
     @ManyToMany
     @JoinTable(
-            name = "anh_bai_viet",
-            joinColumns = @JoinColumn(name = "idbaiviet"),
-            inverseJoinColumns = @JoinColumn(name = "idanh")
+            name = "Anh_BaiViet",
+            joinColumns = @JoinColumn(name = "IDBaiViet"),
+            inverseJoinColumns = @JoinColumn(name = "IDAnh")
     )
     private List<Anh> anhList;
 
     @ManyToMany
     @JoinTable(
-            name = "bai_viet_link_affiliate",
-            joinColumns = @JoinColumn(name = "idbaiviet"),
-            inverseJoinColumns = @JoinColumn(name = "idlinkaffiliate")
+            name = "BaiViet_LinkAffiliate",
+            joinColumns = @JoinColumn(name = "IDBaiViet"),
+            inverseJoinColumns = @JoinColumn(name = "IDLinkAffiliate")
     )
     private List<LinkAffiliate> linkAffiliates;
 
@@ -63,9 +64,9 @@ public class BaiViet {
 
     @ManyToMany
     @JoinTable(
-            name = "bai_viet_yeu_thich",
-            joinColumns = @JoinColumn(name = "idbaiviet"),
-            inverseJoinColumns = @JoinColumn(name = "iduser")
+            name = "BaiVietYeuThich",
+            joinColumns = @JoinColumn(name = "IDBaiViet"),
+            inverseJoinColumns = @JoinColumn(name = "IDUser")
     )
     private List<PlantsUser> yeThichUsers;
 }

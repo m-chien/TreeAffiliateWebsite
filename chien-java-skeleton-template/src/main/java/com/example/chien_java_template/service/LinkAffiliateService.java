@@ -27,7 +27,7 @@ public class LinkAffiliateService {
     @Transactional
     public LinkAffiliateDTO createLinkAffiliate(CreateLinkAffiliateDTO createLinkAffiliateDTO) {
         LinkAffiliate linkAffiliate = linkAffiliateMapper.toEntityFromCreateDTO(createLinkAffiliateDTO);
-        linkAffiliate.setTrangThai(Status.ACTIVE);
+        linkAffiliate.setTrangThai(Status.Active);
         linkAffiliate.setLuotClick(0);
         LinkAffiliate savedLinkAffiliate = linkAffiliateRepository.save(linkAffiliate);
         return linkAffiliateMapper.toDTO(savedLinkAffiliate);

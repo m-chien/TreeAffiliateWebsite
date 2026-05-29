@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "plants_user")
+@Table(name = "[User]")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,36 +18,37 @@ import java.util.List;
 public class PlantsUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "Email", unique = true)
     private String email;
 
-    @Column(name = "hoten")
+    @Column(name = "Hoten")
     private String hoTen;
 
-    @Column(name = "sodienthoai")
+    @Column(name = "soDienThoai")
     private String soDienThoai;
 
-    @Column(name = "matkhau")
+    @Column(name = "MatKhau")
     private String matKhau;
 
-    @Column(name = "trangthai")
+    @Column(name = "TrangThai")
     @Enumerated(EnumType.STRING)
     private Status trangThai;
 
     @CreationTimestamp
-    @Column(name = "ngaytao", nullable = false, updatable = false)
+    @Column(name = "Ngaytao", nullable = false, updatable = false)
     private LocalDateTime ngayTao;
 
-    @Column(name = "vaitro")
+    @Column(name = "VaiTro")
     @Enumerated(EnumType.STRING)
     private UserRole vaiTro;
 
     @Column(name = "avatar", columnDefinition = "NVARCHAR(MAX)")
     private String avatar;
 
-    @Column(name = "landangnhapcuoi")
+    @Column(name = "LanDangNhapCuoi")
     private LocalDateTime lanDangNhapCuoi;
 
     @OneToMany(mappedBy = "plantsUser", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -61,13 +62,12 @@ public class PlantsUser {
 
     @ManyToMany
     @JoinTable(
-            name = "nguoi_dung_yeu_thich",
-            joinColumns = @JoinColumn(name = "idnguoidung"),
-            inverseJoinColumns = @JoinColumn(name = "idcaycanh")
+            name = "NguoiDungYeuThich",
+            joinColumns = @JoinColumn(name = "IDNguoiDung"),
+            inverseJoinColumns = @JoinColumn(name = "IDCayCanh")
     )
     private List<CayCanh> yeThichCayCanhList;
 
     @ManyToMany(mappedBy = "yeThichUsers")
     private List<BaiViet> yeThichBaiViets;
 }
-

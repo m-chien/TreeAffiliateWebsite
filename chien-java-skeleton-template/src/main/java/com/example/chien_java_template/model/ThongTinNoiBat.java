@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "thong_tin_noi_bat")
+@Table(name = "ThongTinNoiBat")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,17 +13,17 @@ import lombok.*;
 public class ThongTinNoiBat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "idcaycanh", nullable = false)
+    @JoinColumn(name = "IDCayCanh", nullable = false)
     private CayCanh cayCanh;
 
-    @Column(name = "loai")
+    @Column(name = "Loai")
     @Enumerated(EnumType.STRING)
     private HighlightType loai;
 
-    @Column(name = "noi_dung", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "NoiDung", columnDefinition = "NVARCHAR(MAX)")
     private String noiDung;
 }
-
