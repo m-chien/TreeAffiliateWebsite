@@ -199,10 +199,37 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page">
-      <div className="global-artistic-background">
+            <div className="global-artistic-background">
         <Leaf className="decor-leaf leaf-1" size={120} />
         <Leaf className="decor-leaf leaf-2" size={80} />
         <Sprout className="decor-leaf leaf-3" size={100} />
+        <Leaf className="decor-leaf leaf-4" size={60} />
+        <Leaf className="decor-leaf leaf-5" size={110} />
+        <Sprout className="decor-leaf leaf-6" size={70} />
+        <Leaf className="decor-leaf leaf-7" size={90} />
+        <Leaf className="decor-leaf leaf-8" size={50} />
+        <Leaf className="decor-leaf leaf-9" size={130} />
+        <Sprout className="decor-leaf leaf-10" size={85} />
+        <Leaf className="decor-leaf leaf-11" size={95} />
+        <Leaf className="decor-leaf leaf-12" size={75} />
+        <Sprout className="decor-leaf leaf-13" size={105} />
+        <Leaf className="decor-leaf leaf-14" size={55} />
+        <Leaf className="decor-leaf leaf-15" size={115} />
+      </div>
+      
+      <div className="category-hero">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1>Bộ Sưu Tập Cây Xanh Thiết Kế</h1>
+          <p>
+            Khám phá hàng trăm loài thực vật độc đáo được tuyển chọn kỹ lưỡng. 
+            Từ những chậu cây để bàn nhỏ xinh cho đến những tuyệt tác kiến trúc xanh thanh lọc không khí,
+            giúp không gian sống của bạn thêm phần trong lành và thư thái.
+          </p>
+        </motion.div>
       </div>
 
       <div className="category-container">
