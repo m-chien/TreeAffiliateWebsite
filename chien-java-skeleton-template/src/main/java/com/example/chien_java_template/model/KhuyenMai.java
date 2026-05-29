@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "khuyen_mai")
+@Table(name = "KhuyenMai")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,10 +17,10 @@ public class KhuyenMai {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "ten_khuyen_mai", nullable = false)
+    @Column(name = "TenKhuyenMai", nullable = false)
     private String tenKhuyenMai;
 
-    @Column(name = "phan_tram_giam", precision = 5, scale = 2)
+    @Column(name = "PhanTramGiam", precision = 5, scale = 2)
     private BigDecimal phanTramGiam;
 
     @ManyToMany(mappedBy = "khuyenMais")

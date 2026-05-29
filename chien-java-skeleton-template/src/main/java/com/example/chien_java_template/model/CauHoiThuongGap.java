@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "cau_hoi_thuong_gap")
+@Table(name = "CauHoiThuongGap")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +18,10 @@ public class CauHoiThuongGap {
     @JoinColumn(name = "idcaycanh", nullable = false)
     private CayCanh cayCanh;
 
-    @Column(name = "cau_hoi", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "CauHoi", columnDefinition = "NVARCHAR(MAX)")
     private String cauHoi;
 
-    @Column(name = "cau_tra_loi", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "CauTraLoi", columnDefinition = "NVARCHAR(MAX)")
     private String cauTraLoi;
 }
 

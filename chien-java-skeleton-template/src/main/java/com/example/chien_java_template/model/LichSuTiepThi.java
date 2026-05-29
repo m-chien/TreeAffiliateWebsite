@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "lich_su_tiep_thi")
+@Table(name = "LichSuTiepThi")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class LichSuTiepThi {
     private ContentType loaiNoiDung;
 
     @CreationTimestamp
-    @Column(name = "ngay_gui", nullable = false, updatable = false)
+    @Column(name = "NgayGui", nullable = false, updatable = false)
     private LocalDateTime ngayGui;
 
     @Column(name = "trangthai")

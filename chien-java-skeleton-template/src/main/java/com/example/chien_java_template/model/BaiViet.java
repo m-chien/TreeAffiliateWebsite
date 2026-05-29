@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "bai_viet")
+@Table(name = "BaiViet")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,7 +44,7 @@ public class BaiViet {
 
     @ManyToMany
     @JoinTable(
-            name = "anh_bai_viet",
+            name = "Anh_BaiViet",
             joinColumns = @JoinColumn(name = "idbaiviet"),
             inverseJoinColumns = @JoinColumn(name = "idanh")
     )
@@ -52,7 +52,7 @@ public class BaiViet {
 
     @ManyToMany
     @JoinTable(
-            name = "bai_viet_link_affiliate",
+            name = "BaiViet_LinkAffiliate",
             joinColumns = @JoinColumn(name = "idbaiviet"),
             inverseJoinColumns = @JoinColumn(name = "idlinkaffiliate")
     )
@@ -63,7 +63,7 @@ public class BaiViet {
 
     @ManyToMany
     @JoinTable(
-            name = "bai_viet_yeu_thich",
+            name = "BaiVietYeuThich",
             joinColumns = @JoinColumn(name = "idbaiviet"),
             inverseJoinColumns = @JoinColumn(name = "iduser")
     )

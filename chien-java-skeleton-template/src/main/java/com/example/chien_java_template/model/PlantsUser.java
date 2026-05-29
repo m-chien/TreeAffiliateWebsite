@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "plants_user")
+@Table(name = "[User]")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -61,7 +61,7 @@ public class PlantsUser {
 
     @ManyToMany
     @JoinTable(
-            name = "nguoi_dung_yeu_thich",
+            name = "NguoiDungYeuThich",
             joinColumns = @JoinColumn(name = "idnguoidung"),
             inverseJoinColumns = @JoinColumn(name = "idcaycanh")
     )

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "danh_muc_noi_dung")
+@Table(name = "DanhMucNoiDung")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +18,11 @@ public class DanhMucNoiDung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "ten_danh_muc", nullable = false)
+    @Column(name = "tenDanhMuc", nullable = false)
     private String tenDanhMuc;
 
     @CreationTimestamp
-    @Column(name = "ngay_tao", nullable = false, updatable = false)
+    @Column(name = "ngayTao", nullable = false, updatable = false)
     private LocalDateTime ngayTao;
 
     @OneToMany(mappedBy = "danhMucNoiDung", cascade = CascadeType.ALL, orphanRemoval = true)
