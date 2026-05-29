@@ -195,6 +195,17 @@ const ComparisonPage = () => {
   // ===============================================================
   // RENDER
   // ===============================================================
+  const mappedAlternatives = plantList
+    .filter((p) => String(p.id) !== plant1Id && String(p.id) !== plant2Id)
+    .slice(0, 5)
+    .map((p) => ({
+      id: String(p.id),
+      name: p.tenCay,
+      price: p.giaThamKhao || (p.gia ? `${p.gia.toLocaleString("vi-VN")}₫` : "Liên hệ"),
+      image: p.anh || "/images/main-plant.png",
+      link: "#",
+    }));
+
   return (
     <div className="comparison-page">
       {/* Background decoration */}
@@ -469,7 +480,7 @@ const ComparisonPage = () => {
       </section>
 
       {/* Gợi Ý Thay Thế */}
-      <AlternativeSuggestions alternatives={mockAlternatives} />
+      <AlternativeSuggestions alternatives={mappedAlternatives.length > 0 ? mappedAlternatives : mockAlternatives} />
 
       {/* Hướng dẫn chăm sóc */}
       <CareSteps />

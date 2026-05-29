@@ -173,3 +173,78 @@ export async function fetchPlantForComparison(
   if (!cayCanh) return null;
   return mapCayCanhToPlant(cayCanh, affiliateLink);
 }
+
+// ---------- API Hướng dẫn chăm sóc ----------
+
+export interface HuongDanChamSocDTO {
+  id: number;
+  cayCanhId: number;
+  anhSang: string;
+  cheDoNuoc: string;
+  datVaDinhDuong: string;
+  doAnToan: string;
+}
+
+export async function fetchHuongDanChamSocByCayCanhId(cayCanhId: number): Promise<HuongDanChamSocDTO | null> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/huong-dan-cham-soc/cay-canh/${cayCanhId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data: ApiResponse<HuongDanChamSocDTO> = await res.json();
+    return data.result;
+  } catch (err) {
+    console.error(`[cayCanhService] fetchHuongDanChamSocByCayCanhId(${cayCanhId}) error:`, err);
+    return null;
+  }
+}
+
+// ---------- API Câu hỏi thường gặp (FAQ) ----------
+
+export interface CauHoiThuongGapDTO {
+  id: number;
+  cayCanhId: number;
+  cauHoi: string;
+  cauTraLoi: string;
+}
+
+export async function fetchFAQByCayCanhId(cayCanhId: number): Promise<CauHoiThuongGapDTO[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/cau-hoi-thuong-gap/cay-canh/${cayCanhId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data: ApiResponse<CauHoiThuongGapDTO[]> = await res.json();
+    return data.result || [];
+  } catch (err) {
+    console.error(`[cayCanhService] fetchFAQByCayCanhId(${cayCanhId}) error:`, err);
+    return [];
+  }
+}
+
+// ---------- API Đánh giá & Review ----------
+
+export interface DanhGiaDTO {
+  id: number;
+  cayCanhId: number;
+  userId: number;
+  nguoiDanhGia: string;
+  diem: number;
+  noiDung: string;
+  ngayDang: string;
+  linkAnh: string | null;
+}
+
+export async function fetchReviewsByCayCanhId(cayCanhId: number): Promise<DanhGiaDTO[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/danh-gia/cay-canh/${cayCanhId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    // DanhGia có thể phân trang hoặc danh sách tuỳ backend, giả định là list
+    const data = await res.json();
+    // Tuỳ thuộc API trả về page hay list
+    if (data.result?.content) {
+      return data.result.content;
+    }
+    return data.result || [];
+  } catch (err) {
+    console.error(`[cayCanhService] fetchReviewsByCayCanhId(${cayCanhId}) error:`, err);
+    return [];
+  }
+}
+
