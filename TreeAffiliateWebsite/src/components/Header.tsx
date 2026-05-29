@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Heart, Menu, X, Leaf, Search } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store";
 import EmailSubscriptionModal from "./EmailSubscriptionModal";
 import "./Header.css";
 
@@ -11,6 +13,7 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const favoriteCount = useSelector((state: RootState) => state.favorites.products.length);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,8 +104,27 @@ const Header = () => {
             />
           </form>
 
-          <Link to="/favorites" className="icon-btn" title="Yêu Thích">
+          <Link to="/favorites" className="icon-btn" title="Yêu Thích" style={{ position: "relative" }}>
             <Heart size={20} />
+            {favoriteCount > 0 && (
+              <span style={{
+                position: "absolute",
+                top: "-6px",
+                right: "-6px",
+                backgroundColor: "var(--accent-orange, #c86c42)",
+                color: "white",
+                fontSize: "10px",
+                fontWeight: "bold",
+                borderRadius: "50%",
+                width: "16px",
+                height: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                {favoriteCount}
+              </span>
+            )}
           </Link>
 
           <button className="mobile-menu-btn" onClick={toggleMenu}>

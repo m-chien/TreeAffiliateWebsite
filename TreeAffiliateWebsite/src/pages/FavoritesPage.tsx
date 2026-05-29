@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Trash2, Calendar, Leaf } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DUMMY_PRODUCTS } from "../data/plantData";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../store";
+import { removeFavoriteProduct } from "../store/favoritesSlice";
 import { mockBlogPosts } from "../data/blogData";
 import "./FavoritesPage.css";
 
@@ -12,15 +14,15 @@ const FavoritesPage = () => {
   }, []);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Mock data for favorites (just taking a slice of our dummy data)
-  const [favoriteProducts, setFavoriteProducts] = useState(DUMMY_PRODUCTS.slice(0, 4));
+  const favoriteProducts = useSelector((state: RootState) => state.favorites.products);
   const [favoriteArticles, setFavoriteArticles] = useState(mockBlogPosts.slice(0, 3));
 
-  const removeProduct = (id: string, e: React.MouseEvent) => {
+  const removeProduct = (id: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setFavoriteProducts(prev => prev.filter(p => p.id !== id));
+    dispatch(removeFavoriteProduct(id));
   };
 
   const removeArticle = (id: number | string, e: React.MouseEvent) => {
@@ -51,38 +53,48 @@ const FavoritesPage = () => {
           {favoriteProducts.length > 0 ? (
             <div className="fav-products-grid">
               <AnimatePresence>
-                {favoriteProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    className="product-card"
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                    onClick={() => navigate('/review/monstera')}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <button className="remove-btn" onClick={(e) => removeProduct(product.id, e)} title="Xóa khỏi danh sách">
-                      <Trash2 size={16} />
-                    </button>
-                    <div className="product-image-container">
-                      {product.discount && <span className="discount-badge">{product.discount}</span>}
-                      <img src={product.img} alt={product.name} />
-                    </div>
-                    <div className="product-meta" style={{ marginTop: '15px' }}>
-                      <span className="subcategory" style={{ color: '#888', fontSize: '0.85rem' }}>{product.subcategory}</span>
-                      <span className="rating">
-                        {renderStars(Math.floor(product.rating))} {product.rating.toFixed(1)}
-                      </span>
-                    </div>
-                    <h3 className="product-title" style={{ fontSize: '1.1rem', margin: '10px 0' }}>{product.name}</h3>
-                    <div className="price-row" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                      <span className="current-price" style={{ color: 'var(--bg-dark-green)', fontWeight: 'bold' }}>{product.price}</span>
-                      {product.oldPrice && <span className="old-price" style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9rem' }}>{product.oldPrice}</span>}
-                    </div>
-                  </motion.div>
-                ))}
+                {favoriteProducts.map((product) => {
+                  const subcategory = product.danhMucList && product.danhMucList.length > 0
+                    ? product.danhMucList[0]
+                    : product.kichThuoc;
+                  const priceFormatted = (product.gia || 0).toLocaleString("vi-VN") + "₫";
+                  const imageSrc = product.anh ? `/images/${product.anh}` : "https://via.placeholder.com/300x350?text=Chua+Co+Anh";
+
+                  return (
+                    <motion.div
+                      key={product.id}
+                      className="product-card"
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.3 }}
+                      onClick={() => navigate(`/review/${product.id}`)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <button className="remove-btn" onClick={(e) => removeProduct(product.id, e)} title="Xóa khỏi danh sách">
+                        <Trash2 size={16} />
+                      </button>
+                      <div className="product-image-container">
+                        {product.giaThamKhao && <span className="discount-badge">Hot</span>}
+                        <img src={imageSrc} alt={product.tenCay} />
+                      </div>
+                      <div className="product-meta" style={{ marginTop: '15px' }}>
+                        <span className="subcategory" style={{ color: '#888', fontSize: '0.85rem' }}>{subcategory}</span>
+                        <span className="rating">
+                          {renderStars(Math.floor(product.diemDanhGia || 5))} {(product.diemDanhGia || 5.0).toFixed(1)}
+                        </span>
+                      </div>
+                      <h3 className="product-title" style={{ fontSize: '1.1rem', margin: '10px 0' }}>
+                        {product.tenCay.startsWith("Cây") ? product.tenCay : `Cây ${product.tenCay}`}
+                      </h3>
+                      <div className="price-row" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                        <span className="current-price" style={{ color: 'var(--bg-dark-green)', fontWeight: 'bold' }}>{priceFormatted}</span>
+                        {product.giaThamKhao && <span className="old-price" style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9rem' }}>{product.giaThamKhao}</span>}
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
             </div>
           ) : (

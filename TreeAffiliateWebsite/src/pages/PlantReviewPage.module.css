@@ -400,4 +400,37 @@
   line-height: 1.6;
   color: #555;
   font-size: 1rem;
+}
+
+/* Favorite Button on Review Detail Page */
+.favoriteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--bg-dark-green, #1B4332);
+  background: transparent;
+  color: var(--bg-dark-green, #1B4332);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+}
+
+.favoriteBtn:hover {
+  background: var(--light-green, #D8E2DC);
+  border-color: var(--bg-dark-green, #1B4332);
+}
+
+.isFavActive {
+  background: var(--accent-orange, #C4622D) !important;
+  border-color: var(--accent-orange, #C4622D) !important;
+  color: #ffffff !important;
+}
+
+.isFavActive:hover {
+  background: var(--accent-orange-hover, #A34E20) !important;
+  border-color: var(--accent-orange-hover, #A34E20) !important;
 }

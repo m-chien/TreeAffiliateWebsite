@@ -5,6 +5,9 @@ import { Heart, Maximize2, Star, Leaf, Sprout } from "lucide-react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../store";
+import { toggleFavoriteProduct } from "../store/favoritesSlice";
 
 import EmailSubscriptionModal from "../components/EmailSubscriptionModal";
 import "./CategoryPage.css";
@@ -58,6 +61,10 @@ const CategoryPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  
+  const dispatch = useDispatch();
+  const favoriteProducts = useSelector((state: RootState) => state.favorites.products);
+  const isFavorite = (productId: number) => favoriteProducts.some((p) => p.id === productId);
 
   // 1. Gọi API lấy dữ liệu
   useEffect(() => {
@@ -146,9 +153,19 @@ const CategoryPage = () => {
   ]);
 
   // Các hàm tiện ích (Handlers)
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsModalOpen(true);
+    dispatch(toggleFavoriteProduct({
+      id: product.id,
+      tenCay: product.tenCay,
+      tenTiengAnh: product.tenTiengAnh,
+      gia: product.gia,
+      anh: product.anh,
+      diemDanhGia: product.diemDanhGia,
+      giaThamKhao: product.giaThamKhao,
+      kichThuoc: product.kichThuoc,
+      danhMucList: product.danhMucList,
+    }));
   };
 
   const handleProductClick = (id: number) => {
@@ -412,9 +429,10 @@ const CategoryPage = () => {
                       <button
                         className="action-btn"
                         title="Yêu thích"
-                        onClick={handleFavoriteClick}
+                        onClick={(e) => handleFavoriteClick(product, e)}
+                        style={isFavorite(product.id) ? { color: "var(--accent-orange, #C4622D)" } : {}}
                       >
-                        <Heart size={18} />
+                        <Heart size={18} fill={isFavorite(product.id) ? "var(--accent-orange, #C4622D)" : "none"} />
                       </button>
                       <button
                         className="action-btn"

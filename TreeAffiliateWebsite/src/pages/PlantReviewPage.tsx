@@ -16,6 +16,9 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../store";
+import { toggleFavoriteProduct } from "../store/favoritesSlice";
 import styles from "./PlantReviewPage.module.css";
 
 interface PlantData {
@@ -80,6 +83,25 @@ const PlantReviewPage = () => {
   const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
 
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  const dispatch = useDispatch();
+  const favoriteProducts = useSelector((state: RootState) => state.favorites.products);
+  const isFav = plant ? favoriteProducts.some((p) => p.id === plant.id) : false;
+
+  const handleFavoriteToggle = () => {
+    if (!plant) return;
+    dispatch(toggleFavoriteProduct({
+      id: plant.id,
+      tenCay: plant.tenCay,
+      tenTiengAnh: plant.tenTiengAnh,
+      gia: plant.gia,
+      anh: plant.anh,
+      diemDanhGia: plant.diemDanhGia,
+      giaThamKhao: plant.giaThamKhao,
+      kichThuoc: plant.kichThuoc,
+      danhMucList: [],
+    }));
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -238,6 +260,13 @@ const PlantReviewPage = () => {
             <p className={styles.shortIntro}>
               {plant.moTa || `Chi tiết thông tin đánh giá, ưu nhược điểm và hướng dẫn chăm sóc đầy đủ nhất cho cây ${plant.tenCay}.`}
             </p>
+            <button
+              className={`${styles.favoriteBtn} ${isFav ? styles.isFavActive : ""}`}
+              onClick={handleFavoriteToggle}
+            >
+              <Heart size={18} fill={isFav ? "white" : "none"} />
+              <span>{isFav ? "Đã thêm vào yêu thích" : "Thêm vào yêu thích"}</span>
+            </button>
           </div>
         </section>
 
