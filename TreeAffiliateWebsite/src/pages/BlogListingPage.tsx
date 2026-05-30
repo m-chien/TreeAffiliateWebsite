@@ -114,6 +114,17 @@ const BlogListingPage: React.FC = () => {
     return date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
+  // --- HÀM PHỤ TRỢ: Xóa thẻ HTML để làm đoạn tóm tắt ---
+  const stripHtmlAndTruncate = (htmlString?: string, maxLength: number = 100) => {
+    if (!htmlString) return 'Đang cập nhật nội dung...';
+    // Dùng Regex để xóa sạch mọi thứ nằm trong dấu < > (VD: <p>, <strong>...)
+    const plainText = htmlString.replace(/<[^>]+>/g, ''); 
+    
+    // Cắt chữ cho vừa khung
+    if (plainText.length <= maxLength) return plainText;
+    return plainText.substring(0, maxLength) + '...';
+  };
+
   return (
     <div className="blog-listing-page">
       <div className="global-artistic-background">
@@ -189,14 +200,14 @@ const BlogListingPage: React.FC = () => {
               transition={{ duration: 0.8 }}
             >
               <div className="featured-image">
-                {/* Thay đường dẫn /assets/images/ bằng nơi bạn lưu ảnh thực tế */}
-                <img src={`/assets/images/${featuredPost.anhDaiDien}`} alt={featuredPost.tieuDe} />
+                <img src={`/images/${featuredPost.anhDaiDien}`} alt={featuredPost.tieuDe} />
               </div>
               <div className="featured-content">
                 <span className="post-category">{featuredPost.tenDanhMuc}</span>
                 <h2>{featuredPost.tieuDe}</h2>
                 <p className="post-excerpt">
-                  {featuredPost.trichDoan || (featuredPost.noiDung ? featuredPost.noiDung.substring(0, 150) + '...' : 'Đang cập nhật nội dung...')}
+                  {/* Áp dụng hàm dọn dẹp HTML cho bài viết nổi bật */}
+                  {featuredPost.trichDoan || stripHtmlAndTruncate(featuredPost.noiDung, 150)}
                 </p>
                 <div className="post-meta">
                   <span><User size={14} /> {featuredPost.tenTacGia}</span>
@@ -225,13 +236,14 @@ const BlogListingPage: React.FC = () => {
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
                       <div className="card-image">
-                        <img src={`/assets/images/${post.anhDaiDien}`} alt={post.tieuDe} />
+                        <img src={`/images/${post.anhDaiDien}`} alt={post.tieuDe} />
                       </div>
                       <div className="card-content">
                         <span className="post-category">{post.tenDanhMuc}</span>
                         <h3>{post.tieuDe}</h3>
                         <p className="post-excerpt">
-                          {post.trichDoan || (post.noiDung ? post.noiDung.substring(0, 100) + '...' : 'Đang cập nhật nội dung...')}
+                          {/* Áp dụng hàm dọn dẹp HTML cho danh sách bài viết */}
+                          {post.trichDoan || stripHtmlAndTruncate(post.noiDung, 100)}
                         </p>
                         <div className="post-meta">
                           <span>{formatDate(post.ngayTao)}</span>
@@ -282,7 +294,7 @@ const BlogListingPage: React.FC = () => {
                 {recentPosts.slice(0, 3).map(post => (
                   <div key={post.id} className="small-post-item">
                     <div className="small-img">
-                      <img src={`/assets/images/${post.anhDaiDien}`} alt={post.tieuDe} />
+                      <img src={`/images/${post.anhDaiDien}`} alt={post.tieuDe} />
                     </div>
                     <div className="small-info">
                       <h5>{post.tieuDe}</h5>

@@ -5,36 +5,53 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../store";
 import { removeFavoriteProduct } from "../store/favoritesSlice";
-import { mockBlogPosts } from "../data/blogData";
 import "./FavoritesPage.css";
 
 const FavoritesPage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // State quản lý Sản phẩm (Redux)
   const favoriteProducts = useSelector((state: RootState) => state.favorites.products);
-  const [favoriteArticles, setFavoriteArticles] = useState(mockBlogPosts.slice(0, 3));
+  
+  // State quản lý Cẩm nang đã lưu (Local Storage)
+  const [favoriteArticles, setFavoriteArticles] = useState<any[]>([]);
 
+  // Lấy dữ liệu bài viết đã lưu khi load trang
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const savedPosts = JSON.parse(localStorage.getItem('favorite_posts') || '[]');
+    setFavoriteArticles(savedPosts);
+  }, []);
+
+  // Xóa Sản phẩm (Giữ nguyên gốc của bạn)
   const removeProduct = (id: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(removeFavoriteProduct(id));
   };
 
+  // Xóa Bài viết khỏi danh sách và cập nhật Local Storage
   const removeArticle = (id: number | string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setFavoriteArticles(prev => prev.filter(a => a.id.toString() !== id.toString()));
+    
+    const updatedArticles = favoriteArticles.filter(a => a.id.toString() !== id.toString());
+    setFavoriteArticles(updatedArticles);
+    localStorage.setItem('favorite_posts', JSON.stringify(updatedArticles));
   };
 
+  // Render sao đánh giá
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
       <span key={i} style={{ color: i < rating ? "#ffc107" : "#eee", fontSize: "14px" }}>★</span>
     ));
+  };
+
+  // Format ngày cho bài viết
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
   return (
@@ -46,7 +63,7 @@ const FavoritesPage = () => {
 
       <div className="favorites-container">
         
-        {/* Favorite Products Section */}
+        {/* Favorite Products Section (GIỮ NGUYÊN CODE CỦA BẠN) */}
         <section className="favorites-section">
           <h2 className="section-title"><Leaf size={24} /> Sản Phẩm Đã Lưu</h2>
           
@@ -105,7 +122,7 @@ const FavoritesPage = () => {
           )}
         </section>
 
-        {/* Favorite Articles Section */}
+        {/* Favorite Articles Section (ĐÃ ĐƯỢC CHỈNH SỬA ĐỂ HIỂN THỊ DỮ LIỆU THẬT) */}
         <section className="favorites-section">
           <h2 className="section-title"><Heart size={24} /> Cẩm Nang Đã Lưu</h2>
           
@@ -126,11 +143,12 @@ const FavoritesPage = () => {
                       <Trash2 size={16} />
                     </button>
                     <Link to={`/blog/${article.id}`} className="related-card" style={{ display: 'block', height: '100%', textDecoration: 'none', background: 'white', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-                      <img src={article.image || '/images/cay1.png'} alt={article.title} style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
+                      {/* Đã sửa đường dẫn ảnh để tương thích với dữ liệu thật */}
+                      <img src={article.anhDaiDien ? `/images/${article.anhDaiDien}` : '/images/cay1.png'} alt={article.tieuDe} style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
                       <div className="related-info" style={{ padding: '20px' }}>
-                        <span style={{ fontSize: '0.8rem', color: '#c86c42', textTransform: 'uppercase', fontWeight: 'bold', marginBottom: '10px', display: 'block' }}>{article.category}</span>
-                        <h4 style={{ color: '#333', fontSize: '1.1rem', marginBottom: '15px', lineHeight: 1.4 }}>{article.title}</h4>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#888', fontSize: '0.85rem' }}><Calendar size={14}/> {article.date}</span>
+                        <span style={{ fontSize: '0.8rem', color: '#c86c42', textTransform: 'uppercase', fontWeight: 'bold', marginBottom: '10px', display: 'block' }}>{article.tenDanhMuc}</span>
+                        <h4 style={{ color: '#333', fontSize: '1.1rem', marginBottom: '15px', lineHeight: 1.4 }}>{article.tieuDe}</h4>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#888', fontSize: '0.85rem' }}><Calendar size={14}/> {formatDate(article.ngayTao)}</span>
                       </div>
                     </Link>
                   </motion.div>
