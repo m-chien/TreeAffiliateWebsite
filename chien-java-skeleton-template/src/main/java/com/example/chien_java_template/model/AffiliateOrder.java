@@ -19,34 +19,34 @@ import java.time.LocalDateTime;
 public class AffiliateOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "idlinkaffiliate", nullable = false)
+    @JoinColumn(name = "IDLinkAffiliate", nullable = false)
     private LinkAffiliate linkAffiliate;
 
-    @Column(name = "nentang")
+    @Column(name = "NenTang")
     @Enumerated(EnumType.STRING)
     private Platform nenTang;
 
-    @Column(name = "macode")
+    @Column(name = "MaCode")
     private String maCode;
 
-    @Column(name = "giatridonhang", precision = 18, scale = 2)
+    @Column(name = "GiaTriDonHang", precision = 18, scale = 2)
     private BigDecimal giaTriDonHang;
 
-    @Column(name = "hoahong", precision = 18, scale = 2)
+    @Column(name = "HoaHong", precision = 18, scale = 2)
     private BigDecimal hoaHong;
 
-    @Column(name = "trangthai")
+    @Column(name = "TrangThai")
     @Enumerated(EnumType.STRING)
     private Status trangThai;
 
-    @Column(name = "ngaydat")
+    @Column(name = "NgayDat")
     private LocalDateTime ngayDat;
 
     @UpdateTimestamp
-    @Column(name = "ngaycapnhat")
+    @Column(name = "NgayCapNhat")
     private LocalDateTime ngayCapNhat;
 }
-

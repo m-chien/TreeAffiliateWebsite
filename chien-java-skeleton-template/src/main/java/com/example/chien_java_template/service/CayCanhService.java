@@ -30,7 +30,7 @@ public class CayCanhService {
             throw new AppException(ErrorCode.DUPLICATE_KEY);
         }
         CayCanh cayCanh = cayCanhMapper.toEntityFromCreateDTO(createCayCanhDTO);
-        cayCanh.setTrangThai(Status.ACTIVE);
+        cayCanh.setTrangThai(Status.Active);
         cayCanh.setLuotXem(0);
         CayCanh savedCayCanh = cayCanhRepository.save(cayCanh);
         return cayCanhMapper.toDTO(savedCayCanh);

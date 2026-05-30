@@ -13,17 +13,17 @@ import lombok.*;
 public class ThongTinNoiBat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "idcaycanh", nullable = false)
+    @JoinColumn(name = "IDCayCanh", nullable = false)
     private CayCanh cayCanh;
 
-    @Column(name = "loai")
+    @Column(name = "Loai")
     @Enumerated(EnumType.STRING)
     private HighlightType loai;
 
     @Column(name = "NoiDung", columnDefinition = "NVARCHAR(MAX)")
     private String noiDung;
 }
-

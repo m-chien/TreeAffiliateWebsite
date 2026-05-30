@@ -37,7 +37,6 @@ public class CayCanh {
     @Column(name = "Anh", columnDefinition = "NVARCHAR(MAX)")
     private String anh;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "TrangThai")
     private Status trangThai;
 
@@ -47,7 +46,7 @@ public class CayCanh {
     @Column(name = "DiemDanhGia")
     private Float diemDanhGia;
 
-    @Column(name = "LuotXem")
+    @Column(name = "LuotXem", columnDefinition = "INT DEFAULT 0")
     private Integer luotXem;
 
     @CreationTimestamp
@@ -88,34 +87,18 @@ public class CayCanh {
     private List<CauHoiThuongGap> cauHoiThuongGaps;
 
     @ManyToMany
-    @JoinTable(
-            name = "DanhMuc_CayCanh",
-            joinColumns = @JoinColumn(name = "IDCayCanh"),
-            inverseJoinColumns = @JoinColumn(name = "IDDanhMucCayCanh")
-    )
+    @JoinTable(name = "DanhMuc_CayCanh", joinColumns = @JoinColumn(name = "IDCayCanh"), inverseJoinColumns = @JoinColumn(name = "IDDanhMucCayCanh"))
     private List<DanhMucCayCanh> danhMucs;
 
     @ManyToMany
-    @JoinTable(
-            name = "CayCanh_KhuyenMai",
-            joinColumns = @JoinColumn(name = "IDCayCanh"),
-            inverseJoinColumns = @JoinColumn(name = "IDKhuyenMai")
-    )
+    @JoinTable(name = "CayCanh_KhuyenMai", joinColumns = @JoinColumn(name = "IDCayCanh"), inverseJoinColumns = @JoinColumn(name = "IDKhuyenMai"))
     private List<KhuyenMai> khuyenMais;
 
     @ManyToMany
-    @JoinTable(
-            name = "BaiViet_CayCanh",
-            joinColumns = @JoinColumn(name = "IDCayCanh"),
-            inverseJoinColumns = @JoinColumn(name = "IDBaiViet")
-    )
+    @JoinTable(name = "BaiViet_CayCanh", joinColumns = @JoinColumn(name = "IDCayCanh"), inverseJoinColumns = @JoinColumn(name = "IDBaiViet"))
     private List<BaiViet> baiViets;
 
     @ManyToMany
-    @JoinTable(
-            name = "NguoiDungYeuThich",
-            joinColumns = @JoinColumn(name = "IDCayCanh"),
-            inverseJoinColumns = @JoinColumn(name = "IDNguoiDung")
-    )
+    @JoinTable(name = "NguoiDungYeuThich", joinColumns = @JoinColumn(name = "IDCayCanh"), inverseJoinColumns = @JoinColumn(name = "IDNguoiDung"))
     private List<PlantsUser> yeThichUsers;
 }

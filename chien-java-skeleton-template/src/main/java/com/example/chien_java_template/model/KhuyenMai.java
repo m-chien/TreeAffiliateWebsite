@@ -15,6 +15,7 @@ import java.util.List;
 public class KhuyenMai {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @Column(name = "TenKhuyenMai", nullable = false)
@@ -26,4 +27,3 @@ public class KhuyenMai {
     @ManyToMany(mappedBy = "khuyenMais")
     private List<CayCanh> cayCanhList;
 }
-

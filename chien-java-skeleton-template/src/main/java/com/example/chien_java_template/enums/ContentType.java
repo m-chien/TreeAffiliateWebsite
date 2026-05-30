@@ -1,11 +1,13 @@
 package com.example.chien_java_template.enums;
 
 public enum ContentType {
-    BLOG,
-    GUIDE,
+    Blog,
+    Guide,
+    Product,
+    Promo,
+    Event,
     TIP,
     REVIEW,
     CARE_INSTRUCTION,
     OTHER
 }
-
