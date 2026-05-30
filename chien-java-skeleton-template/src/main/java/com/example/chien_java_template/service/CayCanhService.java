@@ -36,27 +36,32 @@ public class CayCanhService {
         return cayCanhMapper.toDTO(savedCayCanh);
     }
 
+    @Transactional(readOnly = true)
     public CayCanhDTO getCayCanhById(Integer id) {
         CayCanh cayCanh = cayCanhRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
         return cayCanhMapper.toDTO(cayCanh);
     }
 
+    @Transactional(readOnly = true)
     public Page<CayCanhDTO> getAllCayCanh(Pageable pageable) {
         return cayCanhRepository.findAll(pageable)
                 .map(cayCanhMapper::toDTO);
     }
 
+    @Transactional(readOnly = true)
     public Page<CayCanhDTO> searchCayCanhByName(String tenCay, Pageable pageable) {
         return cayCanhRepository.findByTenCayContainingIgnoreCase(tenCay, pageable)
                 .map(cayCanhMapper::toDTO);
     }
 
+    @Transactional(readOnly = true)
     public Page<CayCanhDTO> getCayCanhByStatus(Status status, Pageable pageable) {
         return cayCanhRepository.findByTrangThai(status, pageable)
                 .map(cayCanhMapper::toDTO);
     }
 
+    @Transactional(readOnly = true)
     public Page<CayCanhDTO> getMostViewedCayCanh(Pageable pageable) {
         return cayCanhRepository.findMostViewed(pageable)
                 .map(cayCanhMapper::toDTO);
@@ -87,4 +92,3 @@ public class CayCanhService {
         cayCanhRepository.save(cayCanh);
     }
 }
-

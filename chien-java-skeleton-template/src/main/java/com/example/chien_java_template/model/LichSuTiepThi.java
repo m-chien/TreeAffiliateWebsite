@@ -17,21 +17,22 @@ import java.time.LocalDateTime;
 public class LichSuTiepThi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "iduser", nullable = false)
+    @JoinColumn(name = "IDUser", nullable = false)
     private PlantsUser plantsUser;
 
     @ManyToOne
-    @JoinColumn(name = "idbaiviet")
+    @JoinColumn(name = "IDBaiViet")
     private BaiViet baiViet;
 
     @ManyToOne
-    @JoinColumn(name = "idcaycanh")
+    @JoinColumn(name = "IDCayCanh")
     private CayCanh cayCanh;
 
-    @Column(name = "loainoidung")
+    @Column(name = "LoaiNoiDung")
     @Enumerated(EnumType.STRING)
     private ContentType loaiNoiDung;
 
@@ -39,8 +40,7 @@ public class LichSuTiepThi {
     @Column(name = "NgayGui", nullable = false, updatable = false)
     private LocalDateTime ngayGui;
 
-    @Column(name = "trangthai")
+    @Column(name = "TrangThai")
     @Enumerated(EnumType.STRING)
     private Status trangThai;
 }
-

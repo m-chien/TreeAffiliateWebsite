@@ -16,6 +16,7 @@ import java.util.List;
 public class DanhMucNoiDung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
     @Column(name = "tenDanhMuc", nullable = false)
@@ -28,4 +29,3 @@ public class DanhMucNoiDung {
     @OneToMany(mappedBy = "danhMucNoiDung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BaiViet> baiViets;
 }
-

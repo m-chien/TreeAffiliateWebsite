@@ -5,6 +5,9 @@ public enum Status {
     INACTIVE,
     PENDING,
     BLOCKED,
-    ARCHIVED
+    ARCHIVED,
+    COMPLETED,
+    CANCELLED,
+    SENT,
+    ERROR
 }
-

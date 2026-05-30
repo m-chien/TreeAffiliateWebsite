@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "anh")
+@Table(name = "Anh")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,15 +14,15 @@ import java.util.List;
 public class Anh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "tieude", nullable = false)
+    @Column(name = "TieuDe", nullable = false)
     private String tieuDe;
 
-    @Column(name = "linkanh", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "LinkAnh", columnDefinition = "NVARCHAR(MAX)")
     private String linkAnh;
 
     @ManyToMany(mappedBy = "anhList")
     private List<BaiViet> baiViets;
 }
-

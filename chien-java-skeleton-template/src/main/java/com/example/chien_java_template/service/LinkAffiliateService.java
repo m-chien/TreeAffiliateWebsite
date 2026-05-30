@@ -35,7 +35,6 @@ public class LinkAffiliateService {
         CayCanh cayCanh = cayCanhRepository.findById(createLinkAffiliateDTO.getCayCanhId())
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID)); // Thay bằng ErrorCode phù hợp
         linkAffiliate.setCayCanh(cayCanh);
-
         linkAffiliate.setTrangThai(Status.ACTIVE);
         linkAffiliate.setLuotClick(0);
         LinkAffiliate savedLinkAffiliate = linkAffiliateRepository.save(linkAffiliate);
@@ -107,4 +106,3 @@ public class LinkAffiliateService {
         linkAffiliateRepository.save(linkAffiliate);
     }
 }
-
