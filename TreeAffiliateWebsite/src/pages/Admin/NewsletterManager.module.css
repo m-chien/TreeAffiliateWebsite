@@ -365,3 +365,117 @@
 .submitBtn:hover {
   background-color: #2a5245;
 }
+
+/* New layout styles */
+.typeBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8f7f2;
+  border: 1px solid #eaebec;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.typeBtn:hover {
+  background-color: #eee;
+  color: #1e3b32;
+  border-color: #1e3b32;
+}
+
+.typeBtnActive {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #1e3b32;
+  border: 1px solid #1e3b32;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.categoryBadgeCard {
+  background-color: #eef2f0;
+  border: 1px solid #c9d6d1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+.badgeLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1e3b32;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categoryTag {
+  background-color: #1e3b32;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.emptyStateContainer {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+  padding: 64px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.emptyStateContainer h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1e3b32;
+  font-weight: 700;
+}
+
+.badgePlant {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badgeBlog {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badgeSent {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+

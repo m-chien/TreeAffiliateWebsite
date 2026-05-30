@@ -47,17 +47,20 @@ public class PlantsUserService {
         return plantsUserMapper.toDTO(plantsUser);
     }
 
+    @Transactional(readOnly = true)
     public Page<PlantsUserDTO> getAllPlantsUser(Pageable pageable) {
         return plantsUserRepository.findAll(pageable)
                 .map(plantsUserMapper::toDTO);
     }
 
+    @Transactional(readOnly = true)
     public PlantsUserDTO getPlantsUserByEmail(String email) {
         PlantsUser plantsUser = plantsUserRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return plantsUserMapper.toDTO(plantsUser);
     }
 
+    @Transactional(readOnly = true)
     public Page<PlantsUserDTO> getPlantsUserByStatus(Status status, Pageable pageable) {
         return plantsUserRepository.findByTrangThai(status, pageable)
                 .map(plantsUserMapper::toDTO);
@@ -86,6 +89,20 @@ public class PlantsUserService {
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
         plantsUser.setLanDangNhapCuoi(LocalDateTime.now());
         plantsUserRepository.save(plantsUser);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PlantsUserDTO> getUsersForPlantMarketing(Integer plantId) {
+        return plantsUserRepository.findUsersForPlantMarketing(plantId).stream()
+                .map(plantsUserMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<PlantsUserDTO> getUsersForCategoryMarketing(String categoryName) {
+        return plantsUserRepository.findUsersForCategoryMarketing(categoryName).stream()
+                .map(plantsUserMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
 

@@ -20,5 +20,7 @@ public class PlantsUserDTO {
     private UserRole vaiTro;
     private String avatar;
     private LocalDateTime lanDangNhapCuoi;
+    private java.util.List<String> favoriteCategories;
+    private java.util.List<String> favoritePlants;
 }
 

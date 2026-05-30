@@ -104,5 +104,26 @@ public class PlantsUserController {
                 .message("Cập nhật lần đăng nhập cuối cùng thành công")
                 .build());
     }
+
+    @GetMapping("/marketing-targets")
+    public ResponseEntity<ApiResponse<java.util.List<PlantsUserDTO>>> getMarketingTargets(
+            @RequestParam(required = false) Integer plantId,
+            @RequestParam(required = false) String category) {
+        
+        java.util.List<PlantsUserDTO> targets;
+        if (plantId != null) {
+            targets = plantsUserService.getUsersForPlantMarketing(plantId);
+        } else if (category != null && !category.trim().isEmpty()) {
+            targets = plantsUserService.getUsersForCategoryMarketing(category);
+        } else {
+            targets = java.util.Collections.emptyList();
+        }
+        
+        return ResponseEntity.ok(ApiResponse.<java.util.List<PlantsUserDTO>>builder()
+                .code(200)
+                .message("Lấy danh sách người dùng tiếp thị mục tiêu thành công")
+                .result(targets)
+                .build());
+    }
 }
 

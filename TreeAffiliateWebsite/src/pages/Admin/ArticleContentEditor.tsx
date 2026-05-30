@@ -8,7 +8,6 @@ import {
   Bold, 
   Italic, 
   List, 
-  ExternalLink,
   Plus
 } from 'lucide-react';
 import styles from './ArticleContentEditor.module.css';

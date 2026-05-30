@@ -112,5 +112,14 @@ public class LichSuTiepThiController {
                 .message("Xóa lịch sử tiếp thị thành công")
                 .build());
     }
+
+    @PostMapping("/send-campaign")
+    public ResponseEntity<ApiResponse<Void>> sendCampaign(@RequestBody com.example.chien_java_template.dto.SendCampaignDTO sendCampaignDTO) {
+        lichSuTiepThiService.sendMarketingCampaign(sendCampaignDTO);
+        return ResponseEntity.ok(ApiResponse.<Void>builder()
+                .code(200)
+                .message("Đã gửi email chiến dịch tiếp thị và lưu lịch sử thành công")
+                .build());
+    }
 }
 

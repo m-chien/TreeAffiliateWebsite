@@ -215,16 +215,16 @@ GO
 
 -- User
 INSERT INTO [User] (Email, Hoten, soDienThoai, MatKhau, TrangThai, VaiTro) VALUES  
-('admin@plants.com', N'Alex Nguyen', '0987654321', 'pw1', 'ACTIVE', 'Admin'),
-('chi@gmail.com', N'Lê Kim Chi', '0901234567', 'pw2', 'ACTIVE', 'User'),
-('hung@gmail.com', N'Trần Mạnh Hùng', '0907654321', 'pw3', 'ACTIVE', 'User'),
-('lan@gmail.com', N'Vũ Ngọc Lan', '0912345678', 'pw4', 'ACTIVE', 'User'),
-('minh@gmail.com', N'Đỗ Quang Minh', '0918765432', 'pw5', 'ACTIVE', 'User'),
-('trang@gmail.com', N'Nguyễn Thu Trang', '0921234567', 'pw6', 'INACTIVE', 'User'),
-('duc@gmail.com', N'Phạm Minh Đức', '0928765432', 'pw7', 'ACTIVE', 'User'),
-('an@gmail.com', N'Lý Hoài An', '0931234567', 'pw8', 'ACTIVE', 'User'),
-('vy@gmail.com', N'Hoàng Thảo Vy', '0938765432', 'pw9', 'ACTIVE', 'User'),
-('thanh@gmail.com', N'Bùi Tiến Thành', '0941234567', 'pw10', 'ACTIVE', 'User');
+('admin@plants.com', N'Alex Nguyen', '0987654321', 'pw1', 'ACTIVE', 'ADMIN'),
+('chi@gmail.com', N'Lê Kim Chi', '0901234567', 'pw2', 'ACTIVE', 'USER'),
+('hung@gmail.com', N'Trần Mạnh Hùng', '0907654321', 'pw3', 'ACTIVE', 'USER'),
+('lan@gmail.com', N'Vũ Ngọc Lan', '0912345678', 'pw4', 'ACTIVE', 'USER'),
+('minh@gmail.com', N'Đỗ Quang Minh', '0918765432', 'pw5', 'ACTIVE', 'USER'),
+('trang@gmail.com', N'Nguyễn Thu Trang', '0921234567', 'pw6', 'INACTIVE', 'USER'),
+('duc@gmail.com', N'Phạm Minh Đức', '0928765432', 'pw7', 'ACTIVE', 'USER'),
+('an@gmail.com', N'Lý Hoài An', '0931234567', 'pw8', 'ACTIVE', 'USER'),
+('vy@gmail.com', N'Hoàng Thảo Vy', '0938765432', 'pw9', 'ACTIVE', 'USER'),
+('thanh@gmail.com', N'Bùi Tiến Thành', '0941234567', 'pw10', 'ACTIVE', 'USER');
 
 -- Danh mục
 INSERT INTO DanhMucNoiDung (tenDanhMuc) VALUES (N'Hướng dẫn chăm sóc'), (N'Mẹo phong thủy'), (N'Top List'), (N'Xu hướng 2026'), (N'Cẩm nang đất trồng'), (N'Phân bón & Dinh dưỡng'), (N'Trang trí nội thất'), (N'Cây mọng nước'), (N'Câu chuyện vườn'), (N'Sự kiện');
@@ -423,7 +423,7 @@ INSERT INTO CauHoiThuongGap (IDCayCanh, CauHoi, CauTraLoi) VALUES
 
 INSERT INTO KhuyenMai (TenKhuyenMai, PhanTramGiam) VALUES (N'Chào hè', 10), (N'Flash Sale', 50), (N'Black Friday', 30), (N'Mừng khai trương', 20), (N'Tết Nguyên Đán', 15), (N'Ngày của mẹ', 10), (N'8/3 Sale', 12), (N'Cuối tháng', 5), (N'Mua kèm deal sốc', 7), (N'Member Only', 25);
 INSERT INTO Anh (TieuDe, LinkAnh) VALUES (N'Kim tiền đại', 'img1.jpg'), (N'Lưỡi hổ vàng', 'img2.jpg'), (N'Monstera lá xẻ', 'img3.jpg'), (N'Sen đá hồng', 'img4.jpg'), (N'Bàng Sing to', 'img5.jpg'), (N'Trầu bà leo', 'img6.jpg'), (N'Lan ý trắng', 'img7.jpg'), (N'Hạnh phúc xanh', 'img8.jpg'), (N'Xương rồng tròn', 'img9.jpg'), (N'Ngọc ngân lá đốm', 'img10.jpg');
-INSERT INTO LichSuTiepThi (IDUser, IDBaiViet, IDCayCanh, LoaiNoiDung, TrangThai) VALUES (2, 1, NULL, 'Blog', 'Sent'), (3, 2, NULL, 'Guide', 'Sent'), (4, NULL, 3, 'Product', 'Sent'), (5, 5, NULL, 'Blog', 'Sent'), (7, NULL, 1, 'Product', 'Error'), (8, 7, NULL, 'Blog', 'Sent'), (9, 3, NULL, 'Promo', 'Sent'), (10, NULL, 5, 'Product', 'Sent'), (2, NULL, 2, 'Product', 'Sent'), (3, 10, NULL, 'Event', 'Sent');
+INSERT INTO LichSuTiepThi (IDUser, IDBaiViet, IDCayCanh, LoaiNoiDung, TrangThai) VALUES (2, 1, NULL, 'BLOG', 'ACTIVE'), (3, 2, NULL, 'GUIDE', 'ACTIVE'), (4, NULL, 3, 'OTHER', 'ACTIVE'), (5, 5, NULL, 'BLOG', 'ACTIVE'), (7, NULL, 1, 'OTHER', 'INACTIVE'), (8, 7, NULL, 'BLOG', 'ACTIVE'), (9, 3, NULL, 'OTHER', 'ACTIVE'), (10, NULL, 5, 'OTHER', 'ACTIVE'), (2, NULL, 2, 'OTHER', 'ACTIVE'), (3, 10, NULL, 'OTHER', 'ACTIVE');
 
 -- Bảng trung gian
 INSERT INTO Anh_BaiViet VALUES (1,1), (1,2), (2,3), (3,4), (5,5), (7,6), (8,7), (9,8), (10,9), (1,10);

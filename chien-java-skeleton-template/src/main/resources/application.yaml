@@ -1,9 +1,20 @@
 debug: false
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: chientranminh355@gmail.com
+    password: gwhh baox kvsp tpas
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=PlantsAvenue;encrypt=false
     username: sa
-    password: 12345
+    password: 1234
   sql:
     init:
       mode: never

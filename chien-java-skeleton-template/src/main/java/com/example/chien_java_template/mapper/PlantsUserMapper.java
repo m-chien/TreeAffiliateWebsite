@@ -9,7 +9,25 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface PlantsUserMapper {
+    @org.mapstruct.Mapping(target = "favoriteCategories", expression = "java(mapFavoriteCategories(plantsUser))")
+    @org.mapstruct.Mapping(target = "favoritePlants", expression = "java(mapFavoritePlants(plantsUser))")
     PlantsUserDTO toDTO(PlantsUser plantsUser);
+
+    default java.util.List<String> mapFavoriteCategories(PlantsUser plantsUser) {
+        if (plantsUser.getYeThichCayCanhList() == null) return null;
+        return plantsUser.getYeThichCayCanhList().stream()
+                .flatMap(c -> c.getDanhMucs() != null ? c.getDanhMucs().stream() : java.util.stream.Stream.empty())
+                .map(com.example.chien_java_template.model.DanhMucCayCanh::getTenDanhMuc)
+                .distinct()
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    default java.util.List<String> mapFavoritePlants(PlantsUser plantsUser) {
+        if (plantsUser.getYeThichCayCanhList() == null) return null;
+        return plantsUser.getYeThichCayCanhList().stream()
+                .map(com.example.chien_java_template.model.CayCanh::getTenCay)
+                .collect(java.util.stream.Collectors.toList());
+    }
 
     PlantsUser toEntity(PlantsUserDTO plantsUserDTO);
 
