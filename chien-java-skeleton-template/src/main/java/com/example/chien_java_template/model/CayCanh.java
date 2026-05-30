@@ -38,6 +38,7 @@ public class CayCanh {
     private String anh;
 
     @Column(name = "TrangThai")
+    @Enumerated(EnumType.STRING)
     private Status trangThai;
 
     @Column(name = "MucTraHoaHong", precision = 5, scale = 2)

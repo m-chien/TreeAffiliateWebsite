@@ -25,7 +25,7 @@ public class GlobalExceptionHandle {
                 .badRequest()
                 .body(ApiResponse.builder()
                         .code(400)
-                        .message(ex.getMessage())
+                        .message(ex.toString())
                         .build());
     }
 

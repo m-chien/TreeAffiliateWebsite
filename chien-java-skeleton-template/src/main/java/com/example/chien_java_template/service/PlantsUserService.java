@@ -35,7 +35,7 @@ public class PlantsUserService {
         }
         PlantsUser plantsUser = plantsUserMapper.toEntityFromCreateDTO(createPlantsUserDTO);
         plantsUser.setMatKhau(passwordEncoder.encode(createPlantsUserDTO.getMatKhau()));
-        plantsUser.setTrangThai(Status.Active);
+        plantsUser.setTrangThai(Status.ACTIVE);
         plantsUser.setVaiTro(UserRole.User);
         PlantsUser savedPlantsUser = plantsUserRepository.save(plantsUser);
         return plantsUserMapper.toDTO(savedPlantsUser);
@@ -88,4 +88,3 @@ public class PlantsUserService {
         plantsUserRepository.save(plantsUser);
     }
 }
-
