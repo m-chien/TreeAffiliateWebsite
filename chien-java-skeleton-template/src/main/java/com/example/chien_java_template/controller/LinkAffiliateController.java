@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/link-affiliate")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class LinkAffiliateController {
     private final LinkAffiliateService linkAffiliateService;
 

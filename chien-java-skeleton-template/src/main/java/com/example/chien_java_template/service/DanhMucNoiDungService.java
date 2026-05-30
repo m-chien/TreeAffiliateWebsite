@@ -57,5 +57,9 @@ public class DanhMucNoiDungService {
         }
         danhMucNoiDungRepository.deleteById(id);
     }
+
+    public List<DanhMucNoiDungDTO> getAllCategoriesWithCount() {
+        return danhMucNoiDungRepository.findAllWithArticleCount();
+    }
 }
 

@@ -1,32 +1,118 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Calendar, User, ShoppingBag, ArrowRight, Mail, Layout, Leaf, Sprout } from "lucide-react";
 import { motion } from "framer-motion";
-import { mockBlogPosts } from "../data/blogData";
+import axios from "axios";
 import "./BlogListingPage.css";
 
-const BlogListingPage = () => {
+// --- ĐỊNH NGHĨA KIỂU DỮ LIỆU TỪ BACKEND ---
+interface BaiViet {
+  id: number;
+  tieuDe: string;
+  trichDoan?: string;
+  noiDung: string;
+  tenTacGia: string;
+  tenDanhMuc: string;
+  ngayTao: string;
+  anhDaiDien: string;
+}
+
+interface DanhMuc {
+  id: number;
+  tenDanhMuc: string;
+  soLuongBaiViet: number;
+}
+
+const BlogListingPage: React.FC = () => {
+  // --- STATE QUẢN LÝ DỮ LIỆU TỪ API ---
+  const [posts, setPosts] = useState<BaiViet[]>([]);
+  const [recentPosts, setRecentPosts] = useState<BaiViet[]>([]);
+  const [categoriesDb, setCategoriesDb] = useState<DanhMuc[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  // --- STATE QUẢN LÝ UI ---
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 4;
 
-  // Filter Logic
-  const filteredPosts = mockBlogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = activeCategory === "All" || post.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
+  // 1. Lấy danh sách Danh mục và Bài viết mới nhất (Chỉ gọi 1 lần khi load trang)
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [catRes, recentRes] = await Promise.all([
+          // Gọi danh mục nội dung (Nếu bạn chưa tạo hàm /with-count, hãy gọi tạm API gốc này)
+          axios.get("http://localhost:8080/api/v1/danh-muc-noi-dung"),
+          // Gọi đúng API /newest của bạn
+          axios.get("http://localhost:8080/api/v1/bai-viet/newest?page=0&size=5")
+        ]);
+        
+        // Backend của bạn có thể trả về Page cho danh mục, dùng content để lấy mảng
+        setCategoriesDb(catRes.data.result.content || catRes.data.result || []);
+        // API newest của bạn trả về kiểu Page, nên phải chọc vào .content
+        setRecentPosts(recentRes.data.result.content || []);
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu ban đầu:", error);
+      }
+    };
+    fetchInitialData();
+  }, []);
 
-  // Pagination Logic
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  // 2. Lấy danh sách Bài viết (Gọi đúng API search và category của bạn)
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        let url = "http://localhost:8080/api/v1/bai-viet";
+        let params: any = {
+          page: currentPage - 1,
+          size: postsPerPage
+        };
 
-  const categories = ["All", "Top List", "Guides", "Phong Thủy"];
+        // Nếu người dùng có gõ tìm kiếm -> Dùng API /search của bạn
+        if (searchTerm) {
+          url = "http://localhost:8080/api/v1/bai-viet/search";
+          params.tieuDe = searchTerm; // Tên tham số khớp với Java của bạn
+        } 
+        // Nếu người dùng chọn danh mục -> Dùng API /category/{categoryId} của bạn
+        else if (activeCategory !== "All") {
+          const categoryId = categoriesDb.find(c => c.tenDanhMuc === activeCategory)?.id;
+          if (categoryId) {
+            url = `http://localhost:8080/api/v1/bai-viet/category/${categoryId}`;
+          }
+        }
 
-  const featuredPost = mockBlogPosts.find(p => p.featured);
+        const res = await axios.get(url, { params });
+        const data = res.data.result;
+        
+        setPosts(data.content || []);
+        setTotalPages(data.totalPages || 1);
+      } catch (error) {
+        console.error("Lỗi khi tải bài viết:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      fetchPosts();
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [currentPage, searchTerm, activeCategory, categoriesDb]);
+
+  // Tạo mảng tên danh mục cho filter tabs (Thêm chữ "All" lên đầu)
+  const categoryTabs = ["All", ...categoriesDb.map(cat => cat.tenDanhMuc)];
+
+  // Lấy bài viết đầu tiên làm bài nổi bật (Featured Post)
+  const featuredPost = posts.length > 0 ? posts[0] : null;
+
+  // Hàm format ngày giờ từ Backend
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: 'numeric' });
+  };
 
   return (
     <div className="blog-listing-page">
@@ -70,11 +156,14 @@ const BlogListingPage = () => {
                 placeholder="Tìm kiếm bài viết..." 
                 className="search-input"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
+                }}
               />
             </div>
             <div className="category-filters">
-              {categories.map(cat => (
+              {categoryTabs.map(cat => (
                 <button 
                   key={cat}
                   className={`filter-btn ${activeCategory === cat ? "active" : ""}`}
@@ -91,7 +180,7 @@ const BlogListingPage = () => {
         </header>
 
         {/* Featured Post (Only show if on page 1 and no search/category filter active) */}
-        {currentPage === 1 && activeCategory === "All" && searchTerm === "" && featuredPost && (
+        {currentPage === 1 && activeCategory === "All" && searchTerm === "" && featuredPost && !loading && (
           <section className="featured-post">
             <motion.div 
               className="featured-card"
@@ -100,15 +189,18 @@ const BlogListingPage = () => {
               transition={{ duration: 0.8 }}
             >
               <div className="featured-image">
-                <img src={featuredPost.image} alt={featuredPost.title} />
+                {/* Thay đường dẫn /assets/images/ bằng nơi bạn lưu ảnh thực tế */}
+                <img src={`/assets/images/${featuredPost.anhDaiDien}`} alt={featuredPost.tieuDe} />
               </div>
               <div className="featured-content">
-                <span className="post-category">{featuredPost.category}</span>
-                <h2>{featuredPost.title}</h2>
-                <p className="post-excerpt">{featuredPost.excerpt}</p>
+                <span className="post-category">{featuredPost.tenDanhMuc}</span>
+                <h2>{featuredPost.tieuDe}</h2>
+                <p className="post-excerpt">
+                  {featuredPost.trichDoan || (featuredPost.noiDung ? featuredPost.noiDung.substring(0, 150) + '...' : 'Đang cập nhật nội dung...')}
+                </p>
                 <div className="post-meta">
-                  <span><User size={14} /> {featuredPost.author}</span>
-                  <span><Calendar size={14} /> {featuredPost.date}</span>
+                  <span><User size={14} /> {featuredPost.tenTacGia}</span>
+                  <span><Calendar size={14} /> {formatDate(featuredPost.ngayTao)}</span>
                 </div>
                 <Link to={`/blog/${featuredPost.id}`} className="read-more-btn" style={{display: 'inline-block', textDecoration: 'none'}}>Đọc tiếp <ArrowRight size={18} style={{marginLeft: '8px', verticalAlign: 'middle'}} /></Link>
               </div>
@@ -119,58 +211,66 @@ const BlogListingPage = () => {
         {/* Main Content Layout */}
         <div className="blog-content-layout">
           <main className="blog-posts-main">
-            <div className="post-grid">
-              {currentPosts.map((post, index) => (
-                <motion.article 
-                  key={post.id} 
-                  className="post-card"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div className="card-image">
-                    <img src={post.image} alt={post.title} />
-                  </div>
-                  <div className="card-content">
-                    <span className="post-category">{post.category}</span>
-                    <h3>{post.title}</h3>
-                    <p className="post-excerpt">{post.excerpt.substring(0, 100)}...</p>
-                    <div className="post-meta">
-                      <span>{post.date}</span>
-                    </div>
-                    <Link to={`/blog/${post.id}`} className="read-more-btn" style={{display: 'inline-block', textDecoration: 'none', padding: '0.6rem 1.2rem', fontSize: '0.9rem'}}>Đọc thêm</Link>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
+            {loading ? (
+              <div style={{ textAlign: "center", padding: "2rem" }}>Đang tải bài viết...</div>
+            ) : (
+              <>
+                <div className="post-grid">
+                  {posts.map((post, index) => (
+                    <motion.article 
+                      key={post.id} 
+                      className="post-card"
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <div className="card-image">
+                        <img src={`/assets/images/${post.anhDaiDien}`} alt={post.tieuDe} />
+                      </div>
+                      <div className="card-content">
+                        <span className="post-category">{post.tenDanhMuc}</span>
+                        <h3>{post.tieuDe}</h3>
+                        <p className="post-excerpt">
+                          {post.trichDoan || (post.noiDung ? post.noiDung.substring(0, 100) + '...' : 'Đang cập nhật nội dung...')}
+                        </p>
+                        <div className="post-meta">
+                          <span>{formatDate(post.ngayTao)}</span>
+                        </div>
+                        <Link to={`/blog/${post.id}`} className="read-more-btn" style={{display: 'inline-block', textDecoration: 'none', padding: '0.6rem 1.2rem', fontSize: '0.9rem'}}>Đọc thêm</Link>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="pagination">
-                <button 
-                  className="page-btn page-arrow" 
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(prev => prev - 1)}
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                {[...Array(totalPages)].map((_, i) => (
-                  <button 
-                    key={i} 
-                    className={`page-btn ${currentPage === i + 1 ? "active" : ""}`}
-                    onClick={() => setCurrentPage(i + 1)}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-                <button 
-                  className="page-btn page-arrow" 
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(prev => prev + 1)}
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </div>
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="pagination">
+                    <button 
+                      className="page-btn page-arrow" 
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => prev - 1)}
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    {[...Array(totalPages)].map((_, i) => (
+                      <button 
+                        key={i} 
+                        className={`page-btn ${currentPage === i + 1 ? "active" : ""}`}
+                        onClick={() => setCurrentPage(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                    <button 
+                      className="page-btn page-arrow" 
+                      disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage(prev => prev + 1)}
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </main>
 
@@ -179,14 +279,14 @@ const BlogListingPage = () => {
             <div className="sidebar-widget">
               <h4>Mới cập nhật</h4>
               <div className="latest-posts-list">
-                {mockBlogPosts.slice(0, 3).map(post => (
+                {recentPosts.slice(0, 3).map(post => (
                   <div key={post.id} className="small-post-item">
                     <div className="small-img">
-                      <img src={post.image} alt={post.title} />
+                      <img src={`/assets/images/${post.anhDaiDien}`} alt={post.tieuDe} />
                     </div>
                     <div className="small-info">
-                      <h5>{post.title}</h5>
-                      <span>{post.date}</span>
+                      <h5>{post.tieuDe}</h5>
+                      <span>{formatDate(post.ngayTao)}</span>
                     </div>
                   </div>
                 ))}
@@ -211,26 +311,17 @@ const BlogListingPage = () => {
             <p>Tìm kiếm cảm hứng qua các chuyên mục được yêu thích nhất của chúng tôi.</p>
           </div>
           <div className="category-grid">
-            <div className="category-card-alt">
-              <div className="cat-icon-wrap">🪴</div>
-              <h4>Chăm Sóc Cơ Bản</h4>
-              <span>24 Bài viết</span>
-            </div>
-            <div className="category-card-alt">
-              <div className="cat-icon-wrap">✨</div>
-              <h4>Phong Thủy Cây Cảnh</h4>
-              <span>18 Bài viết</span>
-            </div>
-            <div className="category-card-alt">
-              <div className="cat-icon-wrap">🏆</div>
-              <h4>Top List Chọn Lọc</h4>
-              <span>12 Bài viết</span>
-            </div>
-            <div className="category-card-alt">
-              <div className="cat-icon-wrap">🍃</div>
-              <h4>Xu Hướng 2026</h4>
-              <span>15 Bài viết</span>
-            </div>
+            {categoriesDb.slice(0, 4).map((cat, idx) => {
+              // Gán icon ngẫu nhiên cho đẹp mắt
+              const icons = ["🪴", "✨", "🏆", "🍃"];
+              return (
+                <div key={cat.id} className="category-card-alt">
+                  <div className="cat-icon-wrap">{icons[idx % 4]}</div>
+                  <h4>{cat.tenDanhMuc}</h4>
+                  <span>{cat.soLuongBaiViet} Bài viết</span>
+                </div>
+              );
+            })}
           </div>
         </section>
 

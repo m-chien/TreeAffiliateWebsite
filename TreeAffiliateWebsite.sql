@@ -474,3 +474,13 @@ SELECT * FROM CayCanh;
 SELECT * FROM HuongDanChamSoc;
 SELECT * FROM LinkAffiliate;
 SELECT * FROM AffiliateOrder;
+SELECT * FROM BaiViet;
+select * from Anh;
+select * from DanhMucNoiDung;
+UPDATE [User] 
+SET vaitro = 'ADMIN' 
+WHERE vaitro = 'Admin';
+
+UPDATE [User] 
+SET vaitro = 'USER' 
+WHERE vaitro = 'User';
