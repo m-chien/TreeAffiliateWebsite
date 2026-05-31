@@ -3,12 +3,12 @@ package com.example.chien_java_template.controller;
 import com.example.chien_java_template.dto.CreateCayCanhDTO;
 import com.example.chien_java_template.dto.UpdateCayCanhDTO;
 import com.example.chien_java_template.dto.CayCanhDTO;
+import com.example.chien_java_template.dto.request.UpdatePlantDetailsRequest;
 import com.example.chien_java_template.enums.Status;
 import com.example.chien_java_template.exception.ApiResponse;
 import com.example.chien_java_template.service.CayCanhService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,5 +112,15 @@ public class CayCanhController {
                 .message("Xóa cây cảnh thành công")
                 .build());
     }
-}
 
+    @PutMapping("/{id}/details")
+    public ResponseEntity<ApiResponse<Void>> updatePlantDetails(
+            @PathVariable Integer id,
+            @RequestBody UpdatePlantDetailsRequest request) {
+        cayCanhService.updatePlantDetails(id, request);
+        return ResponseEntity.ok(ApiResponse.<Void>builder()
+                .code(200)
+                .message("Lưu tất cả thông số phụ của cây cảnh thành công")
+                .build());
+    }
+}

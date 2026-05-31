@@ -169,3 +169,25 @@ export interface ManagedReview {
   imageUrl?: string;
   status: "Approved" | "Pending";
 }
+export interface HuongDanChamSocRequest {
+  anhSang: string;
+  cheDoNuoc: string;
+  datVaDinhDuong: string;
+  doAnToan: string;
+}
+
+export interface ThongTinNoiBatRequest {
+  loai: string;
+  noiDung: string;
+}
+
+export interface CauHoiThuongGapRequest {
+  cauHoi: string;
+  cauTraLoi: string;
+}
+
+export interface UpdatePlantDetailsRequest {
+  huongDanChamSoc: HuongDanChamSocRequest;
+  thongTinNoiBat: ThongTinNoiBatRequest[];
+  cauHoiThuongGap: CauHoiThuongGapRequest[];
+}

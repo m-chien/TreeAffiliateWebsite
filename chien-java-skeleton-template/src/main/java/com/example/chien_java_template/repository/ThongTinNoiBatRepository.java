@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThongTinNoiBatRepository extends JpaRepository<ThongTinNoiBat, Integer> {
     Page<ThongTinNoiBat> findByCayCanhId(Integer cayCanhId, Pageable pageable);
+    void deleteByCayCanhId(Integer cayCanhId);
 }
 
