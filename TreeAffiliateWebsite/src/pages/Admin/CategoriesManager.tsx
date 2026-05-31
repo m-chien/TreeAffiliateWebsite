@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Edit2, Trash2, FolderTree, FolderPlus, Layers, Package, FileText, Plus } from 'lucide-react';
 import styles from './CategoriesManager.module.css';
 import modalStyles from './AdminModal.module.css';
-import { managedCategories as initialCategories } from '../../data/adminData';
 import type { ManagedCategory } from '../../types';
 import AdminModal from './AdminModal';
 
 const CategoriesManager: React.FC = () => {
-  const [categories, setCategories] = useState<ManagedCategory[]>(initialCategories);
+  const [categories, setCategories] = useState<ManagedCategory[]>([]);
   
   // Left form state
   const [newName, setNewName] = useState('');
@@ -22,22 +22,60 @@ const CategoriesManager: React.FC = () => {
   const [editName, setEditName] = useState('');
   const [editType, setEditType] = useState<'Sản phẩm' | 'Bài viết'>('Sản phẩm');
 
+  const fetchCategories = async () => {
+    try {
+      const [productRes, articleRes] = await Promise.all([
+        axios.get("http://localhost:8080/api/v1/danh-muc-cay-canh?size=100"),
+        axios.get("http://localhost:8080/api/v1/danh-muc-noi-dung/with-count")
+      ]);
+
+      const productCats = productRes.data?.result?.content || [];
+      const articleCats = articleRes.data?.result || []; 
+
+      const mappedProductCats: ManagedCategory[] = productCats.map((c: any) => ({
+        id: c.id.toString(),
+        name: c.tenDanhMuc,
+        type: 'Sản phẩm',
+        itemCount: 0 
+      }));
+
+      const mappedArticleCats: ManagedCategory[] = articleCats.map((c: any) => ({
+        id: c.id.toString(),
+        name: c.tenDanhMuc,
+        type: 'Bài viết',
+        itemCount: c.soLuongBaiViet || 0
+      }));
+
+      setCategories([...mappedProductCats, ...mappedArticleCats]);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách danh mục", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   // Data Metrics
   const totalCategories = categories.length;
   const productCategoriesCount = categories.filter(c => c.type === 'Sản phẩm').length;
   const articleCategoriesCount = categories.filter(c => c.type === 'Bài viết').length;
   const maxItems = Math.max(...categories.map(c => c.itemCount), 1); // Avoid division by zero
 
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     if (!newName.trim()) return;
-    const newCat: ManagedCategory = {
-      id: Date.now().toString(),
-      name: newName,
-      type: newType,
-      itemCount: 0
-    };
-    setCategories([...categories, newCat]);
-    setNewName('');
+    try {
+      if (newType === 'Sản phẩm') {
+        await axios.post("http://localhost:8080/api/v1/danh-muc-cay-canh", { tenDanhMuc: newName });
+      } else {
+        await axios.post("http://localhost:8080/api/v1/danh-muc-noi-dung", { tenDanhMuc: newName });
+      }
+      setNewName('');
+      fetchCategories();
+    } catch (error) {
+      console.error("Lỗi khi thêm danh mục", error);
+      alert("Có lỗi xảy ra khi thêm danh mục!");
+    }
   };
 
   const openEditModal = (cat: ManagedCategory) => {
@@ -52,20 +90,42 @@ const CategoriesManager: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!selectedCat || !editName.trim()) return;
-    setCategories(categories.map(c => 
-      c.id === selectedCat.id 
-        ? { ...c, name: editName, type: editType }
-        : c
-    ));
-    setIsEditModalOpen(false);
+    
+    if (editType !== selectedCat.type) {
+      alert("Không thể đổi phân loại của danh mục sau khi tạo. Vui lòng tạo danh mục mới.");
+      return;
+    }
+
+    try {
+      if (selectedCat.type === 'Sản phẩm') {
+        await axios.put(`http://localhost:8080/api/v1/danh-muc-cay-canh/${selectedCat.id}`, { tenDanhMuc: editName });
+      } else {
+        await axios.put(`http://localhost:8080/api/v1/danh-muc-noi-dung/${selectedCat.id}`, { tenDanhMuc: editName });
+      }
+      setIsEditModalOpen(false);
+      fetchCategories();
+    } catch (error) {
+      console.error("Lỗi khi cập nhật danh mục", error);
+      alert("Có lỗi xảy ra khi cập nhật danh mục!");
+    }
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!selectedCat) return;
-    setCategories(categories.filter(c => c.id !== selectedCat.id));
-    setIsDeleteModalOpen(false);
+    try {
+      if (selectedCat.type === 'Sản phẩm') {
+        await axios.delete(`http://localhost:8080/api/v1/danh-muc-cay-canh/${selectedCat.id}`);
+      } else {
+        await axios.delete(`http://localhost:8080/api/v1/danh-muc-noi-dung/${selectedCat.id}`);
+      }
+      setIsDeleteModalOpen(false);
+      fetchCategories();
+    } catch (error) {
+      console.error("Lỗi khi xóa danh mục", error);
+      alert("Có lỗi xảy ra khi xóa danh mục (Có thể danh mục đang chứa dữ liệu)!");
+    }
   };
 
   return (
