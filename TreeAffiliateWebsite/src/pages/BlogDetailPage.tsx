@@ -1,22 +1,127 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, Calendar, ShoppingBag, Eye, List, ThumbsUp, User, Clock, CheckCircle2, Heart, Share2, Info } from 'lucide-react';
-import { mockBlogPosts } from '../data/blogData';
+import axios from 'axios';
 import EmailSubscriptionModal from '../components/EmailSubscriptionModal';
 import './BlogDetailPage.css';
+
+// --- ĐỊNH NGHĨA KIỂU DỮ LIỆU TỪ BACKEND ---
+interface BaiVietDetail {
+  id: number;
+  tieuDe: string;
+  noiDung: string;
+  tenTacGia: string;
+  tenDanhMuc: string;
+  ngayTao: string;
+  anhDaiDien: string;
+  luotXem: number;
+  thoiGianDoc: number;
+}
 
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const article = id && id !== '1' ? mockBlogPosts.find(p => p.id.toString() === id.toString()) : mockBlogPosts[0];
+  
+  // --- STATE LƯU DỮ LIỆU THẬT TỪ API ---
+  const [post, setPost] = useState<BaiVietDetail | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BaiVietDetail[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // --- STATE MỚI CHO TÍNH NĂNG TƯƠNG TÁC ---
+  const [isSaved, setIsSaved] = useState(false);
+  const [toc, setToc] = useState<{ id: string, text: string }[]>([]);
+
+  // Cuộn lên đầu trang và gọi API khi đổi bài viết
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const fetchDetailData = async () => {
+      setLoading(true);
+      try {
+        const detailRes = await axios.get(`http://localhost:8080/api/v1/bai-viet/chi-tiet/${id}`);
+        setPost(detailRes.data.result);
+
+        const relatedRes = await axios.get(`http://localhost:8080/api/v1/bai-viet/newest?page=0&size=4`);
+        setRelatedPosts(relatedRes.data.result.content || []);
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu chi tiết:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchDetailData();
+    }
   }, [id]);
 
-  if (!article) {
-    return <div style={{padding: '120px', textAlign: 'center'}}>Bài viết không tồn tại.</div>;
+  // --- TỰ ĐỘNG TẠO MỤC LỤC VÀ KIỂM TRA TRẠNG THÁI LƯU ---
+  useEffect(() => {
+    if (post) {
+      // Dùng setTimeout chờ 100ms để HTML kịp render ra màn hình
+      setTimeout(() => {
+        const headings = document.querySelectorAll('.post-content-html h3');
+        const tocItems = Array.from(headings).map((h, index) => {
+          const headingId = `heading-${index}`;
+          h.id = headingId; 
+          return { id: headingId, text: (h as HTMLElement).innerText };
+        });
+        setToc(tocItems);
+      }, 100);
+
+      // Kiểm tra xem bài đã lưu trong localStorage chưa
+      const savedFavorites = JSON.parse(localStorage.getItem('favorite_posts') || '[]');
+      const isExist = savedFavorites.some((p: any) => p.id === post.id);
+      setIsSaved(isExist);
+    }
+  }, [post]);
+
+  // --- HÀM XỬ LÝ LƯU CẨM NANG ---
+  const handleToggleSave = () => {
+    if (!post) return;
+    
+    let savedFavorites = JSON.parse(localStorage.getItem('favorite_posts') || '[]');
+
+    if (isSaved) {
+      // Nếu đã lưu thì xóa đi
+      savedFavorites = savedFavorites.filter((p: any) => p.id !== post.id);
+      alert("Đã bỏ lưu cẩm nang!");
+    } else {
+      // Nếu chưa lưu thì thêm vào
+      const newFavorite = {
+        id: post.id,
+        tieuDe: post.tieuDe,
+        anhDaiDien: post.anhDaiDien,
+        tenDanhMuc: post.tenDanhMuc,
+        ngayTao: post.ngayTao
+      };
+      savedFavorites.push(newFavorite);
+      alert("Đã lưu cẩm nang vào Danh Sách Yêu Thích!");
+    }
+
+    localStorage.setItem('favorite_posts', JSON.stringify(savedFavorites));
+    setIsSaved(!isSaved);
+  };
+
+  // --- HÀM XỬ LÝ CHIA SẺ ---
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Đã sao chép đường dẫn bài viết!");
+  };
+
+  // Hàm format ngày từ Backend
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: 'numeric' });
+  };
+
+  if (loading) {
+    return <div style={{padding: '120px', textAlign: 'center', fontSize: '1.2rem'}}>Đang tải dữ liệu bài viết...</div>;
+  }
+
+  if (!post) {
+    return <div style={{padding: '120px', textAlign: 'center', fontSize: '1.2rem'}}>Bài viết không tồn tại.</div>;
   }
 
   return (
@@ -28,12 +133,12 @@ const BlogDetailPage = () => {
           <ChevronRight size={14} />
           <Link to="/blog">Hiểu Biết & Cẩm Nang</Link>
           <ChevronRight size={14} />
-          <Link to={`/category`}>{article.category}</Link>
+          <Link to={`/blog`}>{post.tenDanhMuc}</Link>
         </div>
       </div>
 
       {/* Massive Hero Section */}
-      <div className="article-hero" style={{ backgroundImage: `url(${article.image || '/public/images/cay1.png'})` }}>
+      <div className="article-hero" style={{ backgroundImage: `url(/images/${post.anhDaiDien})` }}>
         <div className="hero-overlay"></div>
         <motion.div 
           className="hero-content-page"
@@ -41,13 +146,13 @@ const BlogDetailPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="hero-category">{article.category}</span>
-          <h1>{article.title}</h1>
+          <span className="hero-category">{post.tenDanhMuc}</span>
+          <h1>{post.tieuDe}</h1>
           <div className="hero-meta">
-            <div className="meta-item"><User size={16} /> <span>{article.author}</span></div>
-            <div className="meta-item"><Calendar size={16} /> <span>{article.date}</span></div>
-            <div className="meta-item"><Eye size={16} /> <span>12.5K Lượt xem</span></div>
-            <div className="meta-item"><Clock size={16} /> <span>5 phút đọc</span></div>
+            <div className="meta-item"><User size={16} /> <span>{post.tenTacGia}</span></div>
+            <div className="meta-item"><Calendar size={16} /> <span>{formatDate(post.ngayTao)}</span></div>
+            <div className="meta-item"><Eye size={16} /> <span>{post.luotXem || 0} Lượt xem</span></div>
+            <div className="meta-item"><Clock size={16} /> <span>{post.thoiGianDoc || 5} phút đọc</span></div>
           </div>
         </motion.div>
       </div>
@@ -60,12 +165,14 @@ const BlogDetailPage = () => {
           <div className="sticky-wrapper">
              {/* Author Card */}
              <div className="widget-card author-profile">
-               <div className="author-large-avatar">{article.author.charAt(0)}</div>
-               <h4 className="author-name">{article.author}</h4>
+               <div className="author-large-avatar">{post.tenTacGia.charAt(0).toUpperCase()}</div>
+               <h4 className="author-name">{post.tenTacGia}</h4>
                <p className="author-bio">Chuyên gia thực vật học nội thất với hơn 5 năm kinh nghiệm setup không gian xanh cho hơn 100+ văn phòng.</p>
                <div className="author-socials">
-                 <button className="social-btn" onClick={() => setIsModalOpen(true)} title="Yêu thích"><Heart size={16}/></button>
-                 <button className="social-btn"><Share2 size={16}/></button>
+                 <button className="social-btn" onClick={handleToggleSave} title="Yêu thích">
+                   <Heart size={16} fill={isSaved ? "#E76F51" : "none"} color={isSaved ? "#E76F51" : "currentColor"}/>
+                 </button>
+                 <button className="social-btn" onClick={handleShare}><Share2 size={16}/></button>
                </div>
              </div>
 
@@ -73,11 +180,19 @@ const BlogDetailPage = () => {
              <div className="widget-card">
                <h3 className="widget-title"><List size={18} color="#c86c42" /> Mục Lục</h3>
                <ul className="toc-list">
-                 <li className="active"><a href="#">Giới thiệu chung</a></li>
-                 <li><a href="#">1. Tâm lý chưng cây hiện đại</a></li>
-                 <li><a href="#">2. Yêu cầu ánh sáng & độ ẩm</a></li>
-                 <li><a href="#">3. Các mẹo trộn đất (Bí quyết)</a></li>
-                 <li><a href="#">4. Lời khuyên kết luận</a></li>
+                 <li><a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); }}>Giới thiệu chung</a></li>
+                 {toc.length > 0 ? (
+                   toc.map(item => (
+                     <li key={item.id}>
+                       <a href={`#${item.id}`} onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                       }}>{item.text.replace('✓', '').trim()}</a>
+                     </li>
+                   ))
+                 ) : (
+                   <li><span style={{color: '#999', fontSize: '0.9rem'}}>Chưa có mục lục</span></li>
+                 )}
                </ul>
              </div>
 
@@ -85,8 +200,11 @@ const BlogDetailPage = () => {
              <div className="widget-card">
                  <h3 className="widget-title">Hành động</h3>
                  <div className="share-links">
-                   <button className="share-btn"><Share2 size={16}/> Chia sẻ</button>
-                   <button className="share-btn" onClick={() => setIsModalOpen(true)}><Heart size={16} color="#c86c42"/> Lưu Cẩm Nang</button>
+                   <button className="share-btn" onClick={handleShare}><Share2 size={16}/> Chia sẻ</button>
+                   <button className="share-btn" onClick={handleToggleSave}>
+                     <Heart size={16} fill={isSaved ? "#c86c42" : "none"} color="#c86c42"/> 
+                     {isSaved ? "Đã lưu Cẩm Nang" : "Lưu Cẩm Nang"}
+                   </button>
                  </div>
              </div>
           </div>
@@ -95,44 +213,27 @@ const BlogDetailPage = () => {
         {/* CENTER COLUMN: Main Content */}
         <main className="article-main">
           <div className="article-content">
-            <p>{article.excerpt} Thật vậy, việc lựa chọn đúng loại cây không chỉ mang lại giá trị thẩm mỹ phi thường mà còn cải thiện phong thủy và năng lượng cá nhân một cách đáng kinh ngạc. Hãy cùng chúng tôi đào sâu vào chi tiết.</p>
             
-            <div className="info-box">
-               <Info size={24} />
-               <p><strong>Lưu ý chuyên gia:</strong> Các dòng cây {article.category} thường khá nhạy cảm với việc tưới dư nước. Yếu tố hàng đầu quyết định sự sinh tồn là một hệ thống đất thoát nước cực tốt!</p>
-            </div>
-
-            <h2><CheckCircle2 color="#c86c42" /> 1. Tại sao {article.title} lại được khao khát?</h2>
-            <p>Trong thời gian gần đây, xu hướng mang thiên nhiên vào không gian sống đang ngày càng phổ biến. Không chỉ mang lại tính thẩm mỹ cao, những loài cây cảnh đặc biệt còn giúp thanh lọc không khí, tạo ra môi trường làm việc và thư giãn vô cùng lý tưởng. Khi nhịp sống đô thị ngày càng ngột ngạt, một góc xanh nhỏ bé cũng đủ để xoa dịu tâm hồn và cân bằng lại trạng thái tinh thần.</p>
-            
-            <img src={article.image || '/public/images/cay1.png'} alt="Main Visual Layout" />
-
-            <p className="custom-quote">"Một chậu cây xanh trong phòng khách không chỉ là điểm nhấn trang trí, mà còn là chiếc máy lọc sinh học tuyệt vời nhất mà thiên nhiên ban tặng cho mọi gia đình."</p>
-
-            <h2><CheckCircle2 color="#c86c42" /> 2. Những quy tắc "Sống Còn" khi chăm sóc</h2>
-            <p>Rất nhiều người đã thất bại trong vòng 1 tuần đầu chỉ vì không tuân thủ các điều kiện sinh quyển cốt lõi. Dưới đây là những nguyên tắc vàng:</p>
-            <ul>
-              <li><strong>Ánh sáng gián tiếp:</strong> Hầu hết các loài cây trong nhà chỉ cần ánh sáng dịu. Đặt chúng gần cửa sổ hướng Đông hoặc Tây. Đừng để nắng gắt buổi trưa thiêu rụi lá.</li>
-              <li><strong>Kiểm soát độ ẩm:</strong> Không phải ném càng nhiều nước càng tốt. Phun sương cho lá mỗi tuần 1 lần để giả lập môi trường nhiệt đới tự nhiên. Chỉ tưới khi lớp đất mặt đã khô hoàn toàn.</li>
-              <li><strong>Cấu trúc Đất nền:</strong> Phải là đất tơi xốp, ưu tiên sử dụng Đá Perlite, Chun nhỏ và lớp xơ dừa băm.</li>
-            </ul>
+            {/* INJECT HTML TỪ DATABASE VÀO ĐÂY */}
+            <div 
+              className="post-content-html" 
+              dangerouslySetInnerHTML={{ __html: post.noiDung }} 
+            />
 
             {/* In-content Affiliate Box - High Conversion */}
-            <div className="affiliate-inline-box">
-              <img src="/public/images/cay3.png" alt="Sản phẩm gợi ý" className="affiliate-inline-img" />
+            <div className="affiliate-inline-box" style={{ marginTop: '40px' }}>
+              <img src="/images/cay3.png" alt="Sản phẩm gợi ý" className="affiliate-inline-img" />
               <div className="affiliate-inline-info">
                 <h4>Combo Đất Trồng Premium + Phân Tan Chậm</h4>
                 <p>Giải pháp tối ưu nhổ rễ chứng "Úng nước" khiến 90% cây chết. Công thức độc quyền đã được pha trộn sẵn tỉ lệ vàng giữa Mùn, Đá Perlite và Phân Hữu cơ vi sinh.</p>
-                <a href="#" className="btn-buy-inline">
+                <Link to="/category" className="btn-buy-inline">
                   <ShoppingBag size={18} /> Mua Chính Hãng Trên Shopee (Freeship)
-                </a>
+                </Link>
               </div>
             </div>
 
-            <h2><CheckCircle2 color="#c86c42" /> 3. Lời kết</h2>
-            <p>Việc chăm cây cảnh không đòi hỏi quá nhiều kỹ thuật phức tạp nếu bạn thực sự thấu hiểu nhu cầu tự nhiên của chúng. Đừng ngần ngại sắm ngay một chậu cây để tự mình trải nghiệm năng lượng tích cực mà nó mang lại. Khởi đầu luôn gian nan, nhưng một khi chúng bung chiếc lá mới đầu tiên, đó là phần thưởng vô giá.</p>
-
-            <div className="article-tags">
+            {/* Tags bài viết */}
+            <div className="article-tags" style={{ marginTop: '30px' }}>
               <span className="tag">cây văn phòng</span>
               <span className="tag">mẹo chăm sóc</span>
               <span className="tag">cây thanh lọc không khí</span>
@@ -146,34 +247,34 @@ const BlogDetailPage = () => {
           <div className="sticky-wrapper">
              {/* Sticky Premium Affiliate Banner */}
              <div className="affiliate-widget">
-               <img src="/public/images/cay4.png" alt="Khuyến mãi" className="affiliate-widget-img" />
+               <img src="/images/cay4.png" alt="Khuyến mãi" className="affiliate-widget-img" />
                <h4>Săn Deal Giảm Giá Cây Sân Vườn Đặc Biệt</h4>
                <p>Chỉ áp dụng mã <strong>PLANTSVN20</strong> hôm nay để được khấu trừ thẳng 20% đơn hàng tại hệ thống kho đối tác.</p>
-               <a href="#" className="btn-widget">Đến Kho Vườn Shopee</a>
+               <Link to="/category" className="btn-widget">Đến Kho Vườn Shopee</Link>
              </div>
 
              {/* Top Rated Products Widget */}
              <div className="widget-card">
                 <h3 className="widget-title"><ThumbsUp size={18} color="#c86c42"/> Phụ Kiện Bán Chạy</h3>
                 <div className="products-list-item">
-                   <img src="/public/images/cay2.png" className="product-widget-img" alt="prod"/>
+                   <img src="/images/cay2.png" className="product-widget-img" alt="prod"/>
                    <div className="product-widget-info">
                       <h5>Chậu Gốm Sứ Bắc Âu Trắng</h5>
-                      <a href="#">Mua Giá 120k →</a>
+                      <Link to="/category">Mua Giá 120k →</Link>
                    </div>
                 </div>
                 <div className="products-list-item">
-                   <img src="/public/images/cay5.png" className="product-widget-img" alt="prod"/>
+                   <img src="/images/cay5.png" className="product-widget-img" alt="prod"/>
                    <div className="product-widget-info">
                       <h5>Bình xịt phun sương áp lực</h5>
-                      <a href="#">Mua Giá 65k →</a>
+                      <Link to="/san-pham">Mua Giá 65k →</Link>
                    </div>
                 </div>
                 <div className="products-list-item">
-                   <img src="/public/images/cay1.png" className="product-widget-img" alt="prod"/>
+                   <img src="/images/cay1.png" className="product-widget-img" alt="prod"/>
                    <div className="product-widget-info">
                       <h5>Cây con Monstera Đột Biến</h5>
-                      <a href="#">Mua Giá 250k →</a>
+                      <Link to="/category">Mua Giá 250k →</Link>
                    </div>
                 </div>
              </div>
@@ -185,12 +286,12 @@ const BlogDetailPage = () => {
       <section className="related-section">
         <h3 className="related-title"><Clock size={28} color="#c86c42"/> Xem Thêm Bài Viết Mới</h3>
         <div className="related-grid">
-          {mockBlogPosts.slice(1, 5).map(related => (
+          {relatedPosts.map(related => (
             <Link to={`/blog/${related.id}`} key={related.id} className="related-card">
-              <img src={related.image} alt={related.title} className="related-img" />
+              <img src={`/images/${related.anhDaiDien}`} alt={related.tieuDe} className="related-img" />
               <div className="related-info">
-                <h4>{related.title}</h4>
-                <span><Calendar size={14}/> {related.date}</span>
+                <h4>{related.tieuDe}</h4>
+                <span><Calendar size={14}/> {formatDate(related.ngayTao)}</span>
               </div>
             </Link>
           ))}

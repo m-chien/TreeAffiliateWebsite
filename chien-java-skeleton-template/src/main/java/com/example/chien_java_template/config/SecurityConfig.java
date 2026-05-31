@@ -34,32 +34,42 @@ public class SecurityConfig implements WebMvcConfigurer {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                                .csrf(AbstractHttpConfigurer::disable)
-                                .sessionManagement(session -> session
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-                http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/anh/**").permitAll()
-                                .requestMatchers("/users/login").permitAll()
-                                .requestMatchers("/api/v1/auth/login").permitAll()
-                                .requestMatchers("/api/v1/auth/google-login").permitAll()
-                                .requestMatchers("/users/**").permitAll()
-                                .requestMatchers("/api/v1/danh-muc-cay-canh/**").permitAll()// Khanh thêm
-                                .requestMatchers("/api/v1/cay-canh/**").permitAll()// Khanh thêm
-                                .requestMatchers("/api/v1/huong-dan-cham-soc/**").permitAll()// Khanh thêm
-                                .requestMatchers("/api/v1/danh-gia/**").permitAll()// Khanh thêm
-                                .requestMatchers("/api/v1/link-affiliate/**").permitAll()// Khanh thêm
-                                .requestMatchers("/api/v1/thong-tin-noi-bat/**").permitAll()
-                                .requestMatchers("/api/v1/cau-hoi-thuong-gap/**").permitAll()
-                                .requestMatchers("/api/v1/plants-user/**").permitAll()
-                                .requestMatchers("/api/v1/lich-su-tiep-thi/**").permitAll()
-                                .anyRequest().authenticated());
-                http.oauth2ResourceServer(oauth2 -> oauth2
-                                .jwt(jwtConfigurer -> jwtConfigurer
-                                                .decoder(jwtDecoder()))
-                                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                                .accessDeniedHandler(new JwtAccessDeniedHandler()));
-                http.csrf(AbstractHttpConfigurer::disable);
-                return http.build();
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http.authorizeHttpRequests(request ->
+                request.requestMatchers("/api/v1/anh/**").permitAll()
+                        .requestMatchers("/users/login").permitAll()
+                        .requestMatchers("/api/v1/auth/login").permitAll()
+                        .requestMatchers("/api/v1/auth/google-login").permitAll()
+                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/api/v1/danh-muc-cay-canh/**").permitAll()
+                        .requestMatchers("/api/v1/cay-canh/**").permitAll()
+                        .requestMatchers("/api/v1/huong-dan-cham-soc/**").permitAll()
+                        .requestMatchers("/api/v1/danh-gia/**").permitAll()
+                        .requestMatchers("/api/v1/link-affiliate/**").permitAll()
+                        .requestMatchers("/api/v1/thong-tin-noi-bat/**").permitAll()
+                        .requestMatchers("/api/v1/cau-hoi-thuong-gap/**").permitAll()
+
+                        // TuanKhanh
+                        .requestMatchers("/api/v1/plants-user/**").permitAll()
+                        .requestMatchers("/api/v1/lich-su-tiep-thi/**").permitAll()
+
+                        // Trung
+                        .requestMatchers("/api/v1/bai-viet/**").permitAll()
+                        .requestMatchers("/api/v1/danh-muc-noi-dung/**").permitAll()
+
+                        .anyRequest().authenticated());
+
+        http.oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwtConfigurer -> jwtConfigurer
+                        .decoder(jwtDecoder()))
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .accessDeniedHandler(new JwtAccessDeniedHandler()));
+
+        return http.build();
         }
 
         @Bean

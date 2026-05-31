@@ -474,3 +474,415 @@ SELECT * FROM CayCanh;
 SELECT * FROM HuongDanChamSoc;
 SELECT * FROM LinkAffiliate;
 SELECT * FROM AffiliateOrder;
+SELECT * FROM BaiViet;
+select * from Anh;
+select * from Anh_BaiViet;
+select * from BaiViet_CayCanh;
+select * from BaiViet_LinkAffiliate;
+select * from DanhMucNoiDung;
+
+-- Chỉnh lại cho đúng với tên đặt trong UseRole của backend
+UPDATE [User] 
+SET vaitro = 'ADMIN' 
+WHERE vaitro = 'Admin';
+
+UPDATE [User] 
+SET vaitro = 'USER' 
+WHERE vaitro = 'User';
+
+-- Chỉnh sửa đường dẫn ảnh cho đúng với tên ảnh trong thư mục Images
+UPDATE Anh SET LinkAnh = 'kimtien.png' WHERE ID = 1;
+UPDATE Anh SET LinkAnh = 'luoiho.png' WHERE ID = 2;
+UPDATE Anh SET LinkAnh = 'monstera.png' WHERE ID = 3;
+UPDATE Anh SET LinkAnh = 'senda.png' WHERE ID = 4;
+UPDATE Anh SET LinkAnh = 'cay1.png' WHERE ID = 5;
+UPDATE Anh SET LinkAnh = 'cay2.png' WHERE ID = 6;
+UPDATE Anh SET LinkAnh = 'cay3.png' WHERE ID = 7;
+UPDATE Anh SET LinkAnh = 'cay4.png' WHERE ID = 8;
+
+--Cập nhận nội dung của bài viết
+--ID1
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Không gian sống của bạn đang bị "ngộp thở" bởi bụi mịn và các hợp chất độc hại?</strong> Đã đến lúc mang thiên nhiên vào nhà. Không chỉ là vật trang trí, 10 loại cây dưới đây được NASA và các chuyên gia môi trường mệnh danh là "những chiếc máy lọc sinh học" quyền năng nhất, giúp thanh lọc không khí và mang lại nguồn sống tươi mới cho gia đình bạn.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lưu ý chuyên gia:</strong> Để phát huy khả năng lọc không khí tốt nhất, hãy lau bụi trên lá cây hàng tuần. Một chiếc lá sạch sẽ hấp thụ bụi mịn và độc tố hiệu quả hơn gấp đôi so với lá bám bụi.
+</blockquote>
+
+<h3>1. Tại sao "Top 10 cây lọc khí" lại là xu hướng tất yếu năm 2026?</h3>
+<p>Trong môi trường đô thị hiện đại, các hợp chất hữu cơ dễ bay hơi (VOCs) từ sơn tường, thiết bị điện tử và khói bụi luôn hiện hữu. Việc sở hữu những loài cây lọc khí không chỉ giúp không gian trong lành hơn mà còn là giải pháp phong thủy tuyệt vời để giảm căng thẳng sau ngày dài.</p>
+
+<img src="/images/cay_loc_khi.jpg" alt="Top 10 cây lọc không khí tốt nhất" />
+
+<blockquote class="highlight-quote">
+  "Một ngôi nhà có cây xanh là một ngôi nhà có sự sống. Mỗi lá cây bạn trồng chính là một món quà sức khỏe vô giá cho những người thân yêu."
+</blockquote>
+
+<h3>2. Danh sách 10 "Chiến binh xanh" thanh lọc không khí</h3>
+<p>Dưới đây là 10 gương mặt vàng trong làng lọc khí, vừa đẹp, vừa khỏe, vừa dễ chăm:</p>
+
+<ul class="care-rules">
+  <li><strong>1. Cây Lưỡi Hổ:</strong> "Vô địch" lọc khí vào ban đêm, giải phóng oxy ngay cả khi không có ánh sáng.</li>
+  <li><strong>2. Cây Lan Ý:</strong> Chuyên gia hấp thụ các loại nấm mốc và hóa chất như formaldehyde, benzene.</li>
+  <li><strong>3. Cây Trầu Bà:</strong> Khả năng "ăn" các hợp chất độc hại từ thiết bị điện tử rất mạnh mẽ.</li>
+  <li><strong>4. Cây Nhện (Spider Plant):</strong> Loại bỏ tới 90% độc tố formaldehyde trong nhà chỉ trong vài ngày.</li>
+  <li><strong>5. Cây Nha Đam:</strong> Không chỉ dưỡng da, nha đam còn báo động tình trạng ô nhiễm không khí qua các đốm nâu trên lá.</li>
+  <li><strong>6. Cây Đa Búp Đỏ:</strong> Khả năng chuyển hóa độc tố thành oxy cực nhanh với bộ lá lớn.</li>
+  <li><strong>7. Cây Cọ Cảnh:</strong> Đặc biệt hiệu quả trong việc loại bỏ ammonia và các chất khí từ hóa chất tẩy rửa.</li>
+  <li><strong>8. Cây Thiết Mộc Lan:</strong> Vừa lọc khí tốt, vừa mang ý nghĩa phong thủy đại cát đại lợi.</li>
+  <li><strong>9. Cây Dương Xỉ:</strong> "Máy làm ẩm" tự nhiên, giúp giảm khô da trong không gian có máy lạnh.</li>
+  <li><strong>10. Cây Vạn Niên Thanh:</strong> Lọc khí ổn định, phù hợp đặt tại hành lang hoặc cửa sổ.</li>
+</ul>
+
+<h3>3. Lời kết</h3>
+<p>Đầu tư vào những "máy lọc khí tự nhiên" này không chỉ là một khoản đầu tư cho thẩm mỹ, mà là khoản đầu tư cho sức khỏe lâu dài. Hãy chọn cho mình ít nhất một loài cây phù hợp và bắt đầu thanh lọc không gian sống ngay hôm nay. Chỉ cần một chút chăm sóc, chúng sẽ đền đáp lại cho bạn bằng bầu không khí trong lành và nguồn năng lượng tích cực bất tận.</p>' 
+WHERE ID = 1;
+
+--ID2
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Bạn sở hữu một chậu Monstera (trầu bà lá xẻ) tuyệt đẹp nhưng lá cứ dần vàng úa?</strong> Đừng vội buồn, vì bạn không cô đơn! Monstera là "nữ hoàng" của không gian nội thất, nhưng nàng ta lại cực kỳ "đỏng đảnh" về nhu cầu nước. Tưới thiếu thì lá héo, tưới thừa thì rễ thối – vậy đâu là điểm cân bằng hoàn hảo?</p>
+
+<blockquote class="expert-note">
+    <strong>Góc nhìn chuyên gia:</strong> Sai lầm lớn nhất khiến 90% cây Monstera bị chết chính là tưới nước theo "lịch trình cứng nhắc" (ví dụ: ngày nào cũng tưới). Hãy nhớ, cây cần nước dựa trên độ ẩm thực tế của đất, không phải dựa trên đồng hồ của bạn!
+</blockquote>
+
+<h3>1. Hiểu về "cơ chế giải khát" của Monstera</h3>
+<p>Trong tự nhiên, Monstera sống dưới tán rừng nhiệt đới, nơi đất ẩm nhưng cực kỳ tơi xốp và thoáng khí. Bộ rễ của chúng cần oxy nhiều như cần nước vậy. Nếu đất bị nén chặt và quá ẩm, rễ sẽ bị "ngạt thở" và dẫn đến tình trạng vàng lá, thậm chí thối rễ.</p>
+
+<img src="/images/monstera.png" alt="Cách tưới nước cho cây Monstera" />
+
+<blockquote class="highlight-quote">
+  "Tưới nước không chỉ là cung cấp sự sống, đó là hành động thấu hiểu nhu cầu của cây. Một người chơi cây giỏi là người biết lắng nghe tiếng nói từ độ ẩm của đất."
+</blockquote>
+
+<h3>2. Quy tắc "Ngón tay vàng" – Bí quyết không bao giờ tưới sai</h3>
+<p>Thay vì đoán mò, hãy sử dụng chính đôi tay của mình. Đây là phương pháp đơn giản nhất mà bất kỳ "phù thủy cây cảnh" nào cũng sử dụng:</p>
+
+<ul class="care-rules">
+  <li><strong>Bước 1:</strong> Dùng ngón tay trỏ ấn sâu xuống đất khoảng 3-5 cm.</li>
+  <li><strong>Bước 2:</strong> Nếu cảm thấy đất vẫn còn ẩm hoặc mát, hãy dừng lại, chưa cần tưới.</li>
+  <li><strong>Bước 3:</strong> Nếu đất khô khốc và không bám dính vào ngón tay, đó chính là lúc "cần giải khát" cho cây.</li>
+</ul>
+
+<h3>3. Kỹ thuật tưới sâu – Đánh thức bộ rễ</h3>
+<p>Khi đã đến lúc tưới, hãy tưới cho "tới nơi tới chốn":</p>
+<ul class="care-rules">
+  <li><strong>Tưới đẫm:</strong> Tưới chậm quanh gốc cho đến khi thấy nước bắt đầu thoát ra ở lỗ đáy chậu. Điều này đảm bảo toàn bộ hệ thống rễ đều được tiếp nước.</li>
+  <li><strong>Đổ bỏ nước thừa:</strong> Sau khi tưới xong, đừng để chậu cây ngâm trong đĩa hứng đầy nước. Hãy đổ bỏ phần nước thừa đi ngay để tránh rễ bị úng.</li>
+  <li><strong>Phun sương lá:</strong> Monstera rất thích độ ẩm không khí. Hãy dùng bình xịt phun sương nhẹ nhàng lên lá 1-2 lần/tuần để giữ lá luôn bóng mượt.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Chăm sóc một chậu Monstera không khó như bạn nghĩ, chỉ cần một chút kiên nhẫn và quan sát. Khi bạn nắm vững "nhịp điệu" tưới nước, nàng Monstera sẽ trả ơn bạn bằng những chiếc lá xẻ độc đáo và tốc độ lớn nhanh chóng mặt. Hãy cùng bắt đầu thói quen chăm cây nhẹ nhàng từ hôm nay nhé!</p>' 
+WHERE ID = 2;
+
+--ID3
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Bạn là người mệnh Kim và đang tìm kiếm một "lá bùa xanh" để bàn làm việc?</strong> Trong phong thủy, việc chọn cây không chỉ để làm đẹp, mà còn là cách để gia tăng sinh khí, cân bằng năng lượng và thu hút may mắn cho sự nghiệp. Đối với người mệnh Kim, những loài cây phù hợp chính là chìa khóa để khai mở những cơ hội mới.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Người mệnh Kim tượng trưng cho sự sắc sảo, kiên định và sức mạnh. Do đó, những loài cây có dáng lá cứng cáp, màu sắc tươi sáng như trắng, vàng hoặc ánh kim sẽ cộng hưởng năng lượng cực tốt cho bản mệnh của bạn.
+</blockquote>
+
+<h3>1. Tại sao người mệnh Kim cần một "người bạn xanh" phù hợp?</h3>
+<p>Trong ngũ hành, "Kim" đại diện cho kim loại, sự cứng cáp và tính bao dung. Một không gian làm việc hay nhà ở của người mệnh Kim nếu thiếu đi mảng xanh thường dễ trở nên khô khan, căng thẳng. Cây phong thủy đóng vai trò như bộ lọc năng lượng, giúp làm mềm không gian và thúc đẩy luồng khí vượng, giúp bạn làm việc hiệu quả hơn.</p>
+
+<img src="/images/cay_menh_kim.jpg" alt="Các loại cây phong thủy hợp mệnh Kim" />
+
+<blockquote class="highlight-quote">
+  "Cây xanh không chỉ đứng yên, chúng là những trạm phát năng lượng. Chọn đúng loài cây hợp mệnh là bạn đang chọn đúng người cộng sự thầm lặng cho sự thành công của mình."
+</blockquote>
+
+<h3>2. Danh sách "Bộ ba tài lộc" cho người mệnh Kim</h3>
+<p>Dưới đây là 3 cái tên tiêu biểu nhất, đáp ứng hoàn hảo cả yếu tố thẩm mỹ và phong thủy cho bạn:</p>
+
+<ul class="care-rules">
+  <li><strong>Cây Bạch Mã Hoàng Tử:</strong> Mang dáng dấp của một quý tộc, loài cây này giúp sự nghiệp của người mệnh Kim luôn tiến triển thuận lợi, tránh được những rắc rối không đáng có.</li>
+  <li><strong>Cây Lan Ý:</strong> Với sắc lá xanh mướt điểm xuyết bông hoa trắng tinh khôi, Lan Ý giúp cân bằng âm dương, hấp thụ năng lượng tiêu cực và mang lại cảm giác bình an trong tâm hồn.</li>
+  <li><strong>Cây Kim Tiền:</strong> Không cần giới thiệu quá nhiều, Kim Tiền chính là "báu vật" trong làng phong thủy. Đúng như tên gọi, nó thu hút tài lộc, tiền bạc và sự phú quý bền vững cho gia chủ.</li>
+</ul>
+
+<h3>3. Bí quyết đặt cây để "Kích hoạt" năng lượng</h3>
+<p>Để đạt hiệu quả phong thủy tối đa, vị trí đặt cây cũng cực kỳ quan trọng:</p>
+<ul class="care-rules">
+  <li><strong>Trên bàn làm việc:</strong> Đặt cây ở góc trái để thu hút may mắn và các mối quan hệ xã giao tốt đẹp.</li>
+  <li><strong>Phòng khách:</strong> Đặt nơi có ánh sáng tốt để cây luôn xanh tươi, biểu trưng cho sự phát triển không ngừng của tiền tài.</li>
+  <li><strong>Tránh đặt cây trong phòng tắm:</strong> Đối với người mệnh Kim, nơi ẩm thấp và thiếu sáng sẽ làm suy giảm sinh khí của cây.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Chọn cây phong thủy hợp mệnh Kim không đơn thuần là chọn một loài cây, mà là chọn một nguồn năng lượng phù hợp để đồng hành. Hy vọng với những gợi ý trên, bạn sẽ tìm được "tri kỷ xanh" giúp cuộc sống và sự nghiệp của mình thêm phần rực rỡ, thịnh vượng. Hãy bắt đầu ngay hôm nay nhé!</p>' 
+WHERE ID = 3;
+
+--ID4
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Năm 2026 đang mở ra một kỷ nguyên mới cho không gian sống: nơi sự sang trọng không nằm ở sự phô trương, mà ở cách chúng ta hòa quyện thiên nhiên vào từng góc nhỏ.</strong> Bạn đã sẵn sàng để "thay áo mới" cho ngôi nhà của mình theo những xu hướng dẫn đầu năm 2026 chưa?</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Xu hướng chủ đạo của năm 2026 là "Sống chậm và Tận hưởng". Đừng cố gắng lấp đầy mọi ngóc ngách bằng đồ đạc, hãy để không gian thở bằng những "khoảng xanh" có mục đích.
+</blockquote>
+
+<h3>1. Sự lên ngôi của phong cách "Minimalist Xanh"</h3>
+<p>Minimalist (tối giản) chưa bao giờ lỗi thời, nhưng vào năm 2026, nó được nâng tầm lên thành "Minimalist Xanh". Đây là sự kết hợp hoàn hảo giữa những đường nét kiến trúc hình khối và sự mềm mại, phóng khoáng của cây lá nhiệt đới.</p>
+
+<img src="/images/xu_huong_2026.png" alt="Xu hướng trang trí nội thất năm 2026" />
+
+<blockquote class="highlight-quote">
+  "Một ngôi nhà đúng chất 2026 là nơi mà mỗi chậu cây đều có một câu chuyện, và mỗi món đồ nội thất đều tôn vinh vẻ đẹp của sự giản đơn."
+</blockquote>
+
+<h3>2. Ba điểm nhấn quan trọng trong xu hướng 2026</h3>
+<p>Nếu bạn muốn biến không gian làm việc hoặc nhà ở trở thành một nơi thời thượng, hãy chú ý đến 3 yếu tố sau:</p>
+
+<ul class="care-rules">
+  <li><strong>Vườn đứng thông minh (Smart Vertical Garden):</strong> Tận dụng các bức tường trống để lắp đặt hệ thống vườn đứng tích hợp tưới tự động. Đây là "cứu cánh" cho những căn hộ có diện tích khiêm tốn.</li>
+  <li><strong>Chất liệu hữu cơ tự nhiên:</strong> Sự trở lại của gốm thô, đá tự nhiên và mây tre đan. Những chất liệu này tạo ra sự tương phản tuyệt vời với các thiết bị công nghệ hiện đại.</li>
+  <li><strong>Ánh sáng nhân tạo mô phỏng tự nhiên:</strong> Việc sử dụng đèn LED phổ quang đầy đủ để hỗ trợ cây phát triển ngay cả ở những góc thiếu sáng đã trở thành tiêu chuẩn của nội thất cao cấp.</li>
+</ul>
+
+<h3>3. Làm sao để bắt nhịp xu hướng mà không tốn kém?</h3>
+<p>Bạn không cần phải cải tạo toàn bộ ngôi nhà để theo kịp xu hướng. Hãy bắt đầu từ những thay đổi nhỏ:</p>
+<ul class="care-rules">
+  <li><strong>Chọn "cây chủ đạo":</strong> Thay vì 10 cây nhỏ, hãy chọn 1 cây lớn (như Bàng Singapore hoặc Monstera) để làm điểm nhấn chính cho phòng khách.</li>
+  <li><strong>Đổi mới phụ kiện:</strong> Chỉ cần thay đổi tất cả chậu cây sang cùng một tông màu trung tính (trắng, xám, đất nung), bạn sẽ thấy không gian gọn gàng hơn hẳn.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Xu hướng trang trí 2026 thực chất là sự quay về với giá trị cốt lõi: sự thoải mái và sức khỏe tinh thần. Đừng chạy theo số đông, hãy tạo nên một "căn cứ" mang đậm dấu ấn cá nhân của chính bạn. Chúc bạn sớm biến không gian sống của mình thành nơi mà mỗi khi trở về, bạn đều cảm thấy được yêu thương và tái tạo năng lượng.</p>' 
+WHERE ID = 4;
+
+--ID5
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Bạn đã từng "phải lòng" những đóa sen đá bé xíu xinh xắn nhưng lại e ngại vì sợ chúng... "đoản mệnh"?</strong> Đừng lo, sen đá không hề khó tính như bạn nghĩ! Bí quyết nằm ở việc chọn đúng "chiến binh" phù hợp với người mới bắt đầu. Dưới đây là 5 loại sen đá cực kỳ "dễ tính", sống khỏe và cực kỳ bắt mắt để bạn khởi đầu hành trình làm vườn của mình.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Sen đá "ngủ" rất ít nhưng cần "thở" rất nhiều. Đừng đặt chúng trong phòng kín quá lâu. Hãy cho chúng tắm nắng nhẹ nhàng vào mỗi buổi sáng, bạn sẽ thấy sự khác biệt về màu sắc của chúng chỉ sau vài tuần.
+</blockquote>
+
+<h3>1. Tại sao sen đá là "người bạn xanh" lý tưởng nhất?</h3>
+<p>Sen đá không chỉ là vật trang trí nhỏ gọn cho bàn làm việc, chúng còn là những bậc thầy về tiết kiệm nước. Nhờ khả năng tích trữ nước trong lá, chúng có thể vượt qua những ngày bạn bận rộn quên tưới. Hơn nữa, nhìn ngắm những chiếc lá mọng nước vươn mình mỗi ngày là một liều thuốc tinh thần cực kỳ hiệu quả.</p>
+
+<img src="/images/sen_da_moi.jpg" alt="Các loại sen đá dễ chăm cho người mới" />
+
+<blockquote class="highlight-quote">
+  "Sen đá không cần quá nhiều sự chăm sóc, chúng cần sự thấu hiểu. Khi bạn cho chúng đủ nắng, chúng sẽ nở hoa ngay trên lá."
+</blockquote>
+
+<h3>2. Top 5 "Chiến binh xanh" cho người mới bắt đầu</h3>
+<p>Dưới đây là danh sách những loài sen đá "siêu khỏe", chịu khó và cực kỳ dễ chăm sóc cho những ai mới bước vào thế giới sen:</p>
+
+<ul class="care-rules">
+  <li><strong>Sen đá nâu (Sen đá socola):</strong> Loài sen đá "quốc dân" với sắc nâu trầm ấm. Chúng cực kỳ ưa nắng, càng nắng càng đậm màu, cực kỳ ít bệnh tật.</li>
+  <li><strong>Sen đá móng rồng:</strong> Với những đường vân trắng nổi bật trên nền lá xanh, đây là loài sen đá "lì lợm" nhất. Nó có thể chịu được ánh sáng yếu và không đòi hỏi quá nhiều nước.</li>
+  <li><strong>Sen đá Kim cương:</strong> Cái tên nói lên tất cả, những chiếc lá trong suốt như pha lê. Đây là loài cây lý tưởng để đặt cạnh cửa sổ, nơi ánh sáng xuyên qua khiến cây như bừng sáng.</li>
+  <li><strong>Sen đá hồng (Sen đá thạch ngọc):</strong> Màu hồng phấn ngọt ngào sẽ làm "tan chảy" bất cứ ai. Chúng phát triển khá nhanh và rất dễ nhân giống từ lá.</li>
+  <li><strong>Sen đá Phật bà:</strong> Với những chiếc lá xếp tầng như hình đài sen, loài này mang vẻ đẹp cổ điển và sự kiên trì, rất phù hợp để làm điểm nhấn trang trí.</li>
+</ul>
+
+<h3>3. "Bỏ túi" bí kíp chăm sóc sen đá bền lâu</h3>
+<p>Đừng để sen đá bị "hại" bởi sự tận tâm thái quá của bạn:</p>
+<ul class="care-rules">
+  <li><strong>Nguyên tắc tưới:</strong> Hãy tưới vào đất, đừng tưới lên lá. Nước đọng lại trên lá lâu ngày sẽ làm lá bị thối và nhũn.</li>
+  <li><strong>Đất trồng:</strong> Tuyệt đối không dùng đất thịt. Hãy sử dụng hỗn hợp giá thể thoát nước cực nhanh (đá Perlite, sỏi nhẹ trộn cùng đất sạch).</li>
+  <li><strong>Ánh sáng:</strong> Nếu đặt trong phòng, hãy mang cây ra tắm nắng nhẹ ít nhất 2-3 giờ mỗi ngày.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Mỗi chậu sen đá là một thế giới thu nhỏ. Dù bạn chỉ mới bắt đầu hay đã là một "người chơi" lâu năm, những đóa sen đá vẫn luôn mang lại sự bình yên lạ kỳ. Hãy chọn ngay một em sen đá xinh xắn, đặt lên bàn và cùng tận hưởng niềm vui khi thấy chúng lớn lên từng ngày nhé!</p>' 
+WHERE ID = 5;
+
+--ID6
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Cây Lưỡi Hổ từ lâu đã được mệnh danh là "vị vua" trong các dòng cây nội thất nhờ sức sống vô cùng bền bỉ.</strong> Thế nhưng, ngay cả một "chiến binh" mạnh mẽ nhất cũng có lúc cần sự bảo vệ. Việc xuất hiện các đốm lạ hay lá bị héo không có nghĩa là bạn thất bại, đó chỉ là tín hiệu nhắc nhở rằng cây đang cần sự hỗ trợ của bạn.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Lưỡi Hổ rất ghét sự ẩm ướt quá mức. 90% các vấn đề về sâu bệnh trên loài cây này đều bắt nguồn từ một lý do duy nhất: "Tưới nước quá nhiều". Một bộ rễ khỏe mạnh chính là hàng rào phòng bệnh tốt nhất.
+</blockquote>
+
+<h3>1. "Bắt bệnh" cho Lưỡi Hổ: Những dấu hiệu cần cảnh giác</h3>
+<p>Dù ít khi bị tấn công bởi sâu bệnh, nhưng nếu không gian sống quá bí bách, Lưỡi Hổ vẫn có thể đối mặt với một số vấn đề sau:</p>
+
+<img src="/images/luoi_ho_benh.jpg" alt="Phòng và trị bệnh cho cây Lưỡi Hổ" />
+
+<ul class="care-rules">
+  <li><strong>Lá xuất hiện đốm nâu hoặc nhũn nước:</strong> Đây là dấu hiệu của bệnh thối gốc hoặc nấm do đất quá ẩm hoặc thoát nước kém.</li>
+  <li><strong>Rệp sáp (những đốm trắng li ti):</strong> Thường xuất hiện ở nách lá, hút nhựa cây khiến lá bị vàng và biến dạng.</li>
+  <li><strong>Lá bị héo quắt:</strong> Nếu không phải do thiếu nước, thì có thể rễ đã bị thối, không thể hấp thụ được chất dinh dưỡng.</li>
+</ul>
+
+<blockquote class="highlight-quote">
+  "Phòng bệnh hơn chữa bệnh. Một không gian sạch sẽ, thoáng đãng chính là liều thuốc kháng sinh tự nhiên tốt nhất cho cây của bạn."
+</blockquote>
+
+<h3>2. Bí quyết "vàng" để phòng tránh sâu bệnh</h3>
+<p>Để Lưỡi Hổ luôn giữ được sắc xanh quyền năng, hãy áp dụng ngay các quy tắc chăm sóc phòng thủ sau:</p>
+
+<ul class="care-rules">
+  <li><strong>Kiểm soát nước tưới:</strong> Chỉ tưới khi lớp đất mặt đã khô hoàn toàn. Đối với Lưỡi Hổ, thà để đất khô hơn là để đất sũng nước.</li>
+  <li><strong>Vệ sinh lá định kỳ:</strong> Dùng khăn ẩm sạch lau bụi bẩn trên lá ít nhất 2 tuần/lần. Việc này vừa giúp lá quang hợp tốt hơn, vừa giúp bạn sớm phát hiện sự hiện diện của rệp sáp.</li>
+  <li><strong>Đảm bảo lưu thông không khí:</strong> Đừng đặt cây trong góc khuất bí bách. Một luồng gió nhẹ nhàng tự nhiên sẽ giúp cây khô ráo và tránh được sự phát triển của nấm mốc.</li>
+</ul>
+
+<h3>3. "Phản ứng nhanh" khi cây có dấu hiệu bệnh</h3>
+<p>Nếu chẳng may cây gặp vấn đề, đừng quá lo lắng, hãy xử lý theo quy trình:</p>
+<ul class="care-rules">
+  <li><strong>Đối với rệp sáp:</strong> Dùng bông gòn thấm dung dịch cồn loãng hoặc xà phòng pha loãng lau sạch vùng bị bệnh. Thực hiện liên tục trong vài ngày cho đến khi sạch hẳn.</li>
+  <li><strong>Đối với thối gốc:</strong> Cần lấy cây ra khỏi chậu ngay, cắt bỏ phần rễ/lá bị thối bằng dao sạch, sau đó để cây "nghỉ ngơi" nơi thoáng gió 1-2 ngày trước khi trồng lại vào đất mới sạch khuẩn.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Lưỡi Hổ là loài cây mang đến sự bình an và bảo vệ gia chủ. Khi bạn chăm sóc chúng cẩn thận, chúng cũng sẽ bảo vệ không gian sống của bạn khỏi những độc tố không khí. Hy vọng những chia sẻ trên sẽ giúp bạn tự tin hơn trong việc "làm bạn" với loài cây tuyệt vời này. Hãy cùng Lưỡi Hổ tận hưởng một không gian xanh sạch và tràn đầy sức sống nhé!</p>' 
+WHERE ID = 6;
+
+--ID7
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Bạn có bao giờ cảm thấy cạn kiệt ý tưởng sau vài giờ làm việc liên tục?</strong> Đôi khi, giải pháp không nằm ở việc uống thêm một tách cà phê, mà nằm ở việc thay đổi không gian xung quanh bạn. Một góc làm việc có cây xanh không chỉ là điểm nhấn thẩm mỹ, mà còn là "trạm sạc" tinh thần giúp bạn lấy lại cảm hứng và sự tập trung chỉ trong vài giây nhìn ngắm.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Bàn làm việc thường là nơi có diện tích hạn chế và ánh sáng không quá dồi dào. Hãy ưu tiên các loài cây "ít đòi hỏi", có khả năng chịu bóng tốt và không cần tưới nước thường xuyên để tránh làm hỏng các thiết bị điện tử bên cạnh.
+</blockquote>
+
+<h3>1. Tại sao bàn làm việc cần phải có cây xanh?</h3>
+<p>Nghiên cứu chỉ ra rằng việc đưa thiên nhiên vào không gian làm việc giúp giảm căng thẳng, tăng khả năng sáng tạo và làm dịu mắt sau nhiều giờ nhìn màn hình máy tính. Không gian xanh giúp nhịp tim của bạn ổn định hơn, tạo ra trạng thái làm việc "tĩnh tại" nhưng tràn đầy năng lượng.</p>
+
+<img src="/images/setup_ban_lam_viec.jpg" alt="Setup bàn làm việc với cây xanh" />
+
+<blockquote class="highlight-quote">
+  "Góc làm việc là nơi nuôi dưỡng những ý tưởng lớn. Đừng để nó khô khan, hãy để cây xanh làm bạn đồng hành, làm mát tâm hồn và khơi gợi sự sáng tạo."
+</blockquote>
+
+<h3>2. Top 3 "ứng cử viên" sáng giá cho bàn làm việc</h3>
+<p>Để setup một góc làm việc xanh chuẩn phong cách 2026, hãy ưu tiên những loài cây vừa nhỏ gọn, vừa mang ý nghĩa phong thủy tốt:</p>
+
+<ul class="care-rules">
+  <li><strong>Kim tiền mini:</strong> Đúng như tên gọi, đây là biểu tượng của sự may mắn và tài lộc. Chúng rất bền bỉ, không cần tưới nhiều, phù hợp hoàn hảo với nhịp sống bận rộn.</li>
+  <li><strong>Trầu bà đế vương:</strong> Mang ý nghĩa của sự quyền lực và thăng tiến. Màu sắc lá đa dạng từ xanh thẫm đến vàng nhạt giúp góc làm việc của bạn trở nên sang trọng hơn hẳn.</li>
+  <li><strong>Cây không khí (Tillandsia):</strong> Đây là "vua" của sự tiện lợi. Không cần đất, không cần chậu, bạn có thể treo chúng lên hoặc đặt trên một giá đỡ gỗ nhỏ. Cực kỳ sạch sẽ và hiện đại.</li>
+</ul>
+
+<h3>3. Bí quyết Setup góc xanh khoa học</h3>
+<p>Đừng đặt cây một cách ngẫu hứng. Hãy áp dụng tư duy "bố cục" để không gian trở nên chuyên nghiệp hơn:</p>
+<ul class="care-rules">
+  <li><strong>Nguyên tắc "tầng lớp":</strong> Đặt cây ở góc bàn, tránh chắn tầm mắt khi sử dụng máy tính. Nếu bàn nhỏ, hãy sử dụng các loại kệ nhỏ để tận dụng không gian theo chiều dọc.</li>
+  <li><strong>Chọn chậu đồng bộ:</strong> Đầu tư một bộ chậu có cùng tông màu (trắng sứ, đen nhám hoặc gốm đất nung) sẽ giúp bàn làm việc trông gọn gàng, tinh tế và chuyên nghiệp hơn rất nhiều.</li>
+  <li><strong>Kết hợp ánh sáng:</strong> Nếu bàn làm việc thiếu sáng, hãy chọn một chiếc đèn học có ánh sáng trung tính – nó vừa giúp bạn làm việc tốt, vừa giúp cây quang hợp nhẹ nhàng.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Góc làm việc chính là tấm gương phản chiếu tâm hồn và sự chỉn chu của mỗi người. Một chút xanh không chỉ mang lại thẩm mỹ, mà còn là sự chăm sóc bản thân cần thiết. Hãy bắt đầu ngay hôm nay, chọn cho mình một người bạn xanh để mỗi ngày làm việc đều trở thành một hành trình đầy cảm hứng. Bạn đã sẵn sàng "nâng cấp" góc làm việc của mình chưa?</p>' 
+WHERE ID = 7;
+
+--ID8
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Xương rồng – những "gã khổng lồ" kiên cường trong thế giới thực vật.</strong> Nhiều người vẫn lầm tưởng xương rồng chỉ là những cây có gai nhọn, sống đơn độc nơi sa mạc. Nhưng thực tế, thế giới xương rồng vô cùng đa dạng, từ những dạng cầu tròn đáng yêu đến những thân cột cao lớn uy nghi hay những loại có hoa rực rỡ như những nữ hoàng.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Xương rồng không chỉ phân biệt bằng hình dáng, mà còn bằng môi trường sống nguyên thủy của chúng. Hiểu được đặc tính của từng nhóm sẽ giúp bạn thiết lập chế độ tưới nước và ánh sáng "chuẩn không cần chỉnh".
+</blockquote>
+
+<h3>1. Tại sao xương rồng lại thu hút đến vậy?</h3>
+<p>Sức hút của xương rồng nằm ở vẻ đẹp của sự gai góc và kiên cường. Trong phong thủy, xương rồng còn được xem là loài cây có khả năng xua đuổi tà khí, bảo vệ không gian sống, đồng thời là biểu tượng của ý chí vượt khó vươn lên.</p>
+
+<img src="/images/xuong_rong_phan_loai.jpg" alt="Phân biệt các loại xương rồng" />
+
+<blockquote class="highlight-quote">
+  "Gai nhọn không chỉ để tự vệ, đó là cách xương rồng giữ lại từng giọt nước quý giá cho chính mình giữa cái nắng khắc nghiệt."
+</blockquote>
+
+<h3>2. Ba nhóm xương rồng cơ bản bạn cần biết</h3>
+<p>Để bắt đầu chơi xương rồng, bạn hãy làm quen với 3 nhóm đặc trưng này:</p>
+
+<ul class="care-rules">
+  <li><strong>Nhóm xương rồng thân cột:</strong> Đây là biểu tượng của sự uy nghi. Với thân cây cao lớn, vững chãi, chúng cực kỳ phù hợp để làm điểm nhấn ở góc phòng khách hoặc hiên nhà. Nhóm này cần rất nhiều nắng để giữ dáng thẳng.</li>
+  <li><strong>Nhóm xương rồng thân tròn (Xương rồng bánh bao):</strong> Vẻ ngoài tròn trịa, đáng yêu khiến chúng trở thành món quà tuyệt vời cho bàn làm việc. Chúng nhỏ gọn, dễ chăm và là lựa chọn hàng đầu cho những người yêu thích sự tinh giản.</li>
+  <li><strong>Nhóm xương rồng Bát Tiên:</strong> Khác với các dòng xương rồng sa mạc truyền thống, Bát Tiên vừa có gai, vừa có lá và điểm nhấn là những bông hoa rực rỡ. Chúng ưa ẩm hơn một chút và cần môi trường thoáng đãng để ra hoa quanh năm.</li>
+</ul>
+
+<h3>3. Làm sao để xương rồng luôn khỏe mạnh?</h3>
+<p>Dù là nhóm nào, xương rồng cũng có những "nguyên tắc sống" không thể phá vỡ:</p>
+<ul class="care-rules">
+  <li><strong>Ánh sáng là tất cả:</strong> Nếu thiếu nắng, xương rồng sẽ bị "vươn dài" (bị ố), thân cây sẽ mất đi vẻ chắc khỏe vốn có. Hãy đặt chúng ở nơi đón nắng trực tiếp ít nhất 4-6 tiếng/ngày.</li>
+  <li><strong>Chế độ nước "ngược đời":</strong> Đừng tưới khi đất còn ẩm. Xương rồng thà chịu khát còn hơn bị úng nước. Hãy tưới thật đẫm, sau đó để đất khô hẳn trong vài tuần rồi mới tưới tiếp.</li>
+  <li><strong>Giá thể thoát nước:</strong> Luôn đảm bảo đất trồng có tỉ lệ đá (Perlite, Pumice) cao hơn đất mùn.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Xương rồng là minh chứng sống động rằng vẻ đẹp có thể tồn tại ngay cả trong những điều kiện khắc nghiệt nhất. Hy vọng với bảng phân loại đơn giản này, bạn đã tự tin hơn để chọn cho mình một người bạn xương rồng phù hợp. Hãy kiên nhẫn, hãy cho chúng đủ nắng, và bạn sẽ thấy chúng đáp lại bằng những hình thái đầy mê hoặc!</p>' 
+WHERE ID = 8;
+
+--ID9
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Bạn đã bao giờ tự hỏi tại sao sen đá ở tiệm luôn căng mọng, còn khi mang về nhà chỉ vài tuần đã úng rễ?</strong> Bí mật không nằm ở "bàn tay vàng" của người bán, mà nằm ở "công thức đất" mà họ sử dụng. Với sen đá, đất trồng chính là chiếc giường êm ái nhất, nơi rễ cây có thể hít thở và phát triển mạnh mẽ.</p>
+
+<blockquote class="expert-note">  
+    <strong>Lời khuyên từ chuyên gia:</strong> Đất trồng sen đá không cần giàu dinh dưỡng, nó cần sự thông thoáng. Đừng dùng đất thịt hay đất vườn, vì chúng sẽ trở thành "hầm ngục" khiến rễ cây bị nghẹt thở và thối rữa chỉ sau một cơn mưa.
+</blockquote>
+
+<h3>1. Tại sao phải tự trộn đất thay vì dùng đất bao sẵn?</h3>
+<p>Hầu hết các loại đất trộn sẵn ngoài cửa hàng thường giữ ẩm quá lâu. Sen đá vốn là loài cây chịu hạn, nếu rễ cây phải "ngâm" trong môi trường ẩm ướt liên tục, nguy cơ bị nấm bệnh và thối rễ là rất cao. Tự trộn đất giúp bạn kiểm soát được độ thoát nước theo đúng môi trường sống của cây.</p>
+
+<img src="/images/dat_sen_da.jpg" alt="Công thức trộn đất trồng sen đá" />
+
+<blockquote class="highlight-quote">
+  "Một hỗn hợp đất lý tưởng là hỗn hợp mà khi bạn tưới nước, nước sẽ chảy qua chậu chỉ trong vài giây."
+</blockquote>
+
+<h3>2. "Công thức vàng" cho mọi loại sen đá</h3>
+<p>Để trộn đất trồng sen đá đạt chuẩn, bạn cần tuân thủ tỉ lệ "thoát nước là trên hết". Công thức gợi ý của các chuyên gia:</p>
+
+<ul class="care-rules">
+  <li><strong>40% Đá Perlite:</strong> Giúp đất tơi xốp, tạo các khe hở nhỏ để rễ cây "thở" dễ dàng.</li>
+  <li><strong>40% Đá Pumice (Đá nham thạch):</strong> Giữ độ thoáng cho chậu và giúp rễ bám chặt hơn.</li>
+  <li><strong>20% Đất mùn hữu cơ (hoặc phân trùn quế):</strong> Cung cấp một chút dinh dưỡng cần thiết mà không làm đất bị bí chặt.</li>
+</ul>
+
+<h3>3. Các bước thực hiện chuyên nghiệp</h3>
+<p>Hãy biến việc trộn đất thành một trải nghiệm thư giãn:</p>
+<ul class="care-rules">
+  <li><strong>Sàng lọc:</strong> Sàng qua đất mùn để loại bỏ các hạt lớn hoặc rác vụn, giúp đất mịn và sạch hơn.</li>
+  <li><strong>Khử trùng:</strong> Trước khi trộn, hãy phơi nắng gắt hoặc nướng nhẹ hỗn hợp đất để loại bỏ hoàn toàn nấm bệnh và trứng côn trùng.</li>
+  <li><strong>Lót đáy chậu:</strong> Đừng quên đặt một lớp sỏi nhẹ hoặc đá Pumice lớn dưới đáy chậu để hỗ trợ tối đa việc thoát nước.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Việc tự tay trộn đất không chỉ đảm bảo sức khỏe cho cây mà còn là cách để bạn hiểu hơn về nhu cầu của chúng. Khi bạn tự tay chuẩn bị từng nguyên liệu, bạn sẽ thấy mình gắn kết với cây hơn. Hãy kiên nhẫn, thử nghiệm và điều chỉnh tỉ lệ tùy theo độ ẩm ở nơi bạn đặt cây. Chúc bạn có những chậu sen đá khỏe mạnh và bung nở rạng rỡ!</p>' 
+WHERE ID = 9;
+
+--ID10
+UPDATE BaiViet SET NoiDung = N'
+<p><strong>Chào mừng cộng đồng yêu cây tại Đà Nẵng đến với sự kiện mong chờ nhất trong năm 2026!</strong> Triển lãm cây cảnh không chỉ là nơi hội tụ của những "tác phẩm xanh" độc đáo mà còn là điểm đến lý tưởng để kết nối những tâm hồn đồng điệu, những nghệ nhân yêu cái đẹp và sự sống.</p>
+
+<blockquote class="expert-note">  
+    <strong>Thông tin từ Ban tổ chức:</strong> Triển lãm năm nay không chỉ trưng bày, mà còn là không gian giao lưu kỹ thuật chăm sóc cây quý hiếm. Đây là cơ hội hiếm hoi để bạn tận mắt chiêm ngưỡng những tác phẩm bonsai "độc bản" từ mọi miền Tổ quốc.
+</blockquote>
+
+<h3>1. Tại sao sự kiện này là "bến đỗ" cho người yêu cây?</h3>
+<p>Đà Nẵng vốn được biết đến là thành phố đáng sống, và sự kiện triển lãm cây cảnh năm nay chính là điểm nhấn tôn vinh phong cách sống xanh mà người dân nơi đây đang theo đuổi. Từ những dáng cây cổ thụ uy nghi đến những góc nội thất tinh tế, triển lãm mở ra một cái nhìn toàn diện về vẻ đẹp của thiên nhiên trong không gian đô thị hiện đại.</p>
+
+<img src="/images/trien_lam_danang.jpg" alt="Sự kiện triển lãm cây cảnh Đà Nẵng 2026" />
+
+<blockquote class="highlight-quote">
+  "Cây cảnh không chỉ là vật vô tri, mỗi tác phẩm tại triển lãm là kết tinh của sự kiên trì, đam mê và tình yêu mãnh liệt của người nghệ nhân đối với thiên nhiên."
+</blockquote>
+
+<h3>2. Những hoạt động tâm điểm không thể bỏ lỡ</h3>
+<p>Để tối ưu hóa trải nghiệm của bạn tại triển lãm, hãy lưu ý những hoạt động đặc sắc sau:</p>
+
+<ul class="care-rules">
+  <li><strong>Workshop chuyên sâu:</strong> Tham gia các buổi hướng dẫn trực tiếp từ nghệ nhân hàng đầu về cách tạo dáng, tỉa cành và chăm sóc cây bonsai chuẩn nghệ thuật.</li>
+  <li><strong>Giao lưu kỹ thuật:</strong> Bạn sẽ có cơ hội đặt câu hỏi trực tiếp cho các chuyên gia về cách xử lý các loại sâu bệnh khó trị hoặc bí quyết nhân giống các dòng cây quý.</li>
+  <li><strong>Khu vực trưng bày độc bản:</strong> Đừng bỏ lỡ khu vực "báu vật xanh", nơi quy tụ những giống cây độc lạ nhất mà bạn khó có thể tìm thấy tại các nhà vườn thông thường.</li>
+  <li><strong>Mua sắm cây giống chất lượng:</strong> Cơ hội sở hữu những giống cây nội thất chất lượng cao với mức giá ưu đãi trực tiếp từ các nhà vườn danh tiếng.</li>
+</ul>
+
+<h3>3. "Bỏ túi" kinh nghiệm tham quan triển lãm</h3>
+<p>Để chuyến đi trọn vẹn và hiệu quả hơn, hãy lưu lại vài mẹo nhỏ:</p>
+<ul class="care-rules">
+  <li><strong>Đi vào khung giờ sáng sớm:</strong> Triển lãm thường rất đông vào cuối tuần, đi sớm giúp bạn có không gian yên tĩnh để ngắm nhìn và trò chuyện với nghệ nhân.</li>
+  <li><strong>Chuẩn bị sổ tay ghi chép:</strong> Bạn sẽ học được vô vàn "bí kíp" chăm cây từ những người đi trước, đừng để chúng trôi đi nhé!</li>
+  <li><strong>Mang theo túi vải lớn:</strong> Nếu bạn có ý định rinh vài "em xanh" về nhà, túi vải sẽ giúp bảo vệ cây tốt hơn và cũng bảo vệ môi trường.</li>
+</ul>
+
+<h3>4. Lời kết</h3>
+<p>Sự kiện triển lãm cây cảnh Đà Nẵng 2026 không chỉ là một sự kiện, đó là một hành trình kết nối cộng đồng. Dù bạn là người chơi lâu năm hay mới chớm nở tình yêu với cây cối, triển lãm vẫn luôn dành một vị trí đặc biệt cho bạn. Hẹn gặp bạn tại không gian xanh đầy cảm hứng này nhé!</p>' 
+WHERE ID = 10;

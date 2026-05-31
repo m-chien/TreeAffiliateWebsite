@@ -12,5 +12,11 @@ public class DanhMucNoiDungDTO {
     private Integer id;
     private String tenDanhMuc;
     private LocalDateTime ngayTao;
+    private Long soLuongBaiViet;
+    public DanhMucNoiDungDTO(Integer id, String tenDanhMuc, Long soLuongBaiViet) {
+        this.id = id;
+        this.tenDanhMuc = tenDanhMuc;
+        this.soLuongBaiViet = soLuongBaiViet;
+    }
 }
 

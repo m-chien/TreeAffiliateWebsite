@@ -12,9 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/danh-muc-noi-dung")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class DanhMucNoiDungController {
     private final DanhMucNoiDungService danhMucNoiDungService;
 
@@ -69,6 +72,16 @@ public class DanhMucNoiDungController {
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .code(200)
                 .message("Xóa danh mục nội dung thành công")
+                .build());
+    }
+
+    @GetMapping("/with-count")
+    public ResponseEntity<ApiResponse<List<DanhMucNoiDungDTO>>> getCategoriesWithCount() {
+        List<DanhMucNoiDungDTO> result = danhMucNoiDungService.getAllCategoriesWithCount();
+        return ResponseEntity.ok(ApiResponse.<List<DanhMucNoiDungDTO>>builder()
+                .code(200)
+                .message("Lấy danh sách chủ đề kèm số lượng thành công")
+                .result(result)
                 .build());
     }
 }

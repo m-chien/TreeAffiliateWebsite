@@ -17,5 +17,9 @@ public class BaiVietDTO {
     private Integer luotXem;
     private Integer thoiGianDoc;
     private LocalDateTime ngayTao;
+    private String tenDanhMuc;
+    private String tenTacGia;
+    private String anhDaiDien;
+    private java.util.List<LinkAffiliateDTO> linkAffiliates;
 }
 
