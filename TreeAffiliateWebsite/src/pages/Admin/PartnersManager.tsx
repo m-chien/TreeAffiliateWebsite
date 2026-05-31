@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Search, Plus, Edit2, Trash2, Globe, ShieldCheck, Briefcase, Calendar, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import styles from './PartnersManager.module.css';
 import modalStyles from './AdminModal.module.css';
-import { managedPartners as initialPartners } from '../../data/adminData';
 import type { ManagedPartner } from '../../types';
 import AdminModal from './AdminModal';
 
 const PartnersManager: React.FC = () => {
-  const [partners, setPartners] = useState<ManagedPartner[]>(initialPartners);
+  const [partners, setPartners] = useState<ManagedPartner[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
 
@@ -29,9 +29,32 @@ const PartnersManager: React.FC = () => {
     : 0;
 
   // Handlers
+  const fetchPartners = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/v1/doi-tac?size=100");
+      const apiPartners = response.data?.result?.content || [];
+      const mapped = apiPartners.map((p: any) => ({
+        id: p.id.toString(),
+        name: p.tenDoiTac,
+        logoUrl: p.logoUrl,
+        website: p.website,
+        partnerType: p.loaiHinh,
+        status: p.trangThai,
+        joinedDate: p.ngayBatDau,
+        commissionRate: p.hoaHong
+      }));
+      setPartners(mapped);
+    } catch (error) {
+      console.error("Lỗi lấy danh sách đối tác:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
   const openAddModal = () => {
     setFormData({
-      id: Date.now().toString(),
       name: '',
       logoUrl: '',
       website: '',
@@ -54,22 +77,56 @@ const PartnersManager: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleSaveAdd = () => {
+  const handleSaveAdd = async () => {
     if (!formData.name || !formData.website) return;
-    setPartners([formData as ManagedPartner, ...partners]);
-    setIsAddModalOpen(false);
+    try {
+      await axios.post("http://localhost:8080/api/v1/doi-tac", {
+        tenDoiTac: formData.name,
+        logoUrl: formData.logoUrl,
+        website: formData.website,
+        loaiHinh: formData.partnerType,
+        trangThai: formData.status,
+        ngayBatDau: formData.joinedDate,
+        hoaHong: formData.commissionRate
+      });
+      setIsAddModalOpen(false);
+      fetchPartners();
+    } catch (error) {
+      console.error("Lỗi khi thêm", error);
+      alert("Có lỗi xảy ra khi thêm đối tác");
+    }
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!selectedPartner) return;
-    setPartners(partners.map(p => p.id === selectedPartner.id ? (formData as ManagedPartner) : p));
-    setIsEditModalOpen(false);
+    try {
+      await axios.put(`http://localhost:8080/api/v1/doi-tac/${selectedPartner.id}`, {
+        tenDoiTac: formData.name,
+        logoUrl: formData.logoUrl,
+        website: formData.website,
+        loaiHinh: formData.partnerType,
+        trangThai: formData.status,
+        ngayBatDau: formData.joinedDate,
+        hoaHong: formData.commissionRate
+      });
+      setIsEditModalOpen(false);
+      fetchPartners();
+    } catch (error) {
+      console.error("Lỗi khi sửa", error);
+      alert("Có lỗi xảy ra khi cập nhật đối tác");
+    }
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!selectedPartner) return;
-    setPartners(partners.filter(p => p.id !== selectedPartner.id));
-    setIsDeleteModalOpen(false);
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/doi-tac/${selectedPartner.id}`);
+      setIsDeleteModalOpen(false);
+      fetchPartners();
+    } catch (error) {
+      console.error("Lỗi khi xóa", error);
+      alert("Có lỗi xảy ra khi xóa đối tác");
+    }
   };
 
   // Render Form (Shared between Add & Edit)

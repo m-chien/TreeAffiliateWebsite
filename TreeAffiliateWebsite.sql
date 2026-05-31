@@ -444,8 +444,6 @@ VALUES
 
 -- 2. Lưỡi Hổ
 (2, N'Thích nghi cực kỳ linh hoạt từ nơi thiếu sáng sâu trong phòng đến nơi có ánh sáng mặt trời mạnh. Tuy nhiên, cây phát triển với sắc thái viền vàng đẹp nhất khi được đón ánh sáng gián tiếp nhẹ mỗi ngày.', N'Khả năng chịu hạn cực cao nhờ lá mọng nước dày. Chỉ tưới nước khi đất khô hẳn đáy chậu, khoảng 2-3 tuần/lần. Tránh tuyệt đối tưới đọng vào tâm lá hoặc tưới quá thường xuyên làm thối gốc.', N'Yêu cầu đất trồng thông thoáng, thoát nước nhanh (như đất pha cát hoặc đá perlite). Cây không cần quá nhiều dinh dưỡng, chỉ cần bón phân vi lượng hoặc phân tan chậm loãng khoảng 2 lần một năm.', N'Chứa độc tính nhẹ đối với động vật. Nếu chó hoặc mèo cắn/nhai lá cây có thể gây buồn nôn, tiêu chảy hoặc kích ứng tiêu hóa. Nên đặt cây trên kệ cao hoặc góc phòng kín.'),
-
--- 3. Monstera
 (3, N'Cây ưa ánh sáng tán xạ nhẹ (như dưới tán cây khác hoặc rèm cửa sổ). Nếu thiếu sáng lá mới sẽ nhỏ và không xẻ sâu, còn nếu đặt dưới ánh nắng trực tiếp lá sẽ bị cháy sạm và mất thẩm mỹ.', N'Cần tưới nước định kỳ khoảng 1-2 lần/tuần khi kiểm tra thấy lớp đất mặt sâu khoảng 2-3cm đã khô. Thường xuyên phun sương lên mặt lá hoặc dùng khăn ẩm lau bụi lá để giữ độ ẩm tốt hơn.', N'Đất trồng cần giàu mùn, tơi xốp và thoát nước tốt (phù hợp trộn đất thịt, đá perlite và xơ dừa). Bón phân hữu cơ loãng hoặc phân NPK chuyên dụng mỗi tháng một lần trong mùa sinh trưởng.', N'Nhựa cây có chứa chất độc nhẹ gây ngứa rát niêm mạc và kích ứng da nếu tiếp xúc trực tiếp hoặc nuốt phải. Cần đặt chậu ở khu vực ngoài tầm với của trẻ nhỏ và vật nuôi.'),
 
 -- 4. Sen Đá
@@ -469,6 +467,27 @@ VALUES
 -- 10. Ngọc Ngân
 (10, N'Cần ánh sáng tán xạ vừa phải đến trung bình. Tránh đặt nơi tối tăm quá lâu lá sẽ bị nhạt màu mất đi các đốm bạc, cũng không phơi nắng gắt vì lá sẽ bị cháy sạm bợt màu.', N'Giữ đất ẩm nhẹ, tưới nước khoảng 1-2 lần/tuần khi kiểm tra thấy lớp đất mặt chậu hơi se khô. Nếu trồng thủy sinh cần thay nước sạch và nhỏ thêm dung dịch dinh dưỡng 1 tuần/lần.', N'Đất trồng cần tơi xốp, thoáng khí và giàu mùn hữu cơ. Nên bổ sung phân bón lá dạng loãng định kỳ mỗi tháng để lá cây luôn giữ được màu sắc căng tràn và rực rỡ nhất.', N'Nhựa cây có chứa độc tính nhẹ, có thể gây nóng rát miệng, sưng lưỡi và khó tiêu nếu thú cưng ăn phải. Nên trưng bày trên bàn làm việc cao hoặc tủ kệ để đảm bảo an toàn.');
 GO
+
+-----------------------------------------------------------
+-- 6. BẢNG ĐỐI TÁC
+-----------------------------------------------------------
+CREATE TABLE DoiTac (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    TenDoiTac NVARCHAR(255),
+    LogoUrl NVARCHAR(MAX),
+    Website NVARCHAR(255),
+    LoaiHinh NVARCHAR(50),
+    TrangThai NVARCHAR(50),
+    NgayBatDau DATE,
+    HoaHong DECIMAL(5, 2)
+);
+
+INSERT INTO DoiTac (TenDoiTac, LogoUrl, Website, LoaiHinh, TrangThai, NgayBatDau, HoaHong) VALUES
+('Shopee Vietnam', 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg', 'https://shopee.vn', 'Shopee', 'Active', '2023-01-15', 12.5),
+('TikTok Shop', 'https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg', 'https://tiktok.com', 'TikTok', 'Active', '2023-06-20', 15.0),
+('Eco Garden', '', 'https://ecogarden.vn', 'Garden Center', 'Active', '2022-11-10', 8.0);
+GO
+
 -- Kiểm tra kết quả
 SELECT * FROM CayCanh;
 SELECT * FROM HuongDanChamSoc;

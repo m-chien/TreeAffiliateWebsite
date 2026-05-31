@@ -14,7 +14,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=PlantsAvenue;encrypt=false
     username: sa
-    password: 1234
+    password: 12345
   sql:
     init:
       mode: never
