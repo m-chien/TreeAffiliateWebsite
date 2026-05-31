@@ -8,7 +8,7 @@ import AdminModal from './AdminModal';
 
 const CategoriesManager: React.FC = () => {
   const [categories, setCategories] = useState<ManagedCategory[]>([]);
-  
+
   // Left form state
   const [newName, setNewName] = useState('');
   const [newType, setNewType] = useState<'Sản phẩm' | 'Bài viết'>('Sản phẩm');
@@ -22,6 +22,9 @@ const CategoriesManager: React.FC = () => {
   const [editName, setEditName] = useState('');
   const [editType, setEditType] = useState<'Sản phẩm' | 'Bài viết'>('Sản phẩm');
 
+  // Filter state
+  const [filterType, setFilterType] = useState<'Sản phẩm' | 'Bài viết'>('Sản phẩm');
+
   const fetchCategories = async () => {
     try {
       const [productRes, articleRes] = await Promise.all([
@@ -30,13 +33,13 @@ const CategoriesManager: React.FC = () => {
       ]);
 
       const productCats = productRes.data?.result?.content || [];
-      const articleCats = articleRes.data?.result || []; 
+      const articleCats = articleRes.data?.result || [];
 
       const mappedProductCats: ManagedCategory[] = productCats.map((c: any) => ({
         id: c.id.toString(),
         name: c.tenDanhMuc,
         type: 'Sản phẩm',
-        itemCount: 0 
+        itemCount: 0
       }));
 
       const mappedArticleCats: ManagedCategory[] = articleCats.map((c: any) => ({
@@ -60,7 +63,6 @@ const CategoriesManager: React.FC = () => {
   const totalCategories = categories.length;
   const productCategoriesCount = categories.filter(c => c.type === 'Sản phẩm').length;
   const articleCategoriesCount = categories.filter(c => c.type === 'Bài viết').length;
-  const maxItems = Math.max(...categories.map(c => c.itemCount), 1); // Avoid division by zero
 
   const handleAddCategory = async () => {
     if (!newName.trim()) return;
@@ -92,7 +94,7 @@ const CategoriesManager: React.FC = () => {
 
   const handleSaveEdit = async () => {
     if (!selectedCat || !editName.trim()) return;
-    
+
     if (editType !== selectedCat.type) {
       alert("Không thể đổi phân loại của danh mục sau khi tạo. Vui lòng tạo danh mục mới.");
       return;
@@ -128,6 +130,9 @@ const CategoriesManager: React.FC = () => {
     }
   };
 
+  const displayedCategories = categories.filter(cat => cat.type === filterType);
+  const maxItems = Math.max(...displayedCategories.map(c => c.itemCount), 1); // Avoid division by zero
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -151,7 +156,7 @@ const CategoriesManager: React.FC = () => {
             <Package size={28} />
           </div>
           <div className={styles.statInfo}>
-            <span className={styles.statLabel}>DM Tiết thị (Sản phẩm)</span>
+            <span className={styles.statLabel}>DM Cây cảnh (Sản phẩm)</span>
             <h3 className={styles.statValue}>{productCategoriesCount}</h3>
           </div>
         </div>
@@ -179,13 +184,13 @@ const CategoriesManager: React.FC = () => {
               <p className={styles.formSub}>Tạo nhóm phân loại mới cho hệ thống website</p>
             </div>
           </div>
-          
+
           <div className={styles.formGroup}>
             <label>Tên danh mục</label>
-            <input 
-              type="text" 
-              className={styles.input} 
-              placeholder="Ví dụ: Cây để bàn..." 
+            <input
+              type="text"
+              className={styles.input}
+              placeholder="Ví dụ: Cây để bàn..."
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
             />
@@ -193,7 +198,7 @@ const CategoriesManager: React.FC = () => {
 
           <div className={styles.formGroup}>
             <label>Loại danh mục</label>
-            <select 
+            <select
               className={styles.select}
               value={newType}
               onChange={(e) => setNewType(e.target.value as 'Sản phẩm' | 'Bài viết')}
@@ -211,22 +216,31 @@ const CategoriesManager: React.FC = () => {
 
         {/* Right Area: Table Details */}
         <div className={styles.tableWrapper}>
-          <div className={styles.tableHeader}>
+          <div className={styles.tableHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3>Danh sách chi tiết</h3>
+            <select
+              className={styles.select}
+              style={{ width: 'auto', minWidth: '180px', margin: 0, padding: '8px', borderRadius: '8px' }}
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value as 'Sản phẩm' | 'Bài viết')}
+            >
+              <option value="Sản phẩm">📦 Phân loại: Sản phẩm</option>
+              <option value="Bài viết">📝 Phân loại: Bài viết</option>
+            </select>
           </div>
 
-          {categories.length > 0 ? (
-            <table className={styles.table}>
+          {displayedCategories.length > 0 ? (
+            <table className={styles.table} style={{ tableLayout: 'fixed' }}>
               <thead>
                 <tr>
-                  <th>Tên danh mục</th>
-                  <th>Phân loại</th>
-                  <th>Số lượng (Items)</th>
-                  <th style={{ textAlign: 'right' }}>Thao tác</th>
+                  <th style={{ width: '40%' }}>Tên danh mục</th>
+                  <th style={{ width: '20%' }}>Phân loại</th>
+                  <th style={{ width: '25%' }}>Số lượng (Items)</th>
+                  <th style={{ width: '15%', textAlign: 'right' }}>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
-                {categories.map(cat => (
+                {displayedCategories.map(cat => (
                   <tr key={cat.id}>
                     <td>
                       <div className={styles.catName}>
@@ -244,10 +258,10 @@ const CategoriesManager: React.FC = () => {
                     <td>
                       <div className={styles.itemCountCell}>
                         <div className={styles.progressContainer}>
-                           <div 
-                              className={styles.progressFill} 
-                              style={{ width: `${(cat.itemCount / maxItems) * 100}%` }}
-                            ></div>
+                          <div
+                            className={styles.progressFill}
+                            style={{ width: `${(cat.itemCount / maxItems) * 100}%` }}
+                          ></div>
                         </div>
                         <span className={styles.itemCountText}>{cat.itemCount} items</span>
                       </div>
@@ -277,9 +291,9 @@ const CategoriesManager: React.FC = () => {
       </div>
 
       {/* Edit Modal */}
-      <AdminModal 
-        isOpen={isEditModalOpen} 
-        onClose={() => setIsEditModalOpen(false)} 
+      <AdminModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
         title="Chỉnh sửa danh mục"
         footer={
           <>
@@ -290,30 +304,30 @@ const CategoriesManager: React.FC = () => {
       >
         <div className={modalStyles.formGroup}>
           <label>Tên danh mục mới</label>
-          <input 
-            type="text" 
-            className={modalStyles.input} 
+          <input
+            type="text"
+            className={modalStyles.input}
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
         </div>
         <div className={modalStyles.formGroup}>
           <label>Phân loại</label>
-          <select 
+          <select
             className={modalStyles.select}
             value={editType}
             onChange={(e) => setEditType(e.target.value as 'Sản phẩm' | 'Bài viết')}
           >
-             <option value="Sản phẩm">📦 Sản phẩm</option>
-             <option value="Bài viết">📝 Bài viết</option>
+            <option value="Sản phẩm">📦 Sản phẩm</option>
+            <option value="Bài viết">📝 Bài viết</option>
           </select>
         </div>
       </AdminModal>
 
       {/* Delete Confirmation Modal */}
-      <AdminModal 
-        isOpen={isDeleteModalOpen} 
-        onClose={() => setIsDeleteModalOpen(false)} 
+      <AdminModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
         title="Xác nhận xóa danh mục"
         footer={
           <>
