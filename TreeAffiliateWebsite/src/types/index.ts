@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface Plant {
   id: string;
@@ -111,13 +111,21 @@ export interface ChartDataPoint {
 }
 
 export interface ManagedPlant {
-  id: string;
-  imageUrl: string;
+  id: string | number;
   name: string;
+  tenTiengAnh?: string;
+  gia?: number;
+  giaThamKhao?: string;
   category: string;
-  platform: 'Shopee' | 'TikTok';
-  commission: number;
-  status: 'Active' | 'Inactive';
+  anhSangCanThiet?: string;
+  kichThuoc?: string;
+  doKhoChamSoc?: number;
+  anToanChoThuCung?: boolean;
+  locKhongKhi?: boolean;
+  moTa?: string;
+  commission?: number;
+  status: "Active" | "Inactive";
+  imageUrl?: string;
 }
 
 export interface ManagedArticle {
@@ -127,14 +135,14 @@ export interface ManagedArticle {
   date: string;
   views: number;
   affiliateClicks: number;
-  status: 'Published' | 'Draft';
+  status: "Published" | "Draft";
   content?: string;
 }
 
 export interface ManagedCategory {
   id: string;
   name: string;
-  type: 'Sản phẩm' | 'Bài viết';
+  type: "Sản phẩm" | "Bài viết";
   itemCount: number;
 }
 
@@ -143,8 +151,8 @@ export interface ManagedPartner {
   name: string;
   logoUrl: string;
   website: string;
-  partnerType: 'Shopee' | 'TikTok' | 'Garden Center' | 'Other';
-  status: 'Active' | 'Inactive';
+  partnerType: "Shopee" | "TikTok" | "Garden Center" | "Other";
+  status: "Active" | "Inactive";
   joinedDate: string;
   commissionRate: number;
 }
@@ -159,5 +167,5 @@ export interface ManagedReview {
   content: string;
   date: string;
   imageUrl?: string;
-  status: 'Approved' | 'Pending';
+  status: "Approved" | "Pending";
 }

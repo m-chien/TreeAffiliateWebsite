@@ -27,5 +27,15 @@ public interface CayCanhRepository extends JpaRepository<CayCanh, Integer> {
     Page<CayCanh> findMostViewed(Pageable pageable);
 
     Page<CayCanh> findByDoKhoChamSoc(Integer doKho, Pageable pageable);
+    
+    @Query("SELECT DISTINCT c FROM CayCanh c " +
+           "LEFT JOIN c.linkAffiliates l " +
+           "WHERE (:searchTerm IS NULL OR LOWER(c.tenCay) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+           "AND (:platform = 'all' OR LOWER(l.nhaCungCap) = LOWER(:platform))")
+    Page<CayCanh> searchManagedPlants(
+            @Param("searchTerm") String searchTerm, 
+            @Param("platform") String platform, 
+            Pageable pageable
+    );
 }
 
