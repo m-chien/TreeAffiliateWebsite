@@ -57,4 +57,7 @@ public class BaiViet {
     @ManyToMany
     @JoinTable(name = "BaiVietYeuThich", joinColumns = @JoinColumn(name = "IDBaiViet"), inverseJoinColumns = @JoinColumn(name = "IDUser"))
     private List<PlantsUser> yeThichUsers;
+
+    @Column(name = "TrangThai")
+    private String trangThai;
 }

@@ -28,11 +28,14 @@ const BlogDetailPage = () => {
   const [relatedPosts, setRelatedPosts] = useState<BaiVietDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // --- STATE LƯU NỘI DUNG ĐÃ XỬ LÝ (TRỘN QUẢNG CÁO) ---
+  const [processedHtml, setProcessedHtml] = useState<string>('');
+
   // --- STATE MỚI CHO TÍNH NĂNG TƯƠNG TÁC ---
   const [isSaved, setIsSaved] = useState(false);
   const [toc, setToc] = useState<{ id: string, text: string }[]>([]);
 
-  // Cuộn lên đầu trang và gọi API khi đổi bài viết
+  // 1. Cuộn lên đầu trang và gọi API khi đổi bài viết
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -56,10 +59,83 @@ const BlogDetailPage = () => {
     }
   }, [id]);
 
-  // --- TỰ ĐỘNG TẠO MỤC LỤC VÀ KIỂM TRA TRẠNG THÁI LƯU ---
+  // 2. XỬ LÝ SHORTCODE & GẮN SỰ KIỆN CLICK THEO DÕI AFFILIATE
   useEffect(() => {
     if (post) {
-      // Dùng setTimeout chờ 100ms để HTML kịp render ra màn hình
+      const processContent = async () => {
+        let content = post.noiDung;
+        const regex = /\[PRODUCT_LINK:(\d+)\]/g;
+        const matches = [...content.matchAll(regex)];
+        
+        if (matches.length > 0) {
+          const ids = Array.from(new Set(matches.map(m => m[1])));
+          try {
+            const responses = await Promise.all(ids.map(productId => axios.get(`http://localhost:8080/api/v1/cay-canh/${productId}`)));
+            
+            responses.forEach(res => {
+              const product = res.data.result;
+              if (product) {
+                const imgSrc = product.anh ? (product.anh.startsWith('http') ? product.anh : `/images/${product.anh}`) : '/images/default.jpg';
+                const desc = product.moTa || 'Giải pháp tối ưu cho không gian sống của bạn. Thanh lọc không khí, dễ chăm sóc.';
+                
+                const cardHtml = `
+                  <div class="affiliate-inline-box" style="margin-top: 40px; margin-bottom: 40px;">
+                    <img src="${imgSrc}" alt="${product.tenCay}" class="affiliate-inline-img" />
+                    <div class="affiliate-inline-info">
+                      <h4>${product.tenCay}</h4>
+                      <p>${desc}</p>
+                      
+                      <a href="/san-pham/${product.id}" 
+                         class="btn-buy-inline" 
+                         target="_blank" 
+                         onclick="window.trackAffiliateClick(event, ${post.id}, 1, '/san-pham/${product.id}')"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: text-bottom;"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        Mua Chính Hãng (Freeship)
+                      </a>
+                    </div>
+                  </div>
+                `;
+                
+                const idRegex = new RegExp(`\\[PRODUCT_LINK:${product.id}\\]`, 'g');
+                content = content.replace(idRegex, cardHtml);
+              }
+            });
+          } catch (err) {
+            console.error("Lỗi khi tải thông tin cây gắn link:", err);
+          }
+        }
+        setProcessedHtml(content);
+      };
+
+      processContent();
+    }
+  }, [post]);
+
+  // HÀM TOÀN CỤC ĐỂ BẮT SỰ KIỆN CLICK TỪ CHUỖI HTML RAW
+  useEffect(() => {
+    (window as any).trackAffiliateClick = (e: any, articleId: number, linkId: number, targetUrl: string) => {
+      e.preventDefault(); 
+      axios.post(`http://localhost:8080/api/v1/bai-viet/${articleId}/click-affiliate?linkId=${linkId}`)
+        .catch(err => console.log("Lỗi track click", err));
+      window.open(targetUrl, '_blank');
+    };
+
+    return () => {
+      delete (window as any).trackAffiliateClick;
+    };
+  }, []);
+
+  // --- HÀM THEO DÕI CLICK CHO CÁC LINK TĨNH BÊN SIDEBAR ---
+  const handleStaticAffiliateClick = (linkId: number) => {
+    if (!post) return;
+    axios.post(`http://localhost:8080/api/v1/bai-viet/${post.id}/click-affiliate?linkId=${linkId}`)
+      .catch(err => console.error("Lỗi ghi nhận click tiếp thị tĩnh:", err));
+  };
+
+  // 3. TỰ ĐỘNG TẠO MỤC LỤC
+  useEffect(() => {
+    if (processedHtml) {
       setTimeout(() => {
         const headings = document.querySelectorAll('.post-content-html h3');
         const tocItems = Array.from(headings).map((h, index) => {
@@ -69,26 +145,25 @@ const BlogDetailPage = () => {
         });
         setToc(tocItems);
       }, 100);
+    }
+  }, [processedHtml]);
 
-      // Kiểm tra xem bài đã lưu trong localStorage chưa
+  // 4. KIỂM TRA TRẠNG THÁI LƯU
+  useEffect(() => {
+    if (post) {
       const savedFavorites = JSON.parse(localStorage.getItem('favorite_posts') || '[]');
       const isExist = savedFavorites.some((p: any) => p.id === post.id);
       setIsSaved(isExist);
     }
   }, [post]);
 
-  // --- HÀM XỬ LÝ LƯU CẨM NANG ---
   const handleToggleSave = () => {
     if (!post) return;
-    
     let savedFavorites = JSON.parse(localStorage.getItem('favorite_posts') || '[]');
-
     if (isSaved) {
-      // Nếu đã lưu thì xóa đi
       savedFavorites = savedFavorites.filter((p: any) => p.id !== post.id);
       alert("Đã bỏ lưu cẩm nang!");
     } else {
-      // Nếu chưa lưu thì thêm vào
       const newFavorite = {
         id: post.id,
         tieuDe: post.tieuDe,
@@ -99,34 +174,25 @@ const BlogDetailPage = () => {
       savedFavorites.push(newFavorite);
       alert("Đã lưu cẩm nang vào Danh Sách Yêu Thích!");
     }
-
     localStorage.setItem('favorite_posts', JSON.stringify(savedFavorites));
     setIsSaved(!isSaved);
   };
 
-  // --- HÀM XỬ LÝ CHIA SẺ ---
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     alert("Đã sao chép đường dẫn bài viết!");
   };
 
-  // Hàm format ngày từ Backend
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
-  if (loading) {
-    return <div style={{padding: '120px', textAlign: 'center', fontSize: '1.2rem'}}>Đang tải dữ liệu bài viết...</div>;
-  }
-
-  if (!post) {
-    return <div style={{padding: '120px', textAlign: 'center', fontSize: '1.2rem'}}>Bài viết không tồn tại.</div>;
-  }
+  if (loading) return <div style={{padding: '120px', textAlign: 'center', fontSize: '1.2rem'}}>Đang tải dữ liệu bài viết...</div>;
+  if (!post) return <div style={{padding: '120px', textAlign: 'center', fontSize: '1.2rem'}}>Bài viết không tồn tại.</div>;
 
   return (
     <div className="blog-detail-page">
-      {/* Absolute Breadcrumbs overlapping the Hero */}
       <div className="breadcrumb-container">
         <div className="breadcrumbs">
           <Link to="/">Trang chủ</Link>
@@ -137,7 +203,6 @@ const BlogDetailPage = () => {
         </div>
       </div>
 
-      {/* Massive Hero Section */}
       <div className="article-hero" style={{ backgroundImage: `url(/images/${post.anhDaiDien})` }}>
         <div className="hero-overlay"></div>
         <motion.div 
@@ -157,13 +222,9 @@ const BlogDetailPage = () => {
         </motion.div>
       </div>
 
-      {/* 3-Column Magazine Layout */}
       <div className="article-layout">
-        
-        {/* LEFT COLUMN: Author & Socials */}
         <aside className="left-sidebar">
           <div className="sticky-wrapper">
-             {/* Author Card */}
              <div className="widget-card author-profile">
                <div className="author-large-avatar">{post.tenTacGia.charAt(0).toUpperCase()}</div>
                <h4 className="author-name">{post.tenTacGia}</h4>
@@ -176,7 +237,6 @@ const BlogDetailPage = () => {
                </div>
              </div>
 
-             {/* Table of Contents */}
              <div className="widget-card">
                <h3 className="widget-title"><List size={18} color="#c86c42" /> Mục Lục</h3>
                <ul className="toc-list">
@@ -196,7 +256,6 @@ const BlogDetailPage = () => {
                </ul>
              </div>
 
-             {/* Simple Actions */}
              <div className="widget-card">
                  <h3 className="widget-title">Hành động</h3>
                  <div className="share-links">
@@ -210,29 +269,14 @@ const BlogDetailPage = () => {
           </div>
         </aside>
 
-        {/* CENTER COLUMN: Main Content */}
         <main className="article-main">
           <div className="article-content">
             
-            {/* INJECT HTML TỪ DATABASE VÀO ĐÂY */}
             <div 
               className="post-content-html" 
-              dangerouslySetInnerHTML={{ __html: post.noiDung }} 
+              dangerouslySetInnerHTML={{ __html: processedHtml }} 
             />
 
-            {/* In-content Affiliate Box - High Conversion */}
-            <div className="affiliate-inline-box" style={{ marginTop: '40px' }}>
-              <img src="/images/cay3.png" alt="Sản phẩm gợi ý" className="affiliate-inline-img" />
-              <div className="affiliate-inline-info">
-                <h4>Combo Đất Trồng Premium + Phân Tan Chậm</h4>
-                <p>Giải pháp tối ưu nhổ rễ chứng "Úng nước" khiến 90% cây chết. Công thức độc quyền đã được pha trộn sẵn tỉ lệ vàng giữa Mùn, Đá Perlite và Phân Hữu cơ vi sinh.</p>
-                <Link to="/category" className="btn-buy-inline">
-                  <ShoppingBag size={18} /> Mua Chính Hãng Trên Shopee (Freeship)
-                </Link>
-              </div>
-            </div>
-
-            {/* Tags bài viết */}
             <div className="article-tags" style={{ marginTop: '30px' }}>
               <span className="tag">cây văn phòng</span>
               <span className="tag">mẹo chăm sóc</span>
@@ -242,39 +286,36 @@ const BlogDetailPage = () => {
           </div>
         </main>
 
-        {/* RIGHT COLUMN: Highly Commercial Sidebar */}
         <aside className="right-sidebar">
           <div className="sticky-wrapper">
-             {/* Sticky Premium Affiliate Banner */}
              <div className="affiliate-widget">
                <img src="/images/cay4.png" alt="Khuyến mãi" className="affiliate-widget-img" />
                <h4>Săn Deal Giảm Giá Cây Sân Vườn Đặc Biệt</h4>
                <p>Chỉ áp dụng mã <strong>PLANTSVN20</strong> hôm nay để được khấu trừ thẳng 20% đơn hàng tại hệ thống kho đối tác.</p>
-               <Link to="/category" className="btn-widget">Đến Kho Vườn Shopee</Link>
+               <Link to="/category" target="_blank" className="btn-widget" onClick={() => handleStaticAffiliateClick(1)}>Đến Kho Vườn Shopee</Link>
              </div>
 
-             {/* Top Rated Products Widget */}
              <div className="widget-card">
                 <h3 className="widget-title"><ThumbsUp size={18} color="#c86c42"/> Phụ Kiện Bán Chạy</h3>
                 <div className="products-list-item">
                    <img src="/images/cay2.png" className="product-widget-img" alt="prod"/>
                    <div className="product-widget-info">
                       <h5>Chậu Gốm Sứ Bắc Âu Trắng</h5>
-                      <Link to="/category">Mua Giá 120k →</Link>
+                      <Link to="/category" target="_blank" onClick={() => handleStaticAffiliateClick(1)}>Mua Giá 120k →</Link>
                    </div>
                 </div>
                 <div className="products-list-item">
                    <img src="/images/cay5.png" className="product-widget-img" alt="prod"/>
                    <div className="product-widget-info">
                       <h5>Bình xịt phun sương áp lực</h5>
-                      <Link to="/san-pham">Mua Giá 65k →</Link>
+                      <Link to="/san-pham" target="_blank" onClick={() => handleStaticAffiliateClick(1)}>Mua Giá 65k →</Link>
                    </div>
                 </div>
                 <div className="products-list-item">
                    <img src="/images/cay1.png" className="product-widget-img" alt="prod"/>
                    <div className="product-widget-info">
                       <h5>Cây con Monstera Đột Biến</h5>
-                      <Link to="/category">Mua Giá 250k →</Link>
+                      <Link to="/category" target="_blank" onClick={() => handleStaticAffiliateClick(1)}>Mua Giá 250k →</Link>
                    </div>
                 </div>
              </div>
@@ -282,7 +323,6 @@ const BlogDetailPage = () => {
         </aside>
       </div>
 
-      {/* Related Posts */}
       <section className="related-section">
         <h3 className="related-title"><Clock size={28} color="#c86c42"/> Xem Thêm Bài Viết Mới</h3>
         <div className="related-grid">

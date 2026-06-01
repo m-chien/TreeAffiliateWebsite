@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Search, Plus, Edit2, Trash2, FileText, Eye, TrendingUp, Filter, BarChart, PenTool, Edit3 } from 'lucide-react';
 import styles from './ArticlesManager.module.css';
 import modalStyles from './AdminModal.module.css';
-import { managedArticles as initialArticles } from '../../data/adminData';
 import type { ManagedArticle } from '../../types';
 import AdminModal from './AdminModal';
 import ArticleContentEditor from './ArticleContentEditor';
 
 const ArticlesManager: React.FC = () => {
-  const [articles, setArticles] = useState<ManagedArticle[]>(initialArticles);
+  const [articles, setArticles] = useState<ManagedArticle[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
@@ -20,7 +22,38 @@ const ArticlesManager: React.FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<ManagedArticle | null>(null);
 
   // Form State
-  const [formData, setFormData] = useState<Partial<ManagedArticle>>({});
+  const [formData, setFormData] = useState<Partial<ManagedArticle & { categoryId?: number }>>({});
+
+  // --------------------------------------------------------
+  // HÀM TẢI DỮ LIỆU TỪ BACKEND
+  // --------------------------------------------------------
+  const fetchArticles = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axios.get('http://localhost:8080/api/v1/bai-viet/admin?page=0&size=50');
+      const data = res.data.result.content || [];
+
+      const formattedData: ManagedArticle[] = data.map((item: any) => ({
+        id: item.id.toString(),
+        title: item.tieuDe || 'Chưa có tiêu đề',
+        author: item.tenTacGia || 'Admin',
+        date: item.ngayTao ? new Date(item.ngayTao).toISOString().split('T')[0] : 'N/A',
+        views: item.luotXem || 0,
+        affiliateClicks: item.affiliateClicks || 0,
+        status: item.trangThai === 'DRAFT' ? 'Draft' : 'Published'
+      }));
+
+      setArticles(formattedData);
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách bài viết từ Backend:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
 
   // Render Analytics Data
   const totalArticles = articles.length;
@@ -28,25 +61,26 @@ const ArticlesManager: React.FC = () => {
   const totalViews = articles.reduce((sum, a) => sum + a.views, 0);
   const totalClicks = articles.reduce((sum, a) => sum + a.affiliateClicks, 0);
 
-  // Max values for visual bars
   const maxViews = Math.max(...articles.map(a => a.views), 1);
   const maxClicks = Math.max(...articles.map(a => a.affiliateClicks), 1);
 
-  // Helper to generate initials from author string
   const getInitials = (name: string) => {
+    if (!name) return 'AD';
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
   };
 
-  // Handlers
+  // --------------------------------------------------------
+  // XỬ LÝ SỰ KIỆN MỞ MODAL
+  // --------------------------------------------------------
   const openAddModal = () => {
     setFormData({ 
-      id: Date.now().toString(), 
       title: '', 
       author: '', 
       date: new Date().toISOString().split('T')[0], 
       views: 0, 
       affiliateClicks: 0, 
-      status: 'Draft' 
+      status: 'Published',
+      categoryId: 1 // Mặc định chọn danh mục đầu tiên
     });
     setIsAddModalOpen(true);
   };
@@ -62,35 +96,109 @@ const ArticlesManager: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const openContentEditor = (article: ManagedArticle) => {
-    setSelectedArticle(article);
-    setIsEditingContent(true);
+  const openContentEditor = async (article: ManagedArticle) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/v1/bai-viet/chi-tiet/${article.id}`);
+      const fullData = res.data.result;
+
+      setSelectedArticle({
+        ...article,
+        content: fullData.noiDung || '' 
+      } as any);
+      
+      setIsEditingContent(true);
+    } catch (error) {
+      console.error("Lỗi khi tải nội dung bài viết:", error);
+      alert("Không thể tải nội dung chi tiết của bài viết này.");
+    }
   };
 
-  const handleSaveContent = (updatedArticle: ManagedArticle) => {
-    setArticles(articles.map(a => a.id === updatedArticle.id ? updatedArticle : a));
-    setIsEditingContent(false);
+  const handleSaveContent = async (updatedArticle: any) => {
+    try {
+      const payload = {
+        noiDung: updatedArticle.content
+      };
+
+      await axios.put(`http://localhost:8080/api/v1/bai-viet/${updatedArticle.id}`, payload);
+      
+      alert("Đã lưu nội dung bài viết thành công!");
+      setIsEditingContent(false);
+      fetchArticles();
+    } catch (error) {
+      console.error("Lỗi khi lưu nội dung:", error);
+      alert("Có lỗi xảy ra khi lưu nội dung.");
+    }
   };
 
-  const handleSaveAdd = () => {
-    if (!formData.title) return;
-    setArticles([formData as ManagedArticle, ...articles]);
-    setIsAddModalOpen(false);
+  // --------------------------------------------------------
+  // KẾT NỐI API: THÊM, SỬA TRẠNG THÁI, XÓA
+  // --------------------------------------------------------
+  const handleSaveAdd = async () => {
+    if (!formData.title) {
+      alert("Vui lòng nhập tiêu đề bài viết!");
+      return;
+    }
+    try {
+      // Dữ liệu map đúng tên biến với CreateBaiVietDTO bên Spring Boot
+      const payload = {
+        tieuDe: formData.title,
+        trangThai: formData.status === 'Draft' ? 'DRAFT' : 'PUBLISHED',
+        userId: 1, // Khóa cứng admin
+        danhMucNoiDungId: formData.categoryId || 1 // Khớp tên biến danhMucNoiDungId
+      };
+
+      await axios.post('http://localhost:8080/api/v1/bai-viet', payload);
+      alert("Thêm bài viết mới thành công!");
+      setIsAddModalOpen(false);
+      fetchArticles();
+    } catch (error) {
+      console.error("Lỗi khi thêm bài viết:", error);
+      alert("Đã xảy ra lỗi khi thêm bài viết.");
+    }
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!selectedArticle) return;
-    setArticles(articles.map(a => a.id === selectedArticle.id ? (formData as ManagedArticle) : a));
-    setIsEditModalOpen(false);
+    try {
+      const payload = {
+        tieuDe: formData.title,
+        trangThai: formData.status === 'Draft' ? 'DRAFT' : 'PUBLISHED',
+        danhMucNoiDungId: formData.categoryId
+      };
+
+      await axios.put(`http://localhost:8080/api/v1/bai-viet/${selectedArticle.id}`, payload);
+      alert("Cập nhật trạng thái/tiêu đề thành công!");
+      setIsEditModalOpen(false);
+      fetchArticles();
+    } catch (error) {
+      console.error("Lỗi khi cập nhật bài viết:", error);
+      alert("Đã xảy ra lỗi khi cập nhật bài viết.");
+    }
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!selectedArticle) return;
-    setArticles(articles.filter(a => a.id !== selectedArticle.id));
-    setIsDeleteModalOpen(false);
+    try {
+      const res = await axios.delete(`http://localhost:8080/api/v1/bai-viet/${selectedArticle.id}`);
+      
+      // Bắt buộc phải kiểm tra code bên trong JSON trả về
+      if (res.data && res.data.code === 200) {
+        alert("Đã xóa bài viết thành công!");
+        setIsDeleteModalOpen(false);
+        fetchArticles();
+      } else {
+        // Nếu Backend báo lỗi (bị dính khóa ngoại)
+        alert("Không thể xóa: " + (res.data.message || "Bị vướng dữ liệu liên kết ở bảng khác!"));
+      }
+    } catch (error: any) {
+      console.error("Lỗi khi xóa bài viết:", error);
+      alert("Đã xảy ra lỗi server: " + (error.response?.data?.message || "Vui lòng xem console."));
+    }
   };
 
-  // Render Form
+  // --------------------------------------------------------
+  // RENDER GIAO DIỆN FORM
+  // --------------------------------------------------------
   const renderForm = () => (
     <>
       <div className={modalStyles.formGroup}>
@@ -103,14 +211,37 @@ const ArticlesManager: React.FC = () => {
           onChange={(e) => setFormData({...formData, title: e.target.value})}
         />
       </div>
+
+      {/* DROPDOWN CHỌN DANH MỤC */}
+      <div className={modalStyles.formGroup}>
+        <label>Thuộc danh mục</label>
+        <select 
+          className={modalStyles.select}
+          value={formData.categoryId || 1}
+          onChange={(e) => setFormData({...formData, categoryId: Number(e.target.value)})}
+          //disabled={!!selectedArticle} // Khóa danh mục khi đang trong chế độ Edit
+        >
+          <option value={1}>Hướng dẫn chăm sóc</option>
+          <option value={2}>Mẹo phong thủy</option>
+          <option value={3}>Top List</option>
+          <option value={4}>Xu hướng 2026</option>
+          <option value={5}>Cẩm nang đất trồng</option>
+          <option value={6}>Phân bón & Dinh dưỡng</option>
+          <option value={7}>Trang trí nội thất</option>
+          <option value={8}>Cây mọng nước</option>
+          <option value={9}>Câu chuyện vườn</option>
+          <option value={10}>Sự kiện</option>
+        </select>
+      </div>
+
       <div style={{ display: 'flex', gap: '20px' }}>
         <div className={modalStyles.formGroup} style={{ flex: 1 }}>
           <label>Tác giả / Bút danh</label>
           <input 
             type="text" 
             className={modalStyles.input} 
-            value={formData.author || ''}
-            onChange={(e) => setFormData({...formData, author: e.target.value})}
+            value={formData.author || 'Admin'}
+            disabled
           />
         </div>
         <div className={modalStyles.formGroup} style={{ flex: 1 }}>
@@ -119,7 +250,7 @@ const ArticlesManager: React.FC = () => {
             type="date" 
             className={modalStyles.input} 
             value={formData.date || ''}
-            onChange={(e) => setFormData({...formData, date: e.target.value})}
+            disabled
           />
         </div>
       </div>
@@ -129,8 +260,8 @@ const ArticlesManager: React.FC = () => {
           <input 
             type="number" 
             className={modalStyles.input} 
-            value={formData.views || ''}
-            onChange={(e) => setFormData({...formData, views: Number(e.target.value)})}
+            value={formData.views || 0}
+            disabled 
           />
         </div>
         <div className={modalStyles.formGroup} style={{ flex: 1 }}>
@@ -138,8 +269,8 @@ const ArticlesManager: React.FC = () => {
            <input 
             type="number" 
             className={modalStyles.input} 
-            value={formData.affiliateClicks || ''}
-            onChange={(e) => setFormData({...formData, affiliateClicks: Number(e.target.value)})}
+            value={formData.affiliateClicks || 0}
+            disabled 
           />
         </div>
       </div>
@@ -147,7 +278,7 @@ const ArticlesManager: React.FC = () => {
         <label>Trạng thái hiển thị</label>
         <select 
           className={modalStyles.select}
-          value={formData.status || ''}
+          value={formData.status || 'Published'}
           onChange={(e) => setFormData({...formData, status: e.target.value as 'Published' | 'Draft'})}
         >
           <option value="Published">✅ Đã xuất bản công khai</option>
@@ -178,7 +309,7 @@ const ArticlesManager: React.FC = () => {
           </div>
           <div className={styles.statInfo}>
             <span className={styles.statLabel}>Tổng bài viết</span>
-            <span className={styles.statValue}>{totalArticles}</span>
+            <span className={styles.statValue}>{isLoading ? '...' : totalArticles}</span>
           </div>
         </div>
         <div className={styles.statCard}>
@@ -187,7 +318,7 @@ const ArticlesManager: React.FC = () => {
           </div>
           <div className={styles.statInfo}>
             <span className={styles.statLabel}>Đã xuất bản</span>
-            <span className={styles.statValue}>{publishedCount}</span>
+            <span className={styles.statValue}>{isLoading ? '...' : publishedCount}</span>
           </div>
         </div>
         <div className={styles.statCard}>
@@ -196,7 +327,7 @@ const ArticlesManager: React.FC = () => {
           </div>
           <div className={styles.statInfo}>
             <span className={styles.statLabel}>Tổng lượt xem</span>
-            <span className={styles.statValue}>{totalViews.toLocaleString()}</span>
+            <span className={styles.statValue}>{isLoading ? '...' : totalViews.toLocaleString()}</span>
           </div>
         </div>
         <div className={styles.statCard}>
@@ -205,7 +336,7 @@ const ArticlesManager: React.FC = () => {
           </div>
           <div className={styles.statInfo}>
             <span className={styles.statLabel}>Referral Clicks</span>
-            <span className={styles.statValue}>{totalClicks.toLocaleString()}</span>
+            <span className={styles.statValue}>{isLoading ? '...' : totalClicks.toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -224,7 +355,7 @@ const ArticlesManager: React.FC = () => {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid #eaebec', padding: '0 8px', borderRadius: '8px', backgroundColor: '#f8f7f2' }}>
             <Filter size={16} color="#666" />
-            <select style={{ border: 'none', backgroundColor: 'transparent' }} className={styles.filterSelect} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <select style={{ border: 'none', backgroundColor: 'transparent', outline: 'none' }} className={styles.filterSelect} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
               <option value="all">Tất cả bài viết</option>
               <option value="published">Đã xuất bản (Published)</option>
               <option value="draft">Bản nháp (Draft)</option>
@@ -242,7 +373,9 @@ const ArticlesManager: React.FC = () => {
         <div className={styles.tableHeader}>
           <h3>Danh sách bài viết chi tiết</h3>
         </div>
-        {filteredArticles.length > 0 ? (
+        {isLoading ? (
+          <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>Đang tải dữ liệu từ server...</div>
+        ) : filteredArticles.length > 0 ? (
           <table className={styles.table}>
             <thead>
               <tr>
@@ -373,7 +506,7 @@ const ArticlesManager: React.FC = () => {
         <ArticleContentEditor 
           article={selectedArticle}
           onClose={() => setIsEditingContent(false)}
-          onSave={handleSaveContent}
+          onSave={handleSaveContent} 
         />
       )}
 
