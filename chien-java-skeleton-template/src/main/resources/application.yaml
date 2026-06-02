@@ -1,4 +1,9 @@
+
+file:
+  upload-dir: "${user.dir}/../TreeAffiliateWebsite/public/images"
+
 debug: false
+
 spring:
   mail:
     host: smtp.gmail.com
@@ -45,5 +50,6 @@ spring:
     redis:
       host: localhost
       port: 6379
+
 jwt:
   secretKey: "a1Y1ksRv71WUdnPa6RNwqoc4Y5xtminhchiendeptrai"

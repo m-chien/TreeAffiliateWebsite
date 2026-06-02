@@ -1,5 +1,6 @@
 package com.example.chien_java_template.controller;
 
+import com.example.chien_java_template.dto.CauHoiThuongGapDTO;
 import com.example.chien_java_template.dto.CreateKhuyenMaiDTO;
 import com.example.chien_java_template.dto.UpdateKhuyenMaiDTO;
 import com.example.chien_java_template.dto.KhuyenMaiDTO;
@@ -50,6 +51,23 @@ public class KhuyenMaiController {
                 .result(khuyenMaiDTOPage)
                 .build());
     }
+
+    @GetMapping("/cay-canh/{cayCanhId}")
+    public ResponseEntity<ApiResponse<Page<KhuyenMaiDTO>>> getKhuyenMaiByCayCanh(
+            @PathVariable Integer cayCanhId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<KhuyenMaiDTO> khuyenMaiDTOPage =
+                khuyenMaiService.getKhuyenMaiByCayCanh(cayCanhId, PageRequest.of(page, size));
+
+        return ResponseEntity.ok(ApiResponse.<Page<KhuyenMaiDTO>>builder()
+                .code(200)
+                .message("Lấy danh sách khuyến mãi theo cây cảnh thành công")
+                .result(khuyenMaiDTOPage)
+                .build());
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<KhuyenMaiDTO>> updateKhuyenMai(

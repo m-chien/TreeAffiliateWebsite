@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CauHoiThuongGapRepository extends JpaRepository<CauHoiThuongGap, Integer> {
     Page<CauHoiThuongGap> findByCayCanhId(Integer cayCanhId, Pageable pageable);
+    void deleteByCayCanhId(Integer cayCanhId);
 }
 

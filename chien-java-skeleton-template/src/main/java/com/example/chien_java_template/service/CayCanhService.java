@@ -3,12 +3,19 @@ package com.example.chien_java_template.service;
 import com.example.chien_java_template.dto.CreateCayCanhDTO;
 import com.example.chien_java_template.dto.UpdateCayCanhDTO;
 import com.example.chien_java_template.dto.CayCanhDTO;
+import com.example.chien_java_template.dto.request.UpdatePlantDetailsRequest;
 import com.example.chien_java_template.enums.Status;
 import com.example.chien_java_template.exception.AppException;
 import com.example.chien_java_template.exception.ErrorCode;
 import com.example.chien_java_template.mapper.CayCanhMapper;
 import com.example.chien_java_template.model.CayCanh;
+import com.example.chien_java_template.model.CauHoiThuongGap;
+import com.example.chien_java_template.model.HuongDanChamSoc;
+import com.example.chien_java_template.model.ThongTinNoiBat;
+import com.example.chien_java_template.repository.CauHoiThuongGapRepository;
 import com.example.chien_java_template.repository.CayCanhRepository;
+import com.example.chien_java_template.repository.HuongDanChamSocRepository;
+import com.example.chien_java_template.repository.ThongTinNoiBatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +30,9 @@ import java.util.stream.Collectors;
 public class CayCanhService {
     private final CayCanhRepository cayCanhRepository;
     private final CayCanhMapper cayCanhMapper;
+    private final HuongDanChamSocRepository huongDanChamSocRepository;
+    private final ThongTinNoiBatRepository thongTinNoiBatRepository;
+    private final CauHoiThuongGapRepository cauHoiThuongGapRepository;
 
     @Transactional
     public CayCanhDTO createCayCanh(CreateCayCanhDTO createCayCanhDTO) {
@@ -90,5 +100,52 @@ public class CayCanhService {
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
         cayCanh.setLuotXem((cayCanh.getLuotXem() == null ? 0 : cayCanh.getLuotXem()) + 1);
         cayCanhRepository.save(cayCanh);
+    }
+
+    @Transactional
+    public void updatePlantDetails(Integer id, UpdatePlantDetailsRequest request) {
+        CayCanh cayCanh = cayCanhRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
+
+        if (request.getHuongDanChamSoc() != null) {
+            HuongDanChamSoc hdcs = huongDanChamSocRepository.findByCayCanhId(id)
+                    .orElse(new HuongDanChamSoc());
+
+            hdcs.setCayCanh(cayCanh);
+            hdcs.setAnhSang(request.getHuongDanChamSoc().getAnhSang());
+            hdcs.setCheDoNuoc(request.getHuongDanChamSoc().getCheDoNuoc());
+            hdcs.setDatVaDinhDuong(request.getHuongDanChamSoc().getDatVaDinhDuong());
+            hdcs.setDoAnToan(request.getHuongDanChamSoc().getDoAnToan());
+
+            huongDanChamSocRepository.save(hdcs);
+        }
+
+        if (request.getThongTinNoiBat() != null) {
+            thongTinNoiBatRepository.deleteByCayCanhId(id);
+
+            List<ThongTinNoiBat> thongTinList = request.getThongTinNoiBat().stream().map(req -> {
+                ThongTinNoiBat ttnb = new ThongTinNoiBat();
+                ttnb.setCayCanh(cayCanh);
+                ttnb.setLoai(req.getLoai());
+                ttnb.setNoiDung(req.getNoiDung());
+                return ttnb;
+            }).collect(Collectors.toList());
+
+            thongTinNoiBatRepository.saveAll(thongTinList);
+        }
+
+        if (request.getCauHoiThuongGap() != null) {
+            cauHoiThuongGapRepository.deleteByCayCanhId(id);
+
+            List<CauHoiThuongGap> faqList = request.getCauHoiThuongGap().stream().map(req -> {
+                CauHoiThuongGap faq = new CauHoiThuongGap();
+                faq.setCayCanh(cayCanh);
+                faq.setCauHoi(req.getCauHoi());
+                faq.setCauTraLoi(req.getCauTraLoi());
+                return faq;
+            }).collect(Collectors.toList());
+
+            cauHoiThuongGapRepository.saveAll(faqList);
+        }
     }
 }

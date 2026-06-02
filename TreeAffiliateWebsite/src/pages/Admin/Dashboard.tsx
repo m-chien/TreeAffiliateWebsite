@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  Leaf, 
-  FileText, 
-  FolderTree, 
-  Settings, 
-  Search, 
+import React, { useState } from "react";
+import {
+  LayoutDashboard,
+  Leaf,
+  FileText,
+  FolderTree,
+  Settings,
+  Search,
   Bell,
   User,
   Users,
@@ -13,67 +13,95 @@ import {
   LogOut,
   Handshake,
   MessageSquare,
-} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import styles from './Dashboard.module.css';
+  Link as LinkIcon, // Import thêm icon này
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import styles from "./Dashboard.module.css";
 
-import DashboardAnalytics from './Analytics/DashboardAnalytics';
-import PlantsManager from './PlantsManager';
-import PlantDetailsManager from './PlantDetailsManager';
-import ArticlesManager from './ArticlesManager';
-import CategoriesManager from './CategoriesManager';
-import SettingsManager from './SettingsManager';
-import AccountManager from './AccountManager';
-import NewsletterManager from './NewsletterManager';
-import UsersManager from './UsersManager';
-import PartnersManager from './PartnersManager';
-import ReviewsManager from './ReviewsManager';
+import DashboardAnalytics from "./Analytics/DashboardAnalytics";
+import PlantsManager from "./PlantsManager";
+import PlantDetailsManager from "./PlantDetailsManager";
+import ArticlesManager from "./ArticlesManager";
+import CategoriesManager from "./CategoriesManager";
+import SettingsManager from "./SettingsManager";
+import AccountManager from "./AccountManager";
+import NewsletterManager from "./NewsletterManager";
+import UsersManager from "./UsersManager";
+import PartnersManager from "./PartnersManager";
+import ReviewsManager from "./ReviewsManager";
+// 1. Import component LinkAffiliateManager mới tạo
+import LinkAffiliateManager from "./LinkAffiliateManager";
 
 const Dashboard: React.FC = () => {
-  const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [activeMenu, setActiveMenu] = useState("dashboard");
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/admin/login');
+    navigate("/admin/login");
   };
 
+  // 2. Thêm mục vào Sidebar
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-    { id: 'plants', label: 'Quản lý cây', icon: <Leaf size={20} /> },
-    { id: 'plant-details', label: 'Thông số cây', icon: <Settings size={20} /> },
-    { id: 'articles', label: 'Quản lý bài viết', icon: <FileText size={20} /> },
-    { id: 'categories', label: 'Quản lý danh mục', icon: <FolderTree size={20} /> },
-    { id: 'users', label: 'Người dùng', icon: <Users size={20} /> },
-    { id: 'newsletter', label: 'Liên hệ tiếp thị', icon: <Mail size={20} /> },
-    { id: 'reviews', label: 'Quản lý đánh giá', icon: <MessageSquare size={20} /> },
-    { id: 'partners', label: 'Quản lý đối tác', icon: <Handshake size={20} /> },
-    { id: 'account', label: 'Tài khoản', icon: <User size={20} /> },
-    { id: 'settings', label: 'Hệ thống', icon: <Settings size={20} /> },
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: <LayoutDashboard size={20} />,
+    },
+    { id: "plants", label: "Quản lý cây", icon: <Leaf size={20} /> },
+    {
+      id: "plant-details",
+      label: "Thông số cây",
+      icon: <Settings size={20} />,
+    },
+    {
+      id: "link-affiliate",
+      label: "Link Affiliate",
+      icon: <LinkIcon size={20} />,
+    }, // <- Mới thêm
+    { id: "articles", label: "Quản lý bài viết", icon: <FileText size={20} /> },
+    {
+      id: "categories",
+      label: "Quản lý danh mục",
+      icon: <FolderTree size={20} />,
+    },
+    { id: "users", label: "Người dùng", icon: <Users size={20} /> },
+    { id: "newsletter", label: "Liên hệ tiếp thị", icon: <Mail size={20} /> },
+    {
+      id: "reviews",
+      label: "Quản lý đánh giá",
+      icon: <MessageSquare size={20} />,
+    },
+    { id: "partners", label: "Quản lý đối tác", icon: <Handshake size={20} /> },
+    { id: "account", label: "Tài khoản", icon: <User size={20} /> },
+    { id: "settings", label: "Hệ thống", icon: <Settings size={20} /> },
   ];
 
+  // 3. Mapping menu ID với Component tương ứng
   const renderContent = () => {
     switch (activeMenu) {
-      case 'dashboard':
+      case "dashboard":
         return <DashboardAnalytics />;
-      case 'plants':
+      case "plants":
         return <PlantsManager />;
-      case 'plant-details':
+      case "plant-details":
         return <PlantDetailsManager />;
-      case 'articles':
+      case "link-affiliate": // <- Mới thêm
+        return <LinkAffiliateManager />;
+      case "articles":
         return <ArticlesManager />;
-      case 'categories':
+      case "categories":
         return <CategoriesManager />;
-      case 'users':
+      case "users":
         return <UsersManager />;
-      case 'newsletter':
+      case "newsletter":
         return <NewsletterManager />;
-      case 'reviews':
+      case "reviews":
         return <ReviewsManager />;
-      case 'partners':
+      case "partners":
         return <PartnersManager />;
-      case 'account':
+      case "account":
         return <AccountManager />;
-      case 'settings':
+      case "settings":
         return <SettingsManager />;
       default:
         return <DashboardAnalytics />;
@@ -92,7 +120,7 @@ const Dashboard: React.FC = () => {
           {menuItems.map((item) => (
             <li
               key={item.id}
-              className={`${styles.menuItem} ${activeMenu === item.id ? styles.active : ''}`}
+              className={`${styles.menuItem} ${activeMenu === item.id ? styles.active : ""}`}
               onClick={() => setActiveMenu(item.id)}
             >
               {item.icon}
@@ -122,10 +150,10 @@ const Dashboard: React.FC = () => {
               <div className={styles.notificationDot}></div>
             </div>
             <div className={styles.adminProfile}>
-              <img 
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&q=80" 
-                alt="Admin Avatar" 
-                className={styles.avatar} 
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&q=80"
+                alt="Admin Avatar"
+                className={styles.avatar}
               />
               <div className={styles.adminInfo}>
                 <span className={styles.adminName}>Alex Nguyen</span>

@@ -40,6 +40,10 @@ public class KhuyenMaiService {
         return khuyenMaiRepository.findAll(pageable)
                 .map(khuyenMaiMapper::toDTO);
     }
+    public Page<KhuyenMaiDTO> getKhuyenMaiByCayCanh(Integer cayCanhId, Pageable pageable) {
+        return khuyenMaiRepository.findByCayCanhId(cayCanhId, pageable)
+                .map(khuyenMaiMapper::toDTO);
+    }
 
     @Transactional
     public KhuyenMaiDTO updateKhuyenMai(Integer id, UpdateKhuyenMaiDTO updateKhuyenMaiDTO) {

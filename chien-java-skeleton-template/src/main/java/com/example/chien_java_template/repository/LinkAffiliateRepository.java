@@ -26,5 +26,9 @@ public interface LinkAffiliateRepository extends JpaRepository<LinkAffiliate, In
     Page<LinkAffiliate> findMostClicked(Pageable pageable);
 
     List<LinkAffiliate> findByCayCanhIdAndTrangThai(Integer cayCanhId, Status trangThai);
+    
+    Optional<LinkAffiliate> findFirstByCayCanh_Id(Integer id);
+
+    void deleteAllByCayCanh_Id(Integer id);
 }
 

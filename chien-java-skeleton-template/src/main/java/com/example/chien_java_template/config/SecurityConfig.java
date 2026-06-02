@@ -56,6 +56,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                         // TuanKhanh
                         .requestMatchers("/api/v1/plants-user/**").permitAll()
                         .requestMatchers("/api/v1/lich-su-tiep-thi/**").permitAll()
+                        .requestMatchers("/api/v1/admin/plants-manager/**").permitAll()
+                        .requestMatchers("/api/v1/admin/files/**").permitAll()
+                        .requestMatchers("/api/v1/khuyen-mai/**").permitAll()
 
                         // Trung
                         .requestMatchers("/api/v1/bai-viet/**").permitAll()
