@@ -21,5 +21,6 @@ public class BaiVietDTO {
     private String tenTacGia;
     private String anhDaiDien;
     private java.util.List<LinkAffiliateDTO> linkAffiliates;
+    private Integer affiliateClicks;
 }
 

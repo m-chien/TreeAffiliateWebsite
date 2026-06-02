@@ -1,7 +1,7 @@
 package com.example.chien_java_template.enums;
 
 public enum UserRole {
-    Admin,
+    ADMIN,
     User,
     Moderator,
     Guest

@@ -11,5 +11,6 @@ public class UpdateBaiVietDTO {
     private String noiDung;
     private Integer thoiGianDoc;
     private Integer danhMucNoiDungId;
+    private String trangThai;
 }
 

@@ -12,5 +12,6 @@ public class CreateBaiVietDTO {
     private String tieuDe;
     private String noiDung;
     private Integer thoiGianDoc;
+    private String trangThai;
 }
 

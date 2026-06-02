@@ -172,10 +172,12 @@ CREATE TABLE Anh_BaiViet (
 );
 
 CREATE TABLE BaiViet_LinkAffiliate (
-    IDBaiViet INT FOREIGN KEY REFERENCES BaiViet(ID),
-    IDLinkAffiliate INT FOREIGN KEY REFERENCES LinkAffiliate(ID),
+    IDBaiViet INT NOT NULL,
+    IDLinkAffiliate INT NOT NULL,
     LuotClick INT DEFAULT 0,
-    PRIMARY KEY (IDBaiViet, IDLinkAffiliate)
+    PRIMARY KEY (IDBaiViet, IDLinkAffiliate),
+    FOREIGN KEY (IDBaiViet) REFERENCES BaiViet(ID),
+    FOREIGN KEY (IDLinkAffiliate) REFERENCES LinkAffiliate(ID)
 );
 
 CREATE TABLE BaiViet_CayCanh (
@@ -554,7 +556,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>3. Lời kết</h3>
-<p>Đầu tư vào những "máy lọc khí tự nhiên" này không chỉ là một khoản đầu tư cho thẩm mỹ, mà là khoản đầu tư cho sức khỏe lâu dài. Hãy chọn cho mình ít nhất một loài cây phù hợp và bắt đầu thanh lọc không gian sống ngay hôm nay. Chỉ cần một chút chăm sóc, chúng sẽ đền đáp lại cho bạn bằng bầu không khí trong lành và nguồn năng lượng tích cực bất tận.</p>' 
+<p>Đầu tư vào những "máy lọc khí tự nhiên" này không chỉ là một khoản đầu tư cho thẩm mỹ, mà là khoản đầu tư cho sức khỏe lâu dài. Hãy chọn cho mình ít nhất một loài cây phù hợp và bắt đầu thanh lọc không gian sống ngay hôm nay. Chỉ cần một chút chăm sóc, chúng sẽ đền đáp lại cho bạn bằng bầu không khí trong lành và nguồn năng lượng tích cực bất tận.</p>
+[PRODUCT_LINK:7]'
 WHERE ID = 1;
 
 --ID2
@@ -592,7 +595,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Chăm sóc một chậu Monstera không khó như bạn nghĩ, chỉ cần một chút kiên nhẫn và quan sát. Khi bạn nắm vững "nhịp điệu" tưới nước, nàng Monstera sẽ trả ơn bạn bằng những chiếc lá xẻ độc đáo và tốc độ lớn nhanh chóng mặt. Hãy cùng bắt đầu thói quen chăm cây nhẹ nhàng từ hôm nay nhé!</p>' 
+<p>Chăm sóc một chậu Monstera không khó như bạn nghĩ, chỉ cần một chút kiên nhẫn và quan sát. Khi bạn nắm vững "nhịp điệu" tưới nước, nàng Monstera sẽ trả ơn bạn bằng những chiếc lá xẻ độc đáo và tốc độ lớn nhanh chóng mặt. Hãy cùng bắt đầu thói quen chăm cây nhẹ nhàng từ hôm nay nhé!</p>
+[PRODUCT_LINK:3]'
 WHERE ID = 2;
 
 --ID3
@@ -630,7 +634,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Chọn cây phong thủy hợp mệnh Kim không đơn thuần là chọn một loài cây, mà là chọn một nguồn năng lượng phù hợp để đồng hành. Hy vọng với những gợi ý trên, bạn sẽ tìm được "tri kỷ xanh" giúp cuộc sống và sự nghiệp của mình thêm phần rực rỡ, thịnh vượng. Hãy bắt đầu ngay hôm nay nhé!</p>' 
+<p>Chọn cây phong thủy hợp mệnh Kim không đơn thuần là chọn một loài cây, mà là chọn một nguồn năng lượng phù hợp để đồng hành. Hy vọng với những gợi ý trên, bạn sẽ tìm được "tri kỷ xanh" giúp cuộc sống và sự nghiệp của mình thêm phần rực rỡ, thịnh vượng. Hãy bắt đầu ngay hôm nay nhé!</p>
+[PRODUCT_LINK:1]'
 WHERE ID = 3;
 
 --ID4
@@ -667,7 +672,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Xu hướng trang trí 2026 thực chất là sự quay về với giá trị cốt lõi: sự thoải mái và sức khỏe tinh thần. Đừng chạy theo số đông, hãy tạo nên một "căn cứ" mang đậm dấu ấn cá nhân của chính bạn. Chúc bạn sớm biến không gian sống của mình thành nơi mà mỗi khi trở về, bạn đều cảm thấy được yêu thương và tái tạo năng lượng.</p>' 
+<p>Xu hướng trang trí 2026 thực chất là sự quay về với giá trị cốt lõi: sự thoải mái và sức khỏe tinh thần. Đừng chạy theo số đông, hãy tạo nên một "căn cứ" mang đậm dấu ấn cá nhân của chính bạn. Chúc bạn sớm biến không gian sống của mình thành nơi mà mỗi khi trở về, bạn đều cảm thấy được yêu thương và tái tạo năng lượng.</p>
+[PRODUCT_LINK:6]'
 WHERE ID = 4;
 
 --ID5
@@ -707,7 +713,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Mỗi chậu sen đá là một thế giới thu nhỏ. Dù bạn chỉ mới bắt đầu hay đã là một "người chơi" lâu năm, những đóa sen đá vẫn luôn mang lại sự bình yên lạ kỳ. Hãy chọn ngay một em sen đá xinh xắn, đặt lên bàn và cùng tận hưởng niềm vui khi thấy chúng lớn lên từng ngày nhé!</p>' 
+<p>Mỗi chậu sen đá là một thế giới thu nhỏ. Dù bạn chỉ mới bắt đầu hay đã là một "người chơi" lâu năm, những đóa sen đá vẫn luôn mang lại sự bình yên lạ kỳ. Hãy chọn ngay một em sen đá xinh xắn, đặt lên bàn và cùng tận hưởng niềm vui khi thấy chúng lớn lên từng ngày nhé!</p>
+[PRODUCT_LINK:4]'
 WHERE ID = 5;
 
 --ID6
@@ -750,7 +757,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Lưỡi Hổ là loài cây mang đến sự bình an và bảo vệ gia chủ. Khi bạn chăm sóc chúng cẩn thận, chúng cũng sẽ bảo vệ không gian sống của bạn khỏi những độc tố không khí. Hy vọng những chia sẻ trên sẽ giúp bạn tự tin hơn trong việc "làm bạn" với loài cây tuyệt vời này. Hãy cùng Lưỡi Hổ tận hưởng một không gian xanh sạch và tràn đầy sức sống nhé!</p>' 
+<p>Lưỡi Hổ là loài cây mang đến sự bình an và bảo vệ gia chủ. Khi bạn chăm sóc chúng cẩn thận, chúng cũng sẽ bảo vệ không gian sống của bạn khỏi những độc tố không khí. Hy vọng những chia sẻ trên sẽ giúp bạn tự tin hơn trong việc "làm bạn" với loài cây tuyệt vời này. Hãy cùng Lưỡi Hổ tận hưởng một không gian xanh sạch và tràn đầy sức sống nhé!</p>
+[PRODUCT_LINK:2]'
 WHERE ID = 6;
 
 --ID7
@@ -788,7 +796,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Góc làm việc chính là tấm gương phản chiếu tâm hồn và sự chỉn chu của mỗi người. Một chút xanh không chỉ mang lại thẩm mỹ, mà còn là sự chăm sóc bản thân cần thiết. Hãy bắt đầu ngay hôm nay, chọn cho mình một người bạn xanh để mỗi ngày làm việc đều trở thành một hành trình đầy cảm hứng. Bạn đã sẵn sàng "nâng cấp" góc làm việc của mình chưa?</p>' 
+<p>Góc làm việc chính là tấm gương phản chiếu tâm hồn và sự chỉn chu của mỗi người. Một chút xanh không chỉ mang lại thẩm mỹ, mà còn là sự chăm sóc bản thân cần thiết. Hãy bắt đầu ngay hôm nay, chọn cho mình một người bạn xanh để mỗi ngày làm việc đều trở thành một hành trình đầy cảm hứng. Bạn đã sẵn sàng "nâng cấp" góc làm việc của mình chưa?</p>
+[PRODUCT_LINK:8]'
 WHERE ID = 7;
 
 --ID8
@@ -826,7 +835,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Xương rồng là minh chứng sống động rằng vẻ đẹp có thể tồn tại ngay cả trong những điều kiện khắc nghiệt nhất. Hy vọng với bảng phân loại đơn giản này, bạn đã tự tin hơn để chọn cho mình một người bạn xương rồng phù hợp. Hãy kiên nhẫn, hãy cho chúng đủ nắng, và bạn sẽ thấy chúng đáp lại bằng những hình thái đầy mê hoặc!</p>' 
+<p>Xương rồng là minh chứng sống động rằng vẻ đẹp có thể tồn tại ngay cả trong những điều kiện khắc nghiệt nhất. Hy vọng với bảng phân loại đơn giản này, bạn đã tự tin hơn để chọn cho mình một người bạn xương rồng phù hợp. Hãy kiên nhẫn, hãy cho chúng đủ nắng, và bạn sẽ thấy chúng đáp lại bằng những hình thái đầy mê hoặc!</p>
+[PRODUCT_LINK:9]'
 WHERE ID = 8;
 
 --ID9
@@ -864,7 +874,8 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Việc tự tay trộn đất không chỉ đảm bảo sức khỏe cho cây mà còn là cách để bạn hiểu hơn về nhu cầu của chúng. Khi bạn tự tay chuẩn bị từng nguyên liệu, bạn sẽ thấy mình gắn kết với cây hơn. Hãy kiên nhẫn, thử nghiệm và điều chỉnh tỉ lệ tùy theo độ ẩm ở nơi bạn đặt cây. Chúc bạn có những chậu sen đá khỏe mạnh và bung nở rạng rỡ!</p>' 
+<p>Việc tự tay trộn đất không chỉ đảm bảo sức khỏe cho cây mà còn là cách để bạn hiểu hơn về nhu cầu của chúng. Khi bạn tự tay chuẩn bị từng nguyên liệu, bạn sẽ thấy mình gắn kết với cây hơn. Hãy kiên nhẫn, thử nghiệm và điều chỉnh tỉ lệ tùy theo độ ẩm ở nơi bạn đặt cây. Chúc bạn có những chậu sen đá khỏe mạnh và bung nở rạng rỡ!</p>
+[PRODUCT_LINK:4]'
 WHERE ID = 9;
 
 --ID10
@@ -903,5 +914,14 @@ UPDATE BaiViet SET NoiDung = N'
 </ul>
 
 <h3>4. Lời kết</h3>
-<p>Sự kiện triển lãm cây cảnh Đà Nẵng 2026 không chỉ là một sự kiện, đó là một hành trình kết nối cộng đồng. Dù bạn là người chơi lâu năm hay mới chớm nở tình yêu với cây cối, triển lãm vẫn luôn dành một vị trí đặc biệt cho bạn. Hẹn gặp bạn tại không gian xanh đầy cảm hứng này nhé!</p>' 
+<p>Sự kiện triển lãm cây cảnh Đà Nẵng 2026 không chỉ là một sự kiện, đó là một hành trình kết nối cộng đồng. Dù bạn là người chơi lâu năm hay mới chớm nở tình yêu với cây cối, triển lãm vẫn luôn dành một vị trí đặc biệt cho bạn. Hẹn gặp bạn tại không gian xanh đầy cảm hứng này nhé!</p>
+[PRODUCT_LINK:5]'
 WHERE ID = 10;
+
+--Thêm trường trạng thái vào bài viết
+ALTER TABLE BaiViet ADD TrangThai NVARCHAR(50) DEFAULT 'PUBLISHED';
+GO
+
+-- Cập nhật giả lập 1 bài viết thành DRAFT để test bộ lọc
+UPDATE BaiViet SET TrangThai = 'DRAFT' WHERE ID = 3;
+GO
