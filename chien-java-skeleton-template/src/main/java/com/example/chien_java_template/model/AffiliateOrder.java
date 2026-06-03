@@ -49,4 +49,7 @@ public class AffiliateOrder {
     @UpdateTimestamp
     @Column(name = "NgayCapNhat")
     private LocalDateTime ngayCapNhat;
+
+    @Column(name = "TenSanPham", columnDefinition = "NVARCHAR(255)")
+    private String tenSanPham;
 }

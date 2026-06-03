@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile; // Import thêm thư viện này cho chức năng upload file
 
 @RestController
 @RequestMapping("/api/v1/affiliate-order")
@@ -29,6 +30,40 @@ public class AffiliateOrderController {
                         .result(affiliateOrderDTO)
                         .build());
     }
+
+    // --- API MỚI: XỬ LÝ IMPORT TỪ FILE EXCEL HOẶC TEXT ---
+    @PostMapping("/import")
+    public ResponseEntity<ApiResponse<String>> importAffiliateData(
+            @RequestParam("doiTac") String doiTac,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(value = "rawData", required = false) String rawData) {
+        try {
+            if (file != null && !file.isEmpty()) {
+                // Gọi sang Service để xử lý file Excel
+                affiliateOrderService.importFromFile(file, doiTac);
+            } else if (rawData != null && !rawData.trim().isEmpty()) {
+                // Gọi sang Service để xử lý text dán vào
+                affiliateOrderService.importFromText(rawData, doiTac);
+            } else {
+                return ResponseEntity.badRequest().body(ApiResponse.<String>builder()
+                        .code(400)
+                        .message("Vui lòng chọn file hoặc dán dữ liệu!")
+                        .build());
+            }
+            return ResponseEntity.ok(ApiResponse.<String>builder()
+                    .code(200)
+                    .message("Import dữ liệu affiliate thành công")
+                    .result("Success")
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.<String>builder()
+                            .code(500)
+                            .message("Lỗi khi import: " + e.getMessage())
+                            .build());
+        }
+    }
+    // ------------------------------------------------------
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<AffiliateOrderDTO>> getAffiliateOrderById(@PathVariable Integer id) {
@@ -99,4 +134,3 @@ public class AffiliateOrderController {
                 .build());
     }
 }
-

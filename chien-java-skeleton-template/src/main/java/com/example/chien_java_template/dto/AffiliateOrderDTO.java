@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class AffiliateOrderDTO {
     private Integer id;
     private Integer linkAffiliateId;
+    private String tenSanPham;
     private Platform nenTang;
     private String maCode;
     private BigDecimal giaTriDonHang;

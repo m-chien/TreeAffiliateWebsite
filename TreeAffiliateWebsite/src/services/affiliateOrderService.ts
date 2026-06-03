@@ -8,6 +8,7 @@ const API_BASE_URL = "http://localhost:8080/api/v1";
 export interface AffiliateOrderDTO {
   id: number;
   linkAffiliateId: number;
+  tenSanPham?: string;
   nenTang: 'Shopee' | 'TikTok' | 'OTHER' | string;
   maCode: string;
   giaTriDonHang: number;

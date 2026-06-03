@@ -545,6 +545,10 @@ select * from Anh_BaiViet;
 select * from BaiViet_CayCanh;
 select * from BaiViet_LinkAffiliate;
 select * from DanhMucNoiDung;
+--Cập nhật trường cho bảng AffiliateOrder
+ALTER TABLE AffiliateOrder
+ADD TenSanPham NVARCHAR(255);
+GO
 
 -- Chỉnh lại cho đúng với tên đặt trong UseRole của backend
 UPDATE [User] 
