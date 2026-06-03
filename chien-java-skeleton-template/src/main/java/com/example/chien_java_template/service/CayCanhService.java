@@ -12,10 +12,12 @@ import com.example.chien_java_template.model.CayCanh;
 import com.example.chien_java_template.model.CauHoiThuongGap;
 import com.example.chien_java_template.model.HuongDanChamSoc;
 import com.example.chien_java_template.model.ThongTinNoiBat;
+import com.example.chien_java_template.model.KhuyenMai;
 import com.example.chien_java_template.repository.CauHoiThuongGapRepository;
 import com.example.chien_java_template.repository.CayCanhRepository;
 import com.example.chien_java_template.repository.HuongDanChamSocRepository;
 import com.example.chien_java_template.repository.ThongTinNoiBatRepository;
+import com.example.chien_java_template.repository.KhuyenMaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,7 @@ public class CayCanhService {
     private final HuongDanChamSocRepository huongDanChamSocRepository;
     private final ThongTinNoiBatRepository thongTinNoiBatRepository;
     private final CauHoiThuongGapRepository cauHoiThuongGapRepository;
+    private final KhuyenMaiRepository khuyenMaiRepository;
 
     @Transactional
     public CayCanhDTO createCayCanh(CreateCayCanhDTO createCayCanhDTO) {
@@ -146,6 +149,28 @@ public class CayCanhService {
             }).collect(Collectors.toList());
 
             cauHoiThuongGapRepository.saveAll(faqList);
+        }
+
+        if (request.getKhuyenMai() != null) {
+            if (cayCanh.getKhuyenMais() != null) {
+                cayCanh.getKhuyenMais().clear();
+            }
+
+            List<KhuyenMai> kmList = request.getKhuyenMai().stream().map(req -> {
+                KhuyenMai km = new KhuyenMai();
+                km.setTenKhuyenMai(req.getTenKhuyenMai());
+                km.setPhanTramGiam(req.getPhanTramGiam());
+                return km;
+            }).collect(Collectors.toList());
+
+            List<KhuyenMai> savedKmList = khuyenMaiRepository.saveAll(kmList);
+            
+            if (cayCanh.getKhuyenMais() == null) {
+                cayCanh.setKhuyenMais(savedKmList);
+            } else {
+                cayCanh.getKhuyenMais().addAll(savedKmList);
+            }
+            cayCanhRepository.save(cayCanh);
         }
     }
 }

@@ -161,8 +161,8 @@ const Dashboard: React.FC = () => {
                 className={styles.avatar}
               />
               <div className={styles.adminInfo}>
-                <span className={styles.adminName}>Alex Nguyen</span>
-                <span className={styles.adminRole}>Super Admin</span>
+                <span className={styles.adminName}>Trần Minh Chiến</span>
+                <span className={styles.adminRole}>Admin</span>
               </div>
             </div>
           </div>

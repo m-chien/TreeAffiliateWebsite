@@ -8,4 +8,5 @@ public class UpdatePlantDetailsRequest {
     private HuongDanChamSocRequest huongDanChamSoc;
     private List<ThongTinNoiBatRequest> thongTinNoiBat;
     private List<CauHoiThuongGapRequest> cauHoiThuongGap;
+    private List<KhuyenMaiRequest> khuyenMai;
 }

@@ -219,7 +219,7 @@ GO
 -- User
 INSERT INTO [User] (Email, Hoten, soDienThoai, MatKhau, TrangThai, VaiTro) VALUES  
 ('admin@plants.com', N'Alex Nguyen', '0987654321', 'pw1', 'ACTIVE', 'ADMIN'),
-('chi@gmail.com', N'Lê Kim Chi', '0901234567', 'pw2', 'ACTIVE', 'USER'),
+('chientranminh355@gmail.com', N'Trần Minh Chiến', '0901234567', 'pw2', 'ACTIVE', 'USER'),
 ('hung@gmail.com', N'Trần Mạnh Hùng', '0907654321', 'pw3', 'ACTIVE', 'USER'),
 ('lan@gmail.com', N'Vũ Ngọc Lan', '0912345678', 'pw4', 'ACTIVE', 'USER'),
 ('minh@gmail.com', N'Đỗ Quang Minh', '0918765432', 'pw5', 'ACTIVE', 'USER'),
@@ -286,58 +286,7 @@ VALUES
 -- Affiliate Order
 INSERT INTO AffiliateOrder (IDLinkAffiliate, NenTang, MaCode, GiaTriDonHang, HoaHong, TrangThai, NgayDat) VALUES  
 (1, 'Shopee', 'SP101', 230000, 34500, 'COMPLETED', '2026-04-01 10:00:00'),
-(3, 'Shopee', 'SP102', 520000, 52000, 'COMPLETED', '2026-04-02 11:00:00'),
-(4, 'TikTok', 'TT201', 300000, 60000, 'PENDING', '2026-04-05 14:30:00'),
-(5, 'Shopee', 'SP103', 160000, 19200, 'COMPLETED', '2026-04-06 16:00:00'),
-(1, 'Shopee', 'SP104', 230000, 34500, 'CANCELLED', '2026-04-07 17:00:00'),
-(8, 'Shopee', 'SP105', 40000, 3200, 'COMPLETED', '2026-04-08 10:15:00'),
-(10, 'TikTok', 'TT202', 70000, 7000, 'COMPLETED', '2026-04-09 11:30:00'),
-(3, 'Shopee', 'SP106', 520000, 52000, 'COMPLETED', '2026-04-09 14:20:00'),
-(1, 'Shopee', 'SP107', 230000, 34500, 'COMPLETED', '2026-04-10 15:40:00'),
-(6, 'Shopee', 'SP108', 110000, 19800, 'COMPLETED', '2026-04-10 18:00:00'),
-(1, 'Shopee', 'SP201', 230000, 34500, 'COMPLETED', '2026-05-01 10:15:00'),
-(2, 'TikTok', 'TT301', 240000, 43200, 'COMPLETED', '2026-05-02 11:30:00'),
-(3, 'Shopee', 'SP202', 520000, 52000, 'COMPLETED', '2026-05-03 14:20:00'),
-(4, 'TikTok', 'TT302', 300000, 60000, 'COMPLETED', '2026-05-04 09:10:00'),
-(5, 'Shopee', 'SP203', 160000, 19200, 'COMPLETED', '2026-05-05 16:45:00'),
-(6, 'Shopee', 'SP204', 110000, 19800, 'COMPLETED', '2026-05-06 18:00:00'),
-(7, 'TikTok', 'TT303', 130000, 15600, 'COMPLETED', '2026-05-07 13:12:00'),
-(8, 'Shopee', 'SP205', 40000, 3200, 'COMPLETED', '2026-05-08 10:00:00'),
-(9, 'Shopee', 'SP206', 420000, 63000, 'COMPLETED', '2026-05-09 15:30:00'),
-(10, 'TikTok', 'TT304', 70000, 7000, 'COMPLETED', '2026-05-10 12:40:00'),
-(1, 'Shopee', 'SP207', 230000, 34500, 'COMPLETED', '2026-05-11 11:05:00'),
-(3, 'Shopee', 'SP208', 520000, 52000, 'COMPLETED', '2026-05-12 14:50:00'),
-(4, 'TikTok', 'TT305', 300000, 60000, 'COMPLETED', '2026-05-13 17:15:00'),
-(1, 'Shopee', 'SP209', 230000, 34500, 'PENDING', '2026-05-14 09:30:00'),
-(2, 'TikTok', 'TT306', 240000, 43200, 'COMPLETED', '2026-05-15 15:22:00'),
-(3, 'Shopee', 'SP210', 520000, 52000, 'COMPLETED', '2026-05-16 16:10:00'),
-(4, 'TikTok', 'TT307', 300000, 60000, 'COMPLETED', '2026-05-17 11:45:00'),
-(8, 'Shopee', 'SP211', 40000, 3200, 'COMPLETED', '2026-05-18 13:00:00'),
-(5, 'Shopee', 'SP212', 160000, 19200, 'COMPLETED', '2026-05-19 14:02:00'),
-(6, 'Shopee', 'SP213', 110000, 19800, 'COMPLETED', '2026-05-20 15:40:00'),
-(1, 'Shopee', 'SP214', 230000, 34500, 'COMPLETED', '2026-05-21 16:30:00'),
-(3, 'Shopee', 'SP215', 520000, 52000, 'COMPLETED', '2026-05-22 10:12:00'),
-(4, 'TikTok', 'TT308', 300000, 60000, 'COMPLETED', '2026-05-23 11:20:00'),
-(8, 'Shopee', 'SP216', 40000, 3200, 'COMPLETED', '2026-05-24 12:45:00'),
-(2, 'TikTok', 'TT309', 240000, 43200, 'COMPLETED', '2026-05-25 14:50:00'),
-(9, 'Shopee', 'SP217', 420000, 63000, 'COMPLETED', '2026-05-26 16:00:00'),
-(1, 'Shopee', 'SP218', 230000, 34500, 'COMPLETED', '2026-05-27 17:15:00'),
-(3, 'Shopee', 'SP219', 520000, 52000, 'COMPLETED', '2026-05-28 09:30:00'),
-(4, 'TikTok', 'TT310', 300000, 60000, 'COMPLETED', '2026-05-29 10:45:00'),
-(5, 'Shopee', 'SP220', 160000, 19200, 'COMPLETED', '2026-05-30 14:20:00'),
-(6, 'Shopee', 'SP221', 110000, 19800, 'COMPLETED', '2026-05-31 16:12:00'),
-(1, 'Shopee', 'SP222', 230000, 34500, 'COMPLETED', '2026-06-01 08:30:00'),
-(2, 'TikTok', 'TT311', 240000, 43200, 'COMPLETED', '2026-06-01 11:00:00'),
-(3, 'Shopee', 'SP223', 520000, 52000, 'COMPLETED', '2026-06-01 14:15:00'),
-(4, 'TikTok', 'TT312', 300000, 60000, 'COMPLETED', '2026-06-01 16:45:00'),
-(8, 'Shopee', 'SP224', 40000, 3200, 'COMPLETED', '2026-06-01 17:30:00'),
-(1, 'Shopee', 'SP225', 230000, 34500, 'COMPLETED', '2026-06-02 09:00:00'),
-(3, 'Shopee', 'SP226', 520000, 52000, 'PENDING', '2026-06-02 10:15:00'),
-(4, 'TikTok', 'TT313', 300000, 60000, 'PENDING', '2026-06-02 11:30:00'),
-(8, 'Shopee', 'SP227', 40000, 3200, 'COMPLETED', '2026-06-02 13:00:00'),
-(1, 'Shopee', 'SP228', 230000, 34500, 'CANCELLED', '2026-05-15 10:00:00'),
-(3, 'Shopee', 'SP229', 520000, 52000, 'CANCELLED', '2026-05-20 14:00:00'),
-(4, 'TikTok', 'TT314', 300000, 60000, 'CANCELLED', '2026-05-25 16:00:00');
+(3, 'Shopee', 'SP102', 520000, 52000, 'COMPLETED', '2026-04-02 11:00:00');
 
 -- Đánh giá
 INSERT INTO DanhGia (IDCayCanh, IDUser, NguoiDanhGia, Diem, NoiDung, NgayDang, LinkAnh) VALUES  
@@ -966,10 +915,8 @@ UPDATE BaiViet SET NoiDung = N'
 [PRODUCT_LINK:5]'
 WHERE ID = 10;
 
---Thêm trường trạng thái vào bài viết
-ALTER TABLE BaiViet ADD TrangThai NVARCHAR(50) DEFAULT 'PUBLISHED';
-GO
 
 -- Cập nhật giả lập 1 bài viết thành DRAFT để test bộ lọc
 UPDATE BaiViet SET TrangThai = 'DRAFT' WHERE ID = 3;
 GO
+select * from AffiliateOrder

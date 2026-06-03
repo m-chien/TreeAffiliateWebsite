@@ -336,15 +336,22 @@ const LinkAffiliateManager: React.FC = () => {
 
                       <div className={styles.formGroup}>
                         <label>Nền Tảng</label>
-                        <input
-                          type="text"
+                        <select
                           className={styles.input}
-                          placeholder="VD: Shopee, Lazada..."
                           value={link.nenTang}
                           onChange={(e) =>
                             handleChange(link.id, "nenTang", e.target.value)
                           }
-                        />
+                        >
+                          <option value="">-- Chọn Nền Tảng --</option>
+                          <option value="Shopee">Shopee</option>
+                          <option value="TikTok">TikTok</option>
+                          <option value="LAZADA">Lazada</option>
+                          <option value="TIKI">Tiki</option>
+                          <option value="AMAZON">Amazon</option>
+                          <option value="BEING">Being</option>
+                          <option value="OTHER">Khác</option>
+                        </select>
                       </div>
 
                       <div className={styles.formGroup}>

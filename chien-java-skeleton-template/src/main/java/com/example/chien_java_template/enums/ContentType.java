@@ -9,5 +9,10 @@ public enum ContentType {
     TIP,
     REVIEW,
     CARE_INSTRUCTION,
-    OTHER
+    OTHER,
+    BLOG,
+    GUIDE,
+    PRODUCT,
+    PROMO,
+    EVENT
 }
