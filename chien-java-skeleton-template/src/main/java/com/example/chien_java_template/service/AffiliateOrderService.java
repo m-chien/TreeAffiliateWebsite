@@ -28,8 +28,16 @@ public class AffiliateOrderService {
     @Transactional
     public AffiliateOrderDTO createAffiliateOrder(CreateAffiliateOrderDTO createAffiliateOrderDTO) {
         AffiliateOrder affiliateOrder = affiliateOrderMapper.toEntityFromCreateDTO(createAffiliateOrderDTO);
-        affiliateOrder.setTrangThai(Status.PENDING);
-        affiliateOrder.setNgayDat(LocalDateTime.now());
+        if (createAffiliateOrderDTO.getTrangThai() != null) {
+            affiliateOrder.setTrangThai(createAffiliateOrderDTO.getTrangThai());
+        } else {
+            affiliateOrder.setTrangThai(Status.PENDING);
+        }
+        if (createAffiliateOrderDTO.getNgayDat() != null) {
+            affiliateOrder.setNgayDat(createAffiliateOrderDTO.getNgayDat());
+        } else {
+            affiliateOrder.setNgayDat(LocalDateTime.now());
+        }
         AffiliateOrder savedAffiliateOrder = affiliateOrderRepository.save(affiliateOrder);
         return affiliateOrderMapper.toDTO(savedAffiliateOrder);
     }

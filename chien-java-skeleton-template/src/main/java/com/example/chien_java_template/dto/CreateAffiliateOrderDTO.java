@@ -16,5 +16,7 @@ public class CreateAffiliateOrderDTO {
     private String maCode;
     private BigDecimal giaTriDonHang;
     private BigDecimal hoaHong;
+    private Status trangThai;
+    private java.time.LocalDateTime ngayDat;
 }
 

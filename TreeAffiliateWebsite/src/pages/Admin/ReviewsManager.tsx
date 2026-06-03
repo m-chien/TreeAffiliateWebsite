@@ -32,7 +32,7 @@ const ReviewsManager: React.FC = () => {
   const openAddModal = () => {
     setFormData({ 
       id: `R${Date.now().toString().slice(-4)}`, 
-      plantId: managedPlants[0]?.id || '',
+      plantId: String(managedPlants[0]?.id || ''),
       plantName: managedPlants[0]?.name || '',
       userId: 'ADMIN',
       userName: 'Admin Moderator',
@@ -59,7 +59,7 @@ const ReviewsManager: React.FC = () => {
     if (!formData.content || !formData.userName) return;
     
     // Find plant name if not set
-    const plant = managedPlants.find(p => p.id === formData.plantId);
+    const plant = managedPlants.find(p => String(p.id) === String(formData.plantId));
     const newReview = {
       ...formData,
       plantName: plant ? plant.name : 'Unknown Plant',
@@ -72,7 +72,7 @@ const ReviewsManager: React.FC = () => {
   const handleSaveEdit = () => {
     if (!selectedReview || !formData.content) return;
     
-    const plant = managedPlants.find(p => p.id === formData.plantId);
+    const plant = managedPlants.find(p => String(p.id) === String(formData.plantId));
     const updatedReview = {
       ...formData,
       plantName: plant ? plant.name : 'Unknown Plant',

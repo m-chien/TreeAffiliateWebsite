@@ -14,6 +14,7 @@ import type {
   ManagedCategory,
   ManagedPartner,
   ManagedReview,
+  ManagedRevenueOrder,
 } from "../types";
 
 // ... (existing constants)
@@ -53,6 +54,144 @@ export const managedReviews: ManagedReview[] = [
     date: "2024-04-09",
     imageUrl: "https://images.unsplash.com/photo-1632123507747-d0c43c24ff2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     status: "Pending"
+  }
+];
+
+export const managedRevenueOrders: ManagedRevenueOrder[] = [
+  {
+    id: "583336649395897859",
+    productName: "Combo 5-10 Quyển Sổ Tay Kiếm Hiệp",
+    partner: "TikTok Shop",
+    gmv: 22792,
+    commission: 2621,
+    status: "Settled",
+    orderDate: "2026-04-01 18:04:10",
+    settlementDate: "2026-04-07 11:56:15",
+    price: 22792,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Gia Dụng B52",
+    commissionRate: "11.5%"
+  },
+  {
+    id: "SP123456",
+    productName: "Cây Kim Tiền Mini",
+    partner: "Shopee",
+    gmv: 150000,
+    commission: 18000,
+    status: "Settled",
+    orderDate: "2026-04-02 10:15:30",
+    settlementDate: "2026-04-08 09:30:00",
+    price: 150000,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Vườn Cây Xanh",
+    commissionRate: "12%"
+  },
+  {
+    id: "583432182682060291",
+    productName: "Combo 5-10 Quyển Sổ Tay Kiếm Hiệp",
+    partner: "TikTok Shop",
+    gmv: 1,
+    commission: 0,
+    status: "Ineligible",
+    orderDate: "2026-04-07 20:53:14",
+    settlementDate: "/",
+    price: 1,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Gia Dụng B52",
+    commissionRate: "11.5%"
+  },
+  {
+    id: "584112349493888700",
+    productName: "Combo 5-10 Quyển Sổ Tay Kiếm Hiệp",
+    partner: "TikTok Shop",
+    gmv: 58651,
+    commission: 6745,
+    status: "Ineligible",
+    orderDate: "2026-05-20 12:12:14",
+    settlementDate: "/",
+    price: 58651,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Gia Dụng B52",
+    commissionRate: "11.5%"
+  },
+  {
+    id: "SP654321",
+    productName: "Cây Bàng Singapore Decor",
+    partner: "Shopee",
+    gmv: 480000,
+    commission: 96000,
+    status: "Settled",
+    orderDate: "2026-04-05 14:22:11",
+    settlementDate: "2026-04-12 10:00:00",
+    price: 480000,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Nhà Vườn Eco",
+    commissionRate: "20%"
+  },
+  {
+    id: "EG888999",
+    productName: "Chậu Trầu Bà Nam Mỹ",
+    partner: "Eco Garden",
+    gmv: 550000,
+    commission: 44000,
+    status: "Pending",
+    orderDate: "2026-05-28 09:15:00",
+    settlementDate: "/",
+    price: 550000,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Eco Garden Store",
+    commissionRate: "8%"
+  },
+  {
+    id: "SP777888",
+    productName: "Cây Lưỡi Hổ Thái",
+    partner: "Shopee",
+    gmv: 180000,
+    commission: 27000,
+    status: "Settled",
+    orderDate: "2026-04-10 11:30:15",
+    settlementDate: "2026-04-17 15:45:00",
+    price: 180000,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Shopee Mall Cây Cảnh",
+    commissionRate: "15%"
+  },
+  {
+    id: "583323301215372803",
+    productName: "Combo 5-10 Quyển Sổ Tay Kiếm Hiệp",
+    partner: "TikTok Shop",
+    gmv: 22792,
+    commission: 2621,
+    status: "Ineligible",
+    orderDate: "2026-03-31 20:24:08",
+    settlementDate: "/",
+    price: 22792,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Gia Dụng B52",
+    commissionRate: "11.5%"
+  },
+  {
+    id: "EG111222",
+    productName: "Sen Đá Mini Cảnh",
+    partner: "Eco Garden",
+    gmv: 45000,
+    commission: 3600,
+    status: "Settled",
+    orderDate: "2026-04-20 16:00:00",
+    settlementDate: "2026-04-27 14:00:00",
+    price: 45000,
+    quantity: 1,
+    refundQuantity: 0,
+    shopName: "Eco Garden Store",
+    commissionRate: "8%"
   }
 ];
 

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   DollarSign, ShoppingCart, MousePointerClick, TrendingUp, 
-  Target, BarChart3, PieChart, Activity, AlertTriangle, 
-  CheckCircle, Download, Calendar
+  Target, BarChart3, PieChart, Activity, Download, Calendar
 } from 'lucide-react';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -10,16 +9,35 @@ import {
 } from 'recharts';
 import styles from './DashboardAnalytics.module.css';
 import { 
-  kpiData, trendChartData, funnelData, 
-  topPlants, topArticles, trafficSources
+  kpiData as mockKpiData, trendChartData as mockTrendData, funnelData as mockFunnelData, 
+  topPlants as mockTopPlants, topArticles, trafficSources
 } from '../../../data/analyticsMockData';
+import { fetchAllAffiliateOrders, fetchAllLinkAffiliates } from '../../../services/affiliateOrderService';
 
 // --- SUB-COMPONENTS ---
 
 const formatCurrency = (val: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
 const formatNumber = (val: number) => new Intl.NumberFormat('vi-VN').format(val);
 
-const KPICards = () => {
+const loadXLSX = () => {
+  return new Promise<any>((resolve, reject) => {
+    if ((window as any).XLSX) {
+      resolve((window as any).XLSX);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+    script.onload = () => resolve((window as any).XLSX);
+    script.onerror = (err) => reject(err);
+    document.body.appendChild(script);
+  });
+};
+
+interface KPICardsProps {
+  kpi: typeof mockKpiData;
+}
+
+const KPICards: React.FC<KPICardsProps> = ({ kpi }) => {
   return (
     <div className={styles.kpiGrid}>
       <div className={styles.kpiCard}>
@@ -29,7 +47,7 @@ const KPICards = () => {
             <DollarSign size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{formatCurrency(kpiData.totalRevenue)}</p>
+        <p className={styles.kpiValue}>{formatCurrency(kpi.totalRevenue)}</p>
         <p className={styles.kpiSub}>
           <span className={styles.trendUp}>+12.5%</span> so với tháng trước
         </p>
@@ -42,7 +60,7 @@ const KPICards = () => {
             <Target size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{formatCurrency(kpiData.estimatedCommission)}</p>
+        <p className={styles.kpiValue}>{formatCurrency(kpi.estimatedCommission)}</p>
         <p className={styles.kpiSub}>
           <span className={styles.trendUp}>+15.2%</span> so với tháng trước
         </p>
@@ -55,7 +73,7 @@ const KPICards = () => {
             <MousePointerClick size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{formatNumber(kpiData.totalClicks)}</p>
+        <p className={styles.kpiValue}>{formatNumber(kpi.totalClicks)}</p>
         <p className={styles.kpiSub}>
           <span className={styles.trendDown}>-2.4%</span> so với tháng trước
         </p>
@@ -68,7 +86,7 @@ const KPICards = () => {
             <ShoppingCart size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{formatNumber(kpiData.totalOrders)}</p>
+        <p className={styles.kpiValue}>{formatNumber(kpi.totalOrders)}</p>
         <p className={styles.kpiSub}>
           <span className={styles.trendUp}>+8.1%</span> so với tháng trước
         </p>
@@ -81,7 +99,7 @@ const KPICards = () => {
             <Activity size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{kpiData.conversionRate}%</p>
+        <p className={styles.kpiValue}>{kpi.conversionRate}%</p>
         <p className={styles.kpiSub}>Orders / Clicks</p>
       </div>
 
@@ -92,7 +110,7 @@ const KPICards = () => {
             <TrendingUp size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{formatCurrency(kpiData.epc)}</p>
+        <p className={styles.kpiValue}>{formatCurrency(kpi.epc)}</p>
         <p className={styles.kpiSub}>Commission / Clicks</p>
       </div>
 
@@ -103,7 +121,7 @@ const KPICards = () => {
             <BarChart3 size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{formatCurrency(kpiData.aov)}</p>
+        <p className={styles.kpiValue}>{formatCurrency(kpi.aov)}</p>
         <p className={styles.kpiSub}>Revenue / Orders</p>
       </div>
 
@@ -114,14 +132,19 @@ const KPICards = () => {
             <PieChart size={20} />
           </div>
         </div>
-        <p className={styles.kpiValue}>{kpiData.activeProducts} / {kpiData.activeArticles}</p>
+        <p className={styles.kpiValue}>{kpi.activeProducts} / {kpi.activeArticles}</p>
         <p className={styles.kpiSub}>Đang phát sinh click</p>
       </div>
     </div>
   );
 };
 
-const ChartsSection = () => {
+interface ChartsSectionProps {
+  trendData: typeof mockTrendData;
+  funnel: typeof mockFunnelData;
+}
+
+const ChartsSection: React.FC<ChartsSectionProps> = ({ trendData, funnel }) => {
   return (
     <div className={styles.chartGrid}>
       <div className={styles.chartCard}>
@@ -131,7 +154,7 @@ const ChartsSection = () => {
         </h2>
         <div style={{ width: '100%', height: 300 }}>
           <ResponsiveContainer>
-            <AreaChart data={trendChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <AreaChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
@@ -164,14 +187,14 @@ const ChartsSection = () => {
         </h2>
         <div style={{ width: '100%', height: 300 }}>
           <ResponsiveContainer>
-            <BarChart layout="vertical" data={funnelData} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+            <BarChart layout="vertical" data={funnel} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
               <XAxis type="number" hide />
               <YAxis dataKey="step" type="category" width={120} fontSize={12} stroke="#64748b" tickLine={false} axisLine={false} />
               <RechartsTooltip cursor={{fill: '#f1f5f9'}} />
               <Bar dataKey="value" name="Lượt" radius={[0, 4, 4, 0]}>
                 {
-                  funnelData.map((entry, index) => (
+                  funnel.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))
                 }
@@ -184,7 +207,13 @@ const ChartsSection = () => {
   );
 };
 
-const AnalyticsTables = () => {
+interface AnalyticsTablesProps {
+  plants: typeof mockTopPlants;
+  articles: typeof topArticles;
+  traffic: typeof trafficSources;
+}
+
+const AnalyticsTables: React.FC<AnalyticsTablesProps> = ({ plants, articles, traffic }) => {
   return (
     <div className={styles.chartGrid} style={{ gridTemplateColumns: '1fr 1fr' }}>
       <div className={styles.chartCard} style={{ padding: 0, overflow: 'hidden' }}>
@@ -203,7 +232,7 @@ const AnalyticsTables = () => {
               </tr>
             </thead>
             <tbody>
-              {topPlants.map(plant => (
+              {plants.map(plant => (
                 <tr key={plant.id}>
                   <td style={{ fontWeight: 500 }}>{plant.name}</td>
                   <td className={styles.highlightMetric}>{formatNumber(plant.clicks)}</td>
@@ -237,7 +266,7 @@ const AnalyticsTables = () => {
               </tr>
             </thead>
             <tbody>
-              {topArticles.map(article => (
+              {articles.map(article => (
                 <tr key={article.id}>
                   <td style={{ fontWeight: 500 }}>{article.title.substring(0, 30)}...</td>
                   <td>{formatNumber(article.views)}</td>
@@ -255,7 +284,6 @@ const AnalyticsTables = () => {
         </div>
       </div>
 
-      {/* Traffic Table spanning full width */}
       <div className={styles.chartCard} style={{ gridColumn: '1 / -1', padding: 0, overflow: 'hidden' }}>
         <div style={{ padding: 24, paddingBottom: 0 }}>
           <h2 className={styles.cardTitle}>Phân tích Nguồn Traffic</h2>
@@ -273,18 +301,18 @@ const AnalyticsTables = () => {
               </tr>
             </thead>
             <tbody>
-              {trafficSources.map((traffic, idx) => (
+              {traffic.map((trafficItem, idx) => (
                 <tr key={idx}>
-                  <td style={{ fontWeight: 600 }}>{traffic.source}</td>
-                  <td className={styles.highlightMetric}>{formatNumber(traffic.clicks)}</td>
-                  <td>{traffic.orders}</td>
+                  <td style={{ fontWeight: 600 }}>{trafficItem.source}</td>
+                  <td className={styles.highlightMetric}>{formatNumber(trafficItem.clicks)}</td>
+                  <td>{trafficItem.orders}</td>
                   <td>
-                    <span className={traffic.cr > 4 ? styles.badge + ' ' + styles.success : traffic.cr < 3 ? styles.badge + ' ' + styles.danger : styles.badge + ' ' + styles.warning}>
-                      {traffic.cr}%
+                    <span className={trafficItem.cr > 4 ? styles.badge + ' ' + styles.success : trafficItem.cr < 3 ? styles.badge + ' ' + styles.danger : styles.badge + ' ' + styles.warning}>
+                      {trafficItem.cr}%
                     </span>
                   </td>
-                  <td className={styles.money}>{formatCurrency(traffic.revenue)}</td>
-                  <td className={styles.commission}>+{formatCurrency(traffic.commission)}</td>
+                  <td className={styles.money}>{formatCurrency(trafficItem.revenue)}</td>
+                  <td className={styles.commission}>+{formatCurrency(trafficItem.commission)}</td>
                 </tr>
               ))}
             </tbody>
@@ -295,69 +323,278 @@ const AnalyticsTables = () => {
   );
 };
 
-const Diagnostics = () => {
-  return (
-    <div className={styles.chartCard}>
-      <h2 className={styles.cardTitle}>
-        <Activity size={20} />
-        Chẩn đoán Hiệu suất & Insight Gợi ý
-      </h2>
-      <div className={styles.diagGrid}>
-        
-        <div className={`${styles.insightCard} ${styles.danger}`}>
-          <div className={styles.insightHeader}>
-            <AlertTriangle size={20} color="#ef4444" />
-            <h4>Cảnh báo: Traffic cao nhưng Order thấp</h4>
-          </div>
-          <p className={styles.insightDesc}>
-            Bài viết <strong>"Cách trồng sen đá không bị úng nước"</strong> có tới 42,000 views nhưng chỉ mang lại 40 đơn hàng (CTR: 2.8%, CR thấp). 
-          </p>
-          <span className={`${styles.badge} ${styles.danger}`}>Hành động: Tối ưu lại Landing Page sen đá, kiểm tra giá bán hoặc thêm nút "Mua ngay" rõ ràng hơn.</span>
-        </div>
-
-        <div className={`${styles.insightCard} ${styles.success}`}>
-          <div className={styles.insightHeader}>
-            <CheckCircle size={20} color="#10b981" />
-            <h4>Điểm sáng: Kênh Email Marketing mang lại EPC cực tốt</h4>
-          </div>
-          <p className={styles.insightDesc}>
-            Nguồn <strong>Email</strong> có tỉ lệ chuyển đổi (CR) dẫn đầu đạt 5.62%, mang lại EPC (Earning Per Click) cực kì cao. Tập khách hàng này cực kì chất lượng.
-          </p>
-          <span className={`${styles.badge} ${styles.success}`}>Hành động: Đẩy mạnh các chiến dịch gửi email chăm sóc cây / mã giảm giá hàng tuần.</span>
-        </div>
-
-        <div className={`${styles.insightCard} ${styles.warning}`}>
-          <div className={styles.insightHeader}>
-            <AlertTriangle size={20} color="#f59e0b" />
-            <h4>Sản phẩm tiềm năng: Cây Lưỡi Hổ</h4>
-          </div>
-          <p className={styles.insightDesc}>
-            <strong>Cây Lưỡi Hổ</strong> đang kéo được 5,500 clicks (nhiều nhất) nhưng Conversion Rate chỉ lẹt đẹt ở mức 1.72%. Có thể do hình ảnh trên gian hàng đối tác xấu, hoặc hết hàng.
-          </p>
-          <span className={`${styles.badge} ${styles.warning}`}>Hành động: Check link Affiliate xem gian hàng còn hàng không, tìm shop khác bán rẻ hơn.</span>
-        </div>
-
-        <div className={`${styles.insightCard} ${styles.success}`}>
-          <div className={styles.insightHeader}>
-            <CheckCircle size={20} color="#10b981" />
-            <h4>Bài viết "Ngôi sao": Top 10 cây lọc không khí</h4>
-          </div>
-          <p className={styles.insightDesc}>
-            Bài viết này tạo ra 156 đơn hàng và thu về hơn 3.5 triệu đồng hoa hồng. Người dùng đọc bài này có ý định mua rất mạnh.
-          </p>
-          <span className={`${styles.badge} ${styles.success}`}>Hành động: Đổ thêm ngân sách chạy Ads cho bài viết này, ghim lên Trang chủ.</span>
-        </div>
-
-      </div>
-    </div>
-  );
-};
-
-
 // --- MAIN DASHBOARD AGGREGATOR ---
 
 const DashboardAnalytics: React.FC = () => {
   const [timeFilter, setTimeFilter] = useState('30days');
+  const [kpi, setKpi] = useState<typeof mockKpiData>(mockKpiData);
+  const [trend, setTrend] = useState<typeof mockTrendData>(mockTrendData);
+  const [funnel, setFunnel] = useState<typeof mockFunnelData>(mockFunnelData);
+  const [topPlantsList, setTopPlantsList] = useState<typeof mockTopPlants>(mockTopPlants);
+  const [topArticlesList, setTopArticlesList] = useState<typeof topArticles>(topArticles);
+  const [trafficSourcesList, setTrafficSourcesList] = useState<typeof trafficSources>(trafficSources);
+
+  useEffect(() => {
+    async function loadBackendData() {
+      try {
+        const [orders, links, articles] = await Promise.all([
+          fetchAllAffiliateOrders(0, 1000),
+          fetchAllLinkAffiliates(0, 1000),
+          fetch("http://localhost:8080/api/v1/bai-viet?page=0&size=100")
+            .then(res => {
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              return res.json();
+            })
+            .then(data => data.result?.content || [])
+            .catch(err => {
+              console.error("Lỗi khi load bài viết từ DB:", err);
+              return [];
+            })
+        ]);
+
+        if (orders && orders.length > 0) {
+          // Calculate KPI metrics
+          const completedOrders = orders.filter(o => o.trangThai === 'COMPLETED');
+          const nonCancelledOrders = orders.filter(o => o.trangThai !== 'CANCELLED');
+          
+          const totalRevenue = completedOrders.reduce((sum, o) => sum + o.giaTriDonHang, 0);
+          const estimatedCommission = nonCancelledOrders.reduce((sum, o) => sum + o.hoaHong, 0);
+          const totalOrders = nonCancelledOrders.length;
+          
+          const totalClicks = links.reduce((sum, l) => sum + (l.luotClick || 0), 0) || 1;
+          const conversionRate = Number(((totalOrders / totalClicks) * 100).toFixed(2));
+          const epc = Math.round(estimatedCommission / totalClicks);
+          const aov = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+
+          setKpi({
+            totalRevenue,
+            estimatedCommission,
+            totalClicks,
+            totalOrders,
+            conversionRate,
+            epc,
+            aov,
+            activeProducts: links.filter(l => l.luotClick > 0).length,
+            activeArticles: articles.length
+          });
+
+          // Generate Funnel Data
+          setFunnel([
+            { step: 'Lượt xem bài viết', value: totalClicks * 5, fill: '#8884d8' },
+            { step: 'Click Affiliate', value: totalClicks, fill: '#83a6ed' },
+            { step: 'Thêm vào giỏ', value: Math.round(totalClicks * 0.2), fill: '#8dd1e1' },
+            { step: 'Đặt hàng thành công', value: totalOrders, fill: '#82ca9d' }
+          ]);
+
+          // Process Top Plants
+          const plantStats: Record<number, { name: string; clicks: number; orders: number; revenue: number; commission: number }> = {};
+          
+          links.forEach(link => {
+            plantStats[link.id] = {
+              name: link.moTa || `Link Affiliate #${link.id}`,
+              clicks: link.luotClick || 0,
+              orders: 0,
+              revenue: 0,
+              commission: 0
+            };
+          });
+
+          completedOrders.forEach(o => {
+            if (o.linkAffiliateId && plantStats[o.linkAffiliateId]) {
+              plantStats[o.linkAffiliateId].orders += 1;
+              plantStats[o.linkAffiliateId].revenue += o.giaTriDonHang;
+              plantStats[o.linkAffiliateId].commission += o.hoaHong;
+            }
+          });
+
+          const mappedPlants = Object.entries(plantStats).map(([id, val]) => {
+            const cr = val.clicks > 0 ? Number(((val.orders / val.clicks) * 100).toFixed(1)) : 0;
+            return {
+              id,
+              name: val.name,
+              clicks: val.clicks,
+              orders: val.orders,
+              cr,
+              revenue: val.revenue,
+              commission: val.commission
+            };
+          }).sort((a, b) => b.commission - a.commission).slice(0, 5);
+
+          if (mappedPlants.length > 0) {
+            setTopPlantsList(mappedPlants);
+          }
+
+          // Process Top Articles
+          if (articles && articles.length > 0) {
+            const mappedArticles = articles.map((art: any) => {
+              const artLinks = art.linkAffiliates || [];
+              const artLinkIds = new Set(artLinks.map((l: any) => l.id));
+              
+              const artClicks = artLinks.reduce((sum: number, l: any) => sum + (l.luotClick || 0), 0);
+              const artOrdersList = completedOrders.filter(o => artLinkIds.has(o.linkAffiliateId));
+              const artOrders = artOrdersList.length;
+              const artRevenue = artOrdersList.reduce((sum, o) => sum + o.giaTriDonHang, 0);
+              const artCommission = artOrdersList.reduce((sum, o) => sum + o.hoaHong, 0);
+              
+              const views = art.luotXem || 0;
+              const ctr = views > 0 ? Number(((artClicks / views) * 100).toFixed(1)) : 0;
+              
+              return {
+                id: String(art.id),
+                title: art.tieuDe,
+                views,
+                clicks: artClicks,
+                ctr,
+                orders: artOrders,
+                revenue: artRevenue,
+                commission: artCommission
+              };
+            }).sort((a: any, b: any) => b.commission - a.commission).slice(0, 5);
+
+            if (mappedArticles.length > 0) {
+              setTopArticlesList(mappedArticles);
+            }
+          }
+
+          // Process Traffic Sources by Platform from DB
+          const platformStats: Record<string, { clicks: number; orders: number; revenue: number; commission: number }> = {
+            'Shopee': { clicks: 0, orders: 0, revenue: 0, commission: 0 },
+            'TikTok Shop': { clicks: 0, orders: 0, revenue: 0, commission: 0 },
+            'Eco Garden': { clicks: 0, orders: 0, revenue: 0, commission: 0 },
+          };
+
+          links.forEach(l => {
+            let plat = 'Eco Garden';
+            if (l.nhaCungCap?.toLowerCase().includes('shopee')) plat = 'Shopee';
+            else if (l.nhaCungCap?.toLowerCase().includes('tiktok')) plat = 'TikTok Shop';
+            
+            if (platformStats[plat]) {
+              platformStats[plat].clicks += (l.luotClick || 0);
+            }
+          });
+
+          completedOrders.forEach(o => {
+            let plat = 'Eco Garden';
+            if (o.nenTang?.toLowerCase().includes('shopee')) plat = 'Shopee';
+            else if (o.nenTang?.toLowerCase().includes('tiktok')) plat = 'TikTok Shop';
+
+            if (platformStats[plat]) {
+              platformStats[plat].orders += 1;
+              platformStats[plat].revenue += o.giaTriDonHang;
+              platformStats[plat].commission += o.hoaHong;
+            }
+          });
+
+          const calculatedTraffic = Object.entries(platformStats).map(([source, val]) => {
+            const cr = val.clicks > 0 ? Number(((val.orders / val.clicks) * 100).toFixed(2)) : 0;
+            return {
+              source,
+              clicks: val.clicks,
+              orders: val.orders,
+              cr,
+              revenue: val.revenue,
+              commission: val.commission
+            };
+          }).sort((a, b) => b.revenue - a.revenue);
+
+          setTrafficSourcesList(calculatedTraffic);
+
+          // Build 30-day Trend Chart Data
+          const chartDataMap: Record<string, { clicks: number; orders: number; revenue: number; commission: number }> = {};
+          
+          for (let i = 29; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const dateStr = d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+            chartDataMap[dateStr] = { clicks: 0, orders: 0, revenue: 0, commission: 0 };
+          }
+
+          completedOrders.forEach(o => {
+            if (o.ngayDat) {
+              const d = new Date(o.ngayDat);
+              const dateStr = d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+              if (chartDataMap[dateStr]) {
+                chartDataMap[dateStr].orders += 1;
+                chartDataMap[dateStr].revenue += o.giaTriDonHang;
+                chartDataMap[dateStr].commission += o.hoaHong;
+              }
+            }
+          });
+
+          // Standardize trend clicks distributing total clicks across 30 days roughly
+          const distributedClicks = Math.round(totalClicks / 30);
+          const formattedTrend = Object.entries(chartDataMap).map(([date, val]) => ({
+            date,
+            clicks: val.clicks || distributedClicks,
+            orders: val.orders,
+            revenue: val.revenue,
+            commission: val.commission
+          }));
+          
+          setTrend(formattedTrend);
+        }
+      } catch (err) {
+        console.error("Lỗi khi load dữ liệu thật từ database:", err);
+      }
+    }
+
+    loadBackendData();
+  }, []);
+
+  const handleExportReport = async () => {
+    try {
+      const XLSX = await loadXLSX();
+      
+      // 1. Sheet KPI
+      const kpiRows = [
+        ["Chỉ số thống kê", "Giá trị"],
+        ["Tổng doanh thu (GMV)", formatCurrency(kpi.totalRevenue)],
+        ["Tổng hoa hồng (Est.)", formatCurrency(kpi.estimatedCommission)],
+        ["Tổng click affiliate", formatNumber(kpi.totalClicks)],
+        ["Tổng đơn hàng", formatNumber(kpi.totalOrders)],
+        ["Tỷ lệ chuyển đổi (CR%)", `${kpi.conversionRate}%`],
+        ["EPC (Earning Per Click)", formatCurrency(kpi.epc)],
+        ["AOV (Average Order Value)", formatCurrency(kpi.aov)],
+        ["Số sản phẩm phát sinh click", kpi.activeProducts],
+        ["Số bài viết phát sinh click", kpi.activeArticles]
+      ];
+      const wsKpi = XLSX.utils.aoa_to_sheet(kpiRows);
+      
+      // 2. Sheet Top Plants
+      const plantRows = [
+        ["Tên cây cảnh", "Số Clicks", "Số Đơn hàng", "Tỷ lệ CR%", "Hoa hồng đem lại"],
+        ...topPlantsList.map(p => [p.name, p.clicks, p.orders, `${p.cr}%`, formatCurrency(p.commission)])
+      ];
+      const wsPlants = XLSX.utils.aoa_to_sheet(plantRows);
+
+      // 3. Sheet Top Articles
+      const articleRows = [
+        ["Tiêu đề bài viết", "Lượt xem", "Số Clicks", "Tỷ lệ CTR%", "Hoa hồng đem lại"],
+        ...topArticlesList.map(a => [a.title, a.views, a.clicks, `${a.ctr}%`, formatCurrency(a.commission)])
+      ];
+      const wsArticles = XLSX.utils.aoa_to_sheet(articleRows);
+
+      // 4. Sheet Traffic Sources
+      const trafficRows = [
+        ["Nguồn traffic", "Lượt Clicks", "Số Đơn hàng", "Tỷ lệ CR%", "Doanh thu", "Hoa hồng"],
+        ...trafficSourcesList.map(t => [t.source, t.clicks, t.orders, `${t.cr}%`, formatCurrency(t.revenue), formatCurrency(t.commission)])
+      ];
+      const wsTraffic = XLSX.utils.aoa_to_sheet(trafficRows);
+
+      // Create Workbook
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, wsKpi, "Tổng quan KPI");
+      XLSX.utils.book_append_sheet(wb, wsPlants, "Top Cây cảnh");
+      XLSX.utils.book_append_sheet(wb, wsArticles, "Top Bài viết");
+      XLSX.utils.book_append_sheet(wb, wsTraffic, "Nguồn Traffic");
+
+      // Write file
+      XLSX.writeFile(wb, `BaoCao_Affiliate_Dashboard_${new Date().toISOString().split('T')[0]}.xlsx`);
+    } catch (err) {
+      console.error("Lỗi khi xuất báo cáo Excel:", err);
+      alert("Không thể tải thư viện xuất Excel. Vui lòng thử lại!");
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -381,16 +618,19 @@ const DashboardAnalytics: React.FC = () => {
             <option value="thisMonth">Tháng này</option>
             <option value="all">Tất cả thời gian</option>
           </select>
-          <button className={styles.filterSelect} style={{ backgroundColor: '#1e3b32', color: 'white', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button 
+            className={styles.filterSelect} 
+            style={{ backgroundColor: '#1e3b32', color: 'white', display: 'flex', alignItems: 'center', gap: 6 }}
+            onClick={handleExportReport}
+          >
             <Download size={16} /> Xuất Báo Cáo
           </button>
         </div>
       </div>
 
-      <KPICards />
-      <ChartsSection />
-      <Diagnostics />
-      <AnalyticsTables />
+      <KPICards kpi={kpi} />
+      <ChartsSection trendData={trend} funnel={funnel} />
+      <AnalyticsTables plants={topPlantsList} articles={topArticlesList} traffic={trafficSourcesList} />
 
     </div>
   );

@@ -13,7 +13,8 @@ import {
   LogOut,
   Handshake,
   MessageSquare,
-  Link as LinkIcon, // Import thêm icon này
+  Link as LinkIcon,
+  DollarSign,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
@@ -29,6 +30,7 @@ import NewsletterManager from "./NewsletterManager";
 import UsersManager from "./UsersManager";
 import PartnersManager from "./PartnersManager";
 import ReviewsManager from "./ReviewsManager";
+import RevenueManager from "./RevenueManager";
 // 1. Import component LinkAffiliateManager mới tạo
 import LinkAffiliateManager from "./LinkAffiliateManager";
 
@@ -57,7 +59,7 @@ const Dashboard: React.FC = () => {
       id: "link-affiliate",
       label: "Link Affiliate",
       icon: <LinkIcon size={20} />,
-    }, // <- Mới thêm
+    },
     { id: "articles", label: "Quản lý bài viết", icon: <FileText size={20} /> },
     {
       id: "categories",
@@ -72,6 +74,7 @@ const Dashboard: React.FC = () => {
       icon: <MessageSquare size={20} />,
     },
     { id: "partners", label: "Quản lý đối tác", icon: <Handshake size={20} /> },
+    { id: "revenue", label: "Quản lý doanh thu", icon: <DollarSign size={20} /> },
     { id: "account", label: "Tài khoản", icon: <User size={20} /> },
     { id: "settings", label: "Hệ thống", icon: <Settings size={20} /> },
   ];
@@ -85,7 +88,7 @@ const Dashboard: React.FC = () => {
         return <PlantsManager />;
       case "plant-details":
         return <PlantDetailsManager />;
-      case "link-affiliate": // <- Mới thêm
+      case "link-affiliate":
         return <LinkAffiliateManager />;
       case "articles":
         return <ArticlesManager />;
@@ -99,6 +102,8 @@ const Dashboard: React.FC = () => {
         return <ReviewsManager />;
       case "partners":
         return <PartnersManager />;
+      case "revenue":
+        return <RevenueManager />;
       case "account":
         return <AccountManager />;
       case "settings":

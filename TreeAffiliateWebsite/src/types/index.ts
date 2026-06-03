@@ -126,6 +126,7 @@ export interface ManagedPlant {
   commission?: number;
   status: "Active" | "Inactive";
   imageUrl?: string;
+  platform?: 'Shopee' | 'TikTok' | string;
 }
 
 export interface ManagedArticle {
@@ -169,6 +170,30 @@ export interface ManagedReview {
   imageUrl?: string;
   status: "Approved" | "Pending";
 }
+
+export interface ManagedRevenueOrder {
+  id: string;
+  skuId?: string;
+  productName: string;
+  productId?: string;
+  price?: number;
+  quantity?: number;
+  refundQuantity?: number;
+  shopName?: string;
+  shopId?: string;
+  partner: 'Shopee' | 'TikTok Shop' | 'Eco Garden' | 'Other';
+  agency?: string;
+  currency?: string;
+  orderType?: string;
+  status: 'Settled' | 'Pending' | 'Ineligible';
+  gmv: number;
+  commission: number;
+  commissionRate?: string;
+  orderDate: string;
+  settlementDate?: string;
+  rawDetails?: any;
+}
+
 export interface HuongDanChamSocRequest {
   anhSang: string;
   cheDoNuoc: string;
